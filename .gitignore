@@ -372,8 +372,6 @@ Omnae/Views/Web.config
 Omnae/Web.config
 web.config
 
-Omnae.DemoBackgroundWorkers/local.settings.json
-Omnae.SyncHobSpotUser/local.settings.json
-Omnae.BackgroundWorkers/local.settings.json
-
-SyncHobSpotUserService/local.settings.json
+/Omnae.DemoBackgroundWorkers/local.settings.json
+/Omnae.BackgroundWorkers/local.settings.json
+/SyncHobSpotUserService/local.settings.json
