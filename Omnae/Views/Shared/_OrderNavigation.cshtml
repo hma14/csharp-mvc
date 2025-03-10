@@ -1,0 +1,30 @@
+﻿@model Omnae.BusinessLayer.Models.StateTrackingViewModel
+
+@using Omnae.Common
+
+@*<div class="tabs-wrapper">
+        <ul class="nav nav-tabs primary-background-color" role="tablist">
+
+            <li class="dropdown text-md-center tabs-1">
+                <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="">Quality</a>
+                <ul class="dropdown-menu text-md-center">
+                    @if (Model.StateId >= States.ProductionComplete)
+                    {
+                        <li><a href="@Url.Action("CreateNCR", "Orders", new { @id = Model.OrderId })" class="dropdown-item">Create Non-Comformity Report</a></li>
+                    }
+                    <li><a href="@Url.Action("NcrHistory", "Orders", new {@id=@Model.OrderId})" class="dropdown-item">NCR History</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>*@
+
+
+    @*<a class="nav-link dropdown-toggle btn  buttonWidth" data-toggle="dropdown" href="">Quality</a>*@
+    <a class="dropdown-toggle btn accent-background-color buttonWidth2" id="dropdownQuality" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Quality</a>
+    <div class="dropdown-menu dropdown" aria-labelledby="dropdownQuality">
+        @if (Model.StateId >= States.ProductionComplete && Model.OrderId != null)
+        {
+            <a href="@Url.Action("CreateNCR", "Orders", new { @id = Model.OrderId, @taskId = Model.TaskId })" class="dropdown-item">Create Non-Comformity Report</a>
+        }
+        <a href="@Url.Action("NcrHistory", "Orders", new {@id=@Model.OrderId})" class="dropdown-item">NCR History</a>
+    </div>

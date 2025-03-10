@@ -1,0 +1,7 @@
+﻿
+Hi @Model.UserName,
+
+Tooling is complete for @Model.PartNumber from Omnae.com. 
+Your assigned factory is building samples with that tooling and will notify you when they are on the way. 
+Please log in to track your progress.
+Purchase Order #: @Model.PONumber

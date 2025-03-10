@@ -1,0 +1,143 @@
+﻿@model Omnae.ViewModels.DocumentProdIdViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    #upload {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 85%;
+    }
+</style>
+
+
+@section head{
+
+    <!--required for fileinput uploader -->
+    <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+}
+
+@section footerInlineScripts{
+    <!--required for fileinput uploader -->
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script>$("#file").fileinput({ browseClass: "btn btn-success" });</script>
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function ConfirmDelete() {
+            alertify.confirm("Do you really want to delete this document?", function (e) {
+                if (e) {
+                    alertify.success("Document is deleted.");
+                    location.reload();
+                }
+                else {
+                    alertify.error("You've clicked cancel");
+                    return false;
+                }
+            });
+            // no return here
+        }
+
+    </script>
+}
+
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-cloud-upload-alt"></i> Upload File</h4>
+        <div id="upload" class="card-block">
+            <div class="col-md-12">
+                @if (TempData["AzureException"] != null)
+                {
+                    <p class="red-text small text-xs-center"> @TempData["AzureException"]</p>
+                }
+                @using (Html.BeginForm("Create", "Documents", FormMethod.Post, new
+                {
+                    id = "uploadform",
+                    data_parsley_validate = "",
+                    enctype = "multipart/form-data"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(x => x.ProductId)
+                    @Html.HiddenFor(x => x.TaskId)
+
+                    if (Model != null && Model.Documents != null && Model.Documents.Any())
+                    {
+                        foreach (var doc in Model.Documents)
+                        {
+                            <div class="md-form">
+                                <a href="@doc.DocUri">@doc.Name</a>
+                                <a class="del pull-xs-right" href="@Url.Action("Delete", "Documents", new { @id = @doc.Id, @actionName = "Create", @controllerName = "Documents" })"><i class="fa fa-trash"></i></a>
+                            </div>
+                        }
+                    }
+
+
+                    <div>
+                        <span class="grey-text small"><span class="red-text">Note: </span>If selected material type is <span class="green-text">metal</span> or <span class="green-text">plastics</span> you must upload at least one 2D (.PDF, .AI, .EPS) and one 3D (.STEP,.DXF) files, for other material type, one 2D file is must. Can select multiple files at once.</span>
+
+                        <div class="no-padding col-md-12 top-margin-30">
+                            <input type="file" id="uploadedFile" name="uploadedFile" multiple class="no-padding">
+                        </div>
+                    </div>
+
+
+                    <div class="text-xs-center">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-50" onclick="showMessage();">Upload</button>
+                    </div>
+
+                }
+            </div>
+
+            <div class="col-md-12 top-margin-30">
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="red-text">
+                        @TempData["ErrorMessage"].ToString()
+                    </div>
+                }
+                else if (TempData["Warning"] != null)
+                {
+                    <div class="green-text">
+                        @TempData["Warning"].ToString()
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $('#uploadform').submit(function () {
+        $('#spinner').show();
+        var uploaddoc = $('#uploadedFile').val();
+        if (uploaddoc == '') {
+            alertify.error('You must upload at least one drawing file - either 2D or 3D');
+            $('#spinner').hide();
+            this.submitButton.disabled = false;
+            return false;
+        }
+        else {
+            this.submitButton.disabled = true;
+            var message = "Documents are uploaded successfully!";
+            alertify.log(message, "info", 2000);
+            return true;
+        }
+    })
+
+</script>
+
+

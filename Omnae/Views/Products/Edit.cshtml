@@ -1,0 +1,262 @@
+﻿@model Omnae.BusinessLayer.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<style>
+    .dynamic {
+        display: none;
+    }
+</style>
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+
+
+        <div class="card-block">
+            <div class="text-xs-center">
+                <h3><i class="fa fa-pencil-square-o fa-2x"></i> Update Material</h3>
+            </div>
+            <br />
+
+            @using (Html.BeginForm("Edit", "Products", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="md-form">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.PartNumber, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.PartNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PartNumber, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="md-form">
+                    @Html.LabelFor(model => model.PartNumberRevision, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.PartNumberRevision, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PartNumberRevision, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.BuildType, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.BuildType, htmlAttributes: new { @id = "buildtype", @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.BuildType, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.Material, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Material, htmlAttributes: new { @id = "material", @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.Material, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form dynamic metal">
+                    @Html.LabelFor(model => model.MetalsProcesses, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.MetalsProcesses, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.MetalsProcesses, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic metal">
+                    @Html.LabelFor(model => model.MetalType, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.MetalType, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.MetalType, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic metal">
+                    @Html.LabelFor(model => model.MetalsSurfaceFinish, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.MetalsSurfaceFinish, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.MetalsSurfaceFinish, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic plastics">
+                    @Html.LabelFor(model => model.PrecisionPlastics, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.PrecisionPlastics, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.PrecisionPlastics, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic plastics">
+                    @Html.LabelFor(model => model.PlasticsProcesses, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.PlasticsProcesses, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.PlasticsProcesses, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic membrane">
+                    @Html.LabelFor(model => model.MembraneSwitches, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.MembraneSwitches, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.MembraneSwitches, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic membrane">
+                    @Html.LabelFor(model => model.MembraneSwitchesAttributes, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.MembraneSwitchesAttributes, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.MembraneSwitchesAttributes, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic graphicOverlays">
+                    @Html.LabelFor(model => model.GraphicOverlaysAttributes, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.GraphicOverlaysAttributes, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.GraphicOverlaysAttributes, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic elastomers">
+                    @Html.LabelFor(model => model.Elastomers, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Elastomers, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.Elastomers, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic labels">
+                    @Html.LabelFor(model => model.Labels, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Labels, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.Labels, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form dynamic others">
+                    @Html.LabelFor(model => model.Others, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Others, htmlAttributes: new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(model => model.Others, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="md-form dynamic metal">
+                    @Html.LabelFor(model => model.MetalType_FreeText, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.MetalType_FreeText, new { htmlAttributes = new { @class = "form-control freetext" } })
+                    @Html.ValidationMessageFor(model => model.MetalType_FreeText, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form dynamic metal">
+                    @Html.LabelFor(model => model.SurfaceFinish_FreeText, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.SurfaceFinish_FreeText, new { htmlAttributes = new { @class = "form-control freetext" } })
+                    @Html.ValidationMessageFor(model => model.SurfaceFinish_FreeText, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form dynamic plastics">
+                    @Html.LabelFor(model => model.PlasticType_FreeText, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.PlasticType_FreeText, new { htmlAttributes = new { @class = "form-control freetext" } })
+                    @Html.ValidationMessageFor(model => model.PlasticType_FreeText, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form dynamic prototype">
+                    @Html.LabelFor(model => model.ToolingLeadTime, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ToolingLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ToolingLeadTime, "", new { @class = "text-danger" })
+
+                </div>
+
+                @*<div class="md-form">
+                    @Html.LabelFor(model => model.HarmonizedCode, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.HarmonizedCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HarmonizedCode, "", new { @class = "text-danger" })
+                </div>*@
+
+                @*<div class="md-form dynamic production">
+                    @Html.LabelFor(model => model.SampleLeadTime, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.SampleLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SampleLeadTime, "", new { @class = "text-danger" })
+
+                </div>*@
+
+                <div class="md-form dynamic production">
+                    @Html.LabelFor(model => model.ProductionLeadTime, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ProductionLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProductionLeadTime, "", new { @class = "text-danger" })
+
+                </div>
+
+
+                <div class="md-form">
+                    <div class="md-form text-xs-center">
+                        <button type="submit" class="btn btn-cyan buttonWidth">Update</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $(function () {
+            $("#buildtype").change(function () {
+                $(".production").hide(200);
+                $(".prototype").hide(200);
+
+                var val = $(this).val();
+                if (val == "1") {
+                    $(".prototype").show(200);
+                }
+                else {
+                    $(".production").show(200);
+                }
+            });
+        });
+
+        $("#material").change(function () {
+            $(".membrane").hide(200);
+            $(".graphicOverlays").hide(200);
+            $(".elastomers").hide(200);
+            $(".labels").hide(200);
+            $(".others").hide(200);
+            $(".metal").hide(200);
+            $(".plastics").hide(200);
+
+
+            var val = $(this).val();
+            var categoryVal = $("#buildtype option:selected").val();
+
+            $.each($(".form-control"), function (index, value) {
+                $(".form-control option:selected").val(0);
+            })
+            $.each($(".freetext"), function (index, value) {
+                $(".freetext").val('');
+            })
+
+            $("#buildtype option:selected").val(categoryVal);
+            $("#material option:selected").val(val);
+
+            if (val == "1") {
+                $(".metal").show(200);
+            }
+            else if (val == "2") {
+                $(".plastics").show(200);
+            }
+            else if (val == "3") {
+                $(".membrane").show(200);
+            }
+            else if (val == "4") {
+                $(".graphicOverlays").show(200);
+            }
+            else if (val == "5") {
+                $(".elastomers").show(200);
+            }
+            else if (val == "6") {
+                $(".labels").show(200);
+            }
+            else if (val == "7") {
+                $(".others").show(200);
+            }
+        });
+    });
+</script>

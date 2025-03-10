@@ -1,0 +1,37 @@
+﻿@model Omnae.Models.VerifyCodeViewModel
+@{
+    ViewBag.Title = "Verify";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-keyboard"></i> Enter verification cod</h4>
+        <div class="card-block">
+            @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("provider", @Model.Provider)
+                @Html.Hidden("rememberMe", @Model.RememberMe)
+
+             
+
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="md-form offset-md-2 col-md-8">
+                    @Html.LabelFor(m => m.Code, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+
+                </div>
+                <div class="md-form offset-md-2 col-md-8">
+                    <input type="checkbox" id="RememberBrowser" name="RememberBrowser" value="true">
+                    <label class="link" style="font-size:small;" for="RememberBrowser">Remember Browser?</label>
+                </div>              
+
+                <div class="text-xs-center">
+                    <button type="submit" class="btn accent-background-color buttonWidth top-margin-50">Submit</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

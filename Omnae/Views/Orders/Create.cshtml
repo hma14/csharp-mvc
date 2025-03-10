@@ -1,0 +1,96 @@
+﻿@model Omnae.ViewModels.OrderViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+        <div class="card-block">
+            <div class="text-xs-center">
+                <h4><i class="fa fa-pencil-square-o fa-2x"></i> Create Order</h4>
+            </div>
+            <br />
+
+            @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(x => x.ProductId)
+
+                @*<div class="md-form">
+                        @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @id = "datepicker_OrderDate", @class = "form-control my-form-control" } })
+                        @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+                    </div>*@
+
+                @*<div class="md-form">
+                        @Html.LabelFor(model => model.SalesPrice, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.SalesPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SalesPrice, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.SalesTax, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.SalesTax, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SalesTax, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+                    </div>*@
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                </div>
+
+                @*<div class="md-form">
+                        @Html.LabelFor(model => model.ShippedDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ShippedDate, new { htmlAttributes = new { @id = "datepicker_ShippedDate", @class = "form -control my-form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippedDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.CarrierName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.CarrierName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CarrierName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.TrackingNumber, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TrackingNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TrackingNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.ShipLeadingTime, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ShipLeadingTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShipLeadingTime, "", new { @class = "text-danger" })
+                    </div>*@
+
+                <div class="md-form text-xs-center top-margin-50">
+                    <button type="submit" class="btn btn-cyan buttonWidth">Create</button>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(function () {
+        $("#datepicker_OrderDate").datepicker();
+        $("#datepicker_ShippedDate").datepicker();
+    });
+        //$(function () {
+        //    $("#datepicker_ShippedDate").datepicker();
+        //});
+
+</script>

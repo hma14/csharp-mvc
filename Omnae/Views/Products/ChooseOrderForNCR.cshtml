@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Omnae.ViewModels.OrderViewModel>
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+
+
+        <h5 class="card-header primary-background-color white-text text-md-center">Choose An Order for Non-Conformance Report (Part Number: @Model.ElementAt(0).PartNumber)</h5>
+        <div class="card-block">
+            @using (Html.BeginForm("CreateNCR", "Products", FormMethod.Get, new
+            {
+                id = "chooseorderforncr",
+                enctype = "multipart/form-data",
+            }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.Hidden("productId", Model.First().ProductId)*@
+                @Html.Hidden("productId")
+                @Html.Hidden("orderId")
+                @Html.Hidden("taskId")
+
+                <div class="col-md-12 card-header secondary-color text-md-center status-title white-text">
+
+                    <span class="col-md-2">Order Id</span>
+                    <span class="col-md-2">Order Date</span>
+                    <span class="col-md-1">Qty</span>
+                    <span class="col-md-2">PO No.</span>
+                    <span class="col-md-2">Carrier</span>
+                    <span class="col-md-2">Tracking #</span>
+                    <span class="col-md-1"><i class="fa fa-check" aria-hidden="true"></i></span>
+                </div>
+
+
+                for (int i = 0; i < Model.Count(); i++)
+                {
+                    <div class="col-md-12 line text-md-center">
+                        <span class="col-md-2">@Model.ElementAt(i).Id</span>
+                        <span class="col-md-2">@Model.ElementAt(i).OrderDate.ToString("yyyy/MM/dd")</span>
+                        <span class="col-md-1">@Model.ElementAt(i).Quantity</span>
+                        <span class="col-md-2">@Model.ElementAt(i).CustomerPONumber</span>
+                        <span class="col-md-2">@Model.ElementAt(i).CarrierName</span>
+                        @if (Model.ElementAt(i).TrackingNumber != null)
+                        {
+                            <span class="col-md-2">
+                                @Ajax.ActionLink(Model.ElementAt(i).TrackingNumber, "TrackingShippingStatus", "Orders",
+                                                                    new { @id = Model.ElementAt(i).TrackingNumber },
+                                                                    new AjaxOptions
+                                                                    {
+                                                                        HttpMethod = "POST",
+                                                                        InsertionMode = InsertionMode.Replace,
+                                                                        UpdateTargetId = "shippingStatus",
+                                                                        OnBegin = "$('#spinner').show();",
+                                                                        OnSuccess = "$('#spinner').hide();"
+                                                                    },
+                                                                    new { @id = "trackinglink" })
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="col-md-2"></span>
+                        }
+
+
+
+                        <input class="col-md-1 chk" type="checkbox" id="@Model.ElementAt(i).Id" name="@Model.ElementAt(i).IsSelected" value="true">
+                        <label for="@Model.ElementAt(i).Id"></label>
+
+
+                    </div>
+
+                }
+
+                <div class="md-form text-xs-center col-md-12 top-margin-30">
+                    <button type="submit" class="btn accent-background-color buttonWidth">Submit</button>
+                </div>
+            }
+
+        </div>
+        <div class="card-block">
+            <div id="shippingStatus">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".chk").change(function () {
+            var current = $(this);
+            var c = current.is(":checked");
+            if (c) {
+                $('#productId').val(@Model.First().ProductId);
+                $('#orderId').val(current.attr('id'));
+
+                $("input[type = 'checkbox']").each(function () {
+                    $(this).prop('checked', false);
+                });
+                current.prop('checked', true);
+            }
+        });
+    });
+
+</script>
+

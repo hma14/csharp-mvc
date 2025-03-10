@@ -1,0 +1,181 @@
+﻿@model Omnae.BusinessLayer.Models.NcrDescriptionViewModel
+
+@using Omnae.Controllers
+
+<style>
+    .my-dl dt, dd {
+        text-align: left;
+    }
+
+    h2.my-h2 {
+        margin-left: 15px;
+    }
+</style>
+
+<div class="card">
+    
+    @Html.Partial("_NcrHeader", Model)
+    <div class="card-block">
+        <div class="col-md-12 text-md-center">
+            <h2 class="my-h2"><i class="fas fa-bug"></i> Non-conformance Report</h2>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="red-text">@TempData["ErrorMessage"]</div>
+            <br />
+        }
+        @using (Html.BeginForm("CreateNCR", "Products", FormMethod.Post, new { id = "createNCR", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.OrderId)
+            @Html.HiddenFor(m => m.TaskId)
+            @Html.HiddenFor(m => m.ProductId)
+            @Html.HiddenFor(m => m.StateId)
+            @Html.HiddenFor(m => m.CustomerId)
+            @Html.HiddenFor(m => m.VendorId)
+            @Html.HiddenFor(m => m.NCDetectedby)
+            @Html.HiddenFor(m => m.NCDetectedDate)
+            @Html.HiddenFor(m => m.PONumber)
+            @Html.HiddenFor(m => m.NCRNumber)
+            @Html.HiddenFor(m => m.NCRNumberForVendor)
+
+            <div class="col-md-6 my-dl top-margin-20">
+                <div class="card-block">
+                    <dl class="dl-horizontal">
+                        <dt class="col-md-6">
+                            Customer
+                        </dt>
+                        <dd>
+                            @Model.Customer
+                        </dd>
+                        <dt class="col-md-6">
+                            PO Number
+                        </dt>
+                        <dd>
+                            @Model.PONumber
+                        </dd>
+                        <dt class="col-md-6">
+                            Part No.
+                        </dt>
+                        <dd>
+                            @Model.ProductPartNo
+                        </dd>
+                        <dt class="col-md-6">
+                            Revision
+                        </dt>
+                        <dd>
+                            @Model.PartRevisionNo
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+            <div class="col-md-6 my-dl top-margin-20">
+                <div class="card-block">
+                    <dl class="dl-horizontal">
+                        <dt class="col-md-6">
+                            Vendor/supplier
+                        </dt>
+                        <dd>
+                            @Model.Vendor
+                        </dd>
+                        <dt class="col-md-6">
+                            Detected By
+                        </dt>
+                        <dd>
+                            @Model.NCDetectedby
+                        </dd>
+                        <dt class="col-md-6">
+                            Initiate Date
+                        </dt>
+                        <dd>
+                            @Model.NCDetectedDate.Value.ToString("yyyy-MM-dd")
+                        </dd>
+                        <dt class="col-md-6">
+                            &nbsp;
+                        </dt>
+                        <dd>
+                            &nbsp;
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="col-md-12 top-margin-40">
+                <div class="col-md-6">
+                    <div class="card-block">
+                        <div>
+                            @Html.LabelFor(model => model.ProductDescription, htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.ProductDescription, new { rows = 10, cols = 50, @readonly = true, @class = "form-control" })
+                        </div>
+                        <div>
+                            @Html.LabelFor(model => model.Expectation, htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.Expectation, new { rows = 10, cols = 50, @class = "form-control", placeholder = "Expectation ..." })
+                            @Html.ValidationMessageFor(model => model.Expectation, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card-block">
+                        <div>
+                            @Html.LabelFor(model => model.NCDescription, htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.NCDescription, new { rows = 10, cols = 50, @class = "form-control", placeholder = "NCR descriptions ..." })
+                            @Html.ValidationMessageFor(model => model.NCDescription, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div>
+                            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", placeholder = string.Format("out of {0}", Model.TotalProductQuantity) } })
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                        </div>
+                        <div>
+                            @Html.LabelFor(model => model.NCOriginator, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.NCOriginator, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NCOriginator, "", new { @class = "text-danger" })
+                        </div>
+                        <br />
+                        <div>
+                            @Html.Partial("_UploadNCDoc")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md-form text-xs-center col-md-12">
+                <button type="submit" name="submitButton" class="btn accent-background-color buttonWidth">Submit</button>
+            </div>
+        }
+    </div>
+    <div class="card-data primary-background-color"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#createNCR').submit(function (event) {
+            event.preventDefault();
+
+            var quantity = $('#Quantity').val();
+            var totalQuantity = @Model.TotalProductQuantity;
+
+            if ($('#Quantity').val() == '') {
+                alertify.error("Damaged quantity is required");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (parseInt(quantity, 10) > parseInt(totalQuantity, 10)) {
+                alertify.error("Claimed quantity can not be bigger than total ordered quantity");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+                $('#spinner').show();
+                this.submitButton.disabled = true;
+                $('#createNCR').unbind('submit').submit();
+            }
+            
+        })
+    });
+</script>

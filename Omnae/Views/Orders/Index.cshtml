@@ -1,0 +1,131 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using Omnae.Common
+@using Omnae.Controllers
+@using System.Configuration
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    div#order-list, div#order-grid2 {
+        display: none;
+    }
+</style>
+
+
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-10">Orders</h4>
+        <span class="col-md-2  small-button" style="float:right; width:140px;">
+
+            <a href="#" class="col-xs-6 switcher small-button order-listview green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="col-xs-6 switcher active small-button order-gridview pink-text"><i class="fas fa-th fa-2x"></i></a>
+        </span>
+        <br />
+        <hr class="gradient" />
+    </div>
+
+    <div id="order-grid" class="card-block">
+
+        @if (Model != null && Model.Any())
+        {
+            DateTime currentDateTime = DateTime.UtcNow;
+            foreach (var tdvm in @Model)
+            {
+
+                var td = tdvm.TaskData;
+                var order = tdvm.Order;
+                if (order != null)
+                {
+                    // Longer than DaysToExpire will be removed from Order Tracking
+                    if (td.StateId == (int)States.ProductionComplete)
+                    {
+                        int daysToExpire = Convert.ToInt32(ConfigurationManager.AppSettings["DaysToExpire"]);
+                        TimeSpan diff = td.ModifiedUtc.AddDays(daysToExpire) - currentDateTime;
+                        if (diff.Ticks < 0)
+                        {
+                            continue;
+                        }
+                    }
+                    @Html.Partial("_OrderGrid", @tdvm)
+                }
+            }
+        }
+    </div>
+
+    <div id="order-list" class="card-block">
+
+
+        @if (Model != null && Model.Any())
+        {
+            @Html.Partial("_RowColumnNamesOrder")
+
+            DateTime currentDateTime = DateTime.UtcNow;
+            foreach (var tdvm in @Model)
+            {
+                var td = tdvm.TaskData;
+                // Longer than DaysToExpire will be removed from Order Tracking
+                if (td.StateId == (int)States.ProductionComplete)
+                {
+                    int daysToExpire = Convert.ToInt32(ConfigurationManager.AppSettings["DaysToExpire"]);
+                    TimeSpan diff = td.ModifiedUtc.AddDays(daysToExpire) - currentDateTime;
+                    if (diff.Ticks < 0)
+                    {
+                        continue;
+                    }
+                }
+                @Html.Partial("_OrdersListView", @tdvm)
+            }
+        }
+    </div>
+
+
+    <div class="col-lg-12">
+        <h4 class="col-md-10">Orders (History)</h4>
+        <span class="col-md-2  small-button" style="float:right; width:140px;">
+
+            <a href="#" class="col-xs-6 switcher small-button order-listview2 green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="col-xs-6 switcher active small-button order-gridview2 pink-text"><i class="fas fa-th fa-2x"></i></a>
+        </span>
+        <br />
+        <hr class="gradient" />
+    </div>
+
+    <div id="order-grid2" class="card-block">
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var tdvm in @Model)
+            {
+                var order = tdvm.Order;
+                if (order != null)
+                {
+                    @Html.Partial("_OrderGrid", @tdvm)
+                }
+            }
+        }
+    </div>
+
+    <div id="order-list2" class="card-block">
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="col-md-12">
+                @Html.Partial("_RowColumnNamesOrder")
+                @foreach (var tdvm in @Model)
+                {
+                    var order = tdvm.Order;
+                    if (order != null)
+                    {
+                        @Html.Partial("_OrdersListView", @tdvm)
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+<div class="row light-green-text pull-right small right-margin-10">Duration: @ViewBag.Duration ms</div>

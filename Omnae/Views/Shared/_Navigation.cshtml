@@ -1,0 +1,113 @@
+﻿@using Omnae.Context
+@{
+    var controller = ViewContext.Controller as IHaveUserContext;
+    USER_TYPE? userType = null;
+    if (controller?.UserContext?.User?.CanUseTheSystem == true)
+    {
+        userType = controller?.UserContext?.UserType;
+    }
+}
+
+<style>
+    #navigationbar .active a {
+        border-bottom: 3px solid gold;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+</style>
+
+<nav class="navbar navbar-fixed-top scrolling-navbar white-text primary-background-color" style="text-align:right;">
+
+    <div class="container-fluid">
+
+        <div class="collapse navbar-collapse" id="nav">
+            <ul id="navigationbar" class="navbar-nav col-md-6">
+                <li class="nav-item">
+                    <a class="nav-link" href='@Url.Action("Index", "Home", null, Request.Url.Scheme)'><img src="~/Images/Omnae Tile May Rev.png" width="30" /></a>
+                </li>
+                @if (userType == USER_TYPE.Customer)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Home", null, Request.Url.Scheme)'>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Orders", null, Request.Url.Scheme)'>Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Products", null, Request.Url.Scheme)'>Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Alerts", "Home", null, Request.Url.Scheme)'>
+                            Alerts
+                            <span id="top-action-flag" class="glyphicon glyphicon-flag red-text"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("CompanyNCR", "Home", null, Request.Url.Scheme)'>Quality</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("GetInvoices", "Home", null, Request.Url.Scheme)'>Invoices</a>
+                    </li>
+                }
+                else if (userType == USER_TYPE.Vendor)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Home", null, Request.Url.Scheme)'>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("DisplayRFQs", "Home", null, Request.Url.Scheme)'>RFQs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("DisplayOrders", "Home", null, Request.Url.Scheme)'>Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Products", null, Request.Url.Scheme)'>Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("CompanyNCR", "Home", null, Request.Url.Scheme)'>Quality</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("GetInvoices", "Home", null, Request.Url.Scheme)'>Invoices</a>
+                    </li>
+                }
+                else if(userType == USER_TYPE.Admin)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("Index", "Home", null, Request.Url.Scheme)'>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='@Url.Action("CompanyNCR", "Home", null, Request.Url.Scheme)'>Quality</a>
+                    </li>
+                }
+            </ul>
+
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+            }
+
+            <div class="dropdown col-md-6" id="shrinkbutton">
+                <div class="col-md-10">
+                    @(controller?.UserContext?.Company?.Name ?? "Anonymous")
+                </div>
+
+                <!--Trigger-->
+                <a class="nav-link dropdown-toggle col-md-2" id="logout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></a>
+                <!--Menu-->
+                <div class="dropdown-menu  dropdown pull-right" aria-labelledby="logout">
+                    
+                    @if (controller?.UserContext?.IsAccountAdmin() == true)
+                    {
+                        @Html.ActionLink("Manage Company Accounts", "Index", "CompanyAccounts", routeValues: null, htmlAttributes: new {title = $"Manage {userType} Accounts", @class = "dropdown-item"})
+                    }
+                    @Html.ActionLink("Manage your Account", "Index", "Manage", routeValues: null, htmlAttributes: new {title = "Account Setting", @class = "dropdown-item"})
+                    @Html.ActionLink("Help", "Help", "Home", routeValues: null, htmlAttributes: new {title = "Help", @class = "dropdown-item"})
+                    @Html.ActionLink("Contact us", "Contact", "Home", routeValues: null, htmlAttributes: new {title = "Contact", @class = "dropdown-item"})
+                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+

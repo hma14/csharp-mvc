@@ -1,0 +1,211 @@
+﻿@model Omnae.ShippingAPI.DHL.Models.DHLResponse
+
+<style>
+    .shippingstatus .dl-horizontal dt {
+        width: 50% !important;
+        text-align: left;
+    }
+
+    .status-title span {
+        padding: 0px !important;
+    }
+</style>
+
+
+
+
+@if (Model != null && Model.Trackings != null && Model.Trackings.Any())
+{
+
+    if (Model.Trackings.First().Status_ActionStatus != "success")
+    {
+
+        <div class="card-block">
+            <p class="red-text text-md-center bold">@Model.Trackings.First().Status_ActionStatus</p>
+        </div>
+        return;
+    }
+    foreach (var track in Model.Trackings)
+    {
+
+        <div class="card-block">
+            <div class="col-md-6 shippingstatus">
+                <dl class="dl-horizontal">
+                    <dt>
+                        Waybill Number
+                    </dt>
+                    <dd>
+                        @track.AWBNumber
+                    </dd>
+                    <dt>
+                        Action Status
+                    </dt>
+                    <dd>
+                        @track.Status_ActionStatus
+                    </dd>
+                    <dt>
+                        Origin
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.OriginServiceArea_Description
+                    </dd>
+                    <dt>
+                        Destination
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.DestinationServiceArea_Description
+                    </dd>
+                    <dt>
+                        Shipper Name
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.ShipperName
+                    </dd>
+                    <dt>
+                        Shipper Account Number
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.ShipperAccountNumber
+                    </dd>
+                    <dt>
+                        Consignee Name
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.ConsigneeName
+                    </dd>
+                    <dt>
+                        Shipment Date
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.ShipmentDate
+                    </dd>
+                    <dt>
+                        Pieces
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Pieces
+                    </dd>
+                    <dt>
+                        Weight
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Weight
+                    </dd>
+                    <dt>
+                        Weight Unit
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.WeightUnit
+                    </dd>
+
+                </dl>
+            </div>
+            <div class="col-md-6 shippingstatus">
+                <dl class="dl-horizontal">
+                    <dt>
+                        Global Product Code
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.GlobalProductCode
+                    </dd>
+                    <dt>
+                        Shipment Description
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.ShipmentDesc
+                    </dd>
+                    <dt>
+                        Delivery Notification Flag
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.DlvyNotificationFlag
+                    </dd>
+                    <dt>
+                        Shipper City
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Shipper.City
+                    </dd>
+                    <dt>
+                        Shipper Postal Code
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Shipper.PostalCode
+                    </dd>
+                    <dt>
+                        Shipper Country Code
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Shipper.CountryCode
+                    </dd>
+                    <dt>
+                        Consignee City
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Consignee.City
+                    </dd>
+                    <dt>
+                        Consignee Division
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Consignee.DivisionCode
+                    </dd>
+                    <dt>
+                        Consignee Postal Code
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Consignee.PostalCode
+                    </dd>
+                    <dt>
+                        Consignee Country Code
+                    </dt>
+                    <dd>
+                        @track.ShipmentInfo.Consignee.CountryCode
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div>
+            <div class="card-block">
+                <div class="col-md-12">
+                    <div class="col-md-12 card-header default-color pull-left white-text status-title">
+                        <span class="col-md-1">Date</span>
+                        <span class="col-md-1">Time</span>
+                        @*<span class="col-md-1">Event Code</span>*@
+                        <span class="col-md-5">Event Desc</span>
+                        @*<span class="col-md-1">SA Code</span>*@
+                        <span class="col-md-2">Consignee Signatory</span>
+                        <span class="col-md-3">Service Area Desc</span>
+
+                    </div>
+
+                    @foreach (var evt in track.ShipmentInfo.ShipmentEvents)
+                    {
+
+                        <div class="col-md-12 line">
+                            <span class="col-md-1">@evt.Date</span>
+                            <span class="col-md-1">@evt.Time</span>
+                            @*<span class="col-md-1">@evt.ServiceEvent_EventCode</span>*@
+                            <span class="col-md-5">@evt.ServiceEvent_Description</span>
+                            @*<span class="col-md-1">@evt.ServiceArea_ServiceAreaCode</span>*@
+                            <span class="col-md-2">@evt.Signatory</span>
+                            <span class="col-md-3">@evt.ServiceArea_Description</span>
+
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card-block">
+        <p class="red-text text-md-center bold">No Shipment was found</p>
+    </div>
+}
+
+
+

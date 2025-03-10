@@ -1,0 +1,86 @@
+﻿@model Omnae.Model.Models.Product
+
+@using Omnae.Common
+
+<style>
+    .dl-horizontal dt {
+        width: 200px !important;
+        margin-right: 5%;
+        text-align: right;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row top grey-text">
+    <div class="offset-md-3 col-md-6">
+
+        <div class="card">
+            <!--Card image-->
+            <div class="view overlay hm-white-slight z-depth-1">
+                <img src=@Model.AvatarUri class="img-fluid center-block" title="@Model.Name" style="height:200px;">
+                <a>
+                    <div class="mask"></div>
+                </a>
+            </div>
+
+            <div class="card-block">
+                <!--Category & Title-->
+                <h5 class="card-title text-xs-center">@Model.BuildType</h5>
+                <h4 class="card-title text-xs-center"><strong><a href="">@Model.Name</a></strong></h4>
+
+                <!--Description-->
+                <p class="card-text text-xs-center">
+                    @Model.Description
+                </p>
+
+                <dl class="dl-horizontal offset-md-2">
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PartNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PartNumber)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PartNumberRevision)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PartNumberRevision)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Material)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Material)
+                    </dd>
+
+                    @*@Html.Partial("_Details")*@
+
+                </dl>
+
+            </div>
+            @*<p class="text-xs-center">
+                @if (TempData["UserType"] != null && (int)TempData["UserType"] != (int)USER_TYPE.Vendor)
+                {
+                    @Html.ActionLink("Create Order", "Create", "Orders", new { id = Model.Id }, null) @Html.Raw(" |")
+                }
+                else
+                {
+                    @Html.ActionLink("Setup PriceBreaks", "SetupPriceBreaks", "Products", new { @id = Model.Id }, null)  @Html.Raw(" |")
+                }
+                @Html.ActionLink("Edit Material", "Edit", new { id = Model.Id }) |
+                @Html.ActionLink("Update RFQ", "UpdateProduct", "Products", new { id = Model.Id }, null) |
+                @Html.ActionLink("Back to TaskData List", "Index", "TaskDatas")
+            </p>*@
+        </div>
+    </div>
+</div>

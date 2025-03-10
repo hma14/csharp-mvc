@@ -1,0 +1,5 @@
+﻿
+Hi @Model.UserName,
+
+Production has started on your order of @Model.PartNumber from Omnae.com.
+Purchase Order #: @Model.PONumber

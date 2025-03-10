@@ -1,0 +1,74 @@
+﻿@model Omnae.ViewModels.AssignCustomerEnterpriseViewModel
+@{
+    ViewBag.Title = "AssignCustomerEnterprise";
+}
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-right"></i> Assign Customer As Subscriber/Reseller User</h4>
+        <div class="card-block">
+            <div class="top-margin-30 col-md-12">
+
+                @using (Html.BeginForm("AssignCustomerEnterprise", "Home", FormMethod.Post, new { id = "assignCustomerEnterprise", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="md-form col-md-6">
+                        @Html.DropDownListFor(model => model.CompanyId, Model.Companies, "-- Select Customer --", new { @id = "companyId", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form col-md-6">
+                        @Html.EnumDropDownListFor(model => model.CustomerType, "-- Select a Customer Type --", new { @id = "customerType", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CustomerType, "", new { @class = "text-danger" })
+                    </div>
+                    
+                    <div class="md-form text-xs-center col-md-12">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-20">Assign</button>
+                    </div>
+                }
+            </div>
+            @if (TempData["Result"] != null)
+            {
+                <div class="card-block top-margin-20">
+                    <h5 class="green-text text-lg-center">@TempData["Result"].ToString()</h5>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="card-block top-margin-20">
+                    <h5 class="red-text error">@TempData["ErrorMessage"].ToString()</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $("#assignCustomerEnterprise").submit(function (event) {
+        $('#spinner').show();
+        var companyId = $('#companyId option:selected').val();
+        var customerType = $('#customerType option:selected').val();
+
+        if (companyId == 0) {
+            alertify.error("You must choose a customer");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (customerType == 0) {
+            alertify.error("You must choose a customer type");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }        
+        else {
+            this.submitButton.disabled = true;
+            return true;
+        }
+    });
+
+</script>

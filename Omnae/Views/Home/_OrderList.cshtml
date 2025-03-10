@@ -1,0 +1,12 @@
+﻿@model Omnae.ViewModels.ChangeShippingDatesForCustomerViewModel
+
+
+@if (Model != null)
+{
+    @Html.DropDownListFor(model => model.OrderId, TempData["OrderList"] as SelectList, "-- Select Order --", new { @class = "btn grey-background-color dropdown-toggle col-md-12" })
+    @Html.ValidationMessageFor(model => model.OrderId, "", new { @class = "text-danger" })
+}
+else
+{
+    <p class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</p>
+}

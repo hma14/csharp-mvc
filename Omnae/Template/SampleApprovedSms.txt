@@ -1,0 +1,6 @@
+﻿
+Hi @Model.UserName,
+
+This is notice that your samples for @Model.PartNumber from Omnae.com have been approved.
+Purchase Order #: @Model.PONumber
+

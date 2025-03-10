@@ -1,0 +1,3 @@
+﻿Hi @Model.UserName,
+
+This is to notify you that Admin will intervene to the disputes on this NCR regarding part # @Model.PartNumber of @Model.Description.

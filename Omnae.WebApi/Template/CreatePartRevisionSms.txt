@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+A new revision has been created on Omnae.com! The revision is @Model.PartRevision, @Model.PartRevisionDesc.

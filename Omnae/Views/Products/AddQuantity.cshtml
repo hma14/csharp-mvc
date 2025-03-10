@@ -1,0 +1,96 @@
+﻿@model Omnae.BusinessLayer.Models.AddQuantityViewModel
+
+@{
+    ViewBag.Title = "AddQuantity";
+}
+
+<div class="container-fluid top-margin-30 offset-lg-3 col-md-6">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color text-md-center white-text"><i class="fas fa-plus"></i> Add Quantities</h4>
+
+        <!--Card image-->
+
+        <div class="view overlay hm-white-slight">
+            <img src=@Model.Product.AvatarUri class="img-fluid center-block" title="@Model.Product.Name">
+        </div>
+
+        <div id="product" class="card-block">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+            }
+            <!--Category & Title-->
+            <h4 class="card-title text-xs-center">@Model.Product.BuildType</h4>
+            <h2 class="card-title text-xs-center"><a href="">@Model.Product.Name</a></h2>
+
+
+
+            <!--Description-->
+            <p class="card-text text-xs-center">
+                @Model.Product.Description
+            </p>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Product.PartNumber)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Product.PartNumber)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Product.PartNumberRevision)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Product.PartNumberRevision)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
+                @{
+                    Html.Partial("_PartDetails", Model.ProductDetailsVM);
+                }
+
+            </div>
+
+            @using (Html.BeginForm("AddQuantity", "Products", FormMethod.Post, new { id = "AddQuantity", enctype = "multipart/form-data" }))
+            {
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.ProductId)
+                @Html.HiddenFor(m => m.TaskId)
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Add Extra Quantities <span class="red-text">*</span></legend>
+                    <div class="col-lg-12 no-padding top-margin-30">
+                        @for (int i = 0; i < Model.QuantityList.Count; i++)
+                        {
+                            <div class="md-form col-md-3">
+                                @Html.Label("Qty " + (@i + 1), htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.QuantityList[i], new { htmlAttributes = new { @id = "qty" + (@i + 1), @class = "form-control quantity" } })
+                                @Html.ValidationMessageFor(model => model.QuantityList[i], "", new { @class = "text-danger" })
+                            </div>
+                        }
+                    </div>
+                    <p><span class="red-text">*</span><span class="grey-text small"> Each quantity values must be 10, 20, ..., 100, 110, 150, ..., 200, 210, ..., 1000, ... </span></p>
+                </fieldset>
+
+                <div class="text-xs-center">
+                    <button type="submit" class="btn accent-background-color buttonWidth">Submit</button>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

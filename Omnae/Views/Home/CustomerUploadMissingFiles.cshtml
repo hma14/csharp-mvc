@@ -1,0 +1,158 @@
+﻿@model  Omnae.BusinessLayer.Models.CustomerUploadMissingFilesViewModel
+@{
+    ViewBag.Title = "CustomerUploadMissingFiles";
+}
+
+
+
+<div class="col-md-12 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-edit"></i> Customer Upload Missing Files</h5>
+        <div class="card-block">
+
+            @if (Model != null)
+            {
+                <div class="top-margin-30">
+
+                    @using (Html.BeginForm("CustomerUploadMissingFiles", "Home", FormMethod.Post, new { id = "CustomerUploadMissingFiles", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                @Html.EnumDropDownListFor(model => model.DocType, "-- Select Document Type --", new { @id = "docType", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(model => model.ProductId, Model.ProductDDL, "-- Select Product --", new { @id = "productId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="file-field col-md-4 top-margin-30  pull-md-right">
+                                <div class="btn grey-background-color">
+                                    <span class="fileupload">Browse</span>
+                                    <input type="file" name="uploadedFile" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload Document" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-md-center">
+                            <button type="submit" name="submitButton" class="btn accent-background-color buttonWidth top-margin-50">Upload</button>
+                        </div>
+                        <div id="documents" class="col-md-8 top-margin-30">
+                            @if (Model != null && Model.Documents != null && Model.Documents.Any())
+                            {
+                                Html.RenderPartial("_Documents", Model.Documents);
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function showMessage() {
+        var message = "Documents are uploaded successfully!";
+        alertify.log(message, "info", 0);
+        return true;
+    };
+
+    $(function () {
+        $('#CustomerUploadMissingFiles').submit(function () {
+            $('#spinner').show();
+
+            var docType = $('#docType option:selected').val();
+            var productId = $('#productId option:selected').val();
+
+            if (docType == 0) {
+                $('#spinner').hide();
+                alertify.error("Document type must be selected");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (productId == 0) {
+                $('#spinner').hide();
+                alertify.error("A product or part # must be selected");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+                this.submitButton.disabled = true;
+                return true;
+            }
+        });
+
+
+        $('#productId')
+            .change(function () {
+
+                $('#spinner').show();
+                //var productId = $("select option:selected").val();
+                var productId = $('#productId').val();
+                var $url = '//' + window.location.host + '/Home/GetDocumentsByProductId';
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: $url,
+                    data: { 'productId': productId },
+                    success: function (result) {
+                        $('#spinner').hide();
+                        $('#documents').html(result);
+                    },
+                    error: function (error) {
+                        $('#spinner').hide();
+                        alertify.error(error.statusCode);
+                    }
+                });
+            });
+    });
+
+
+
+    function deleteDoc(docId, productId) {
+
+        $('#spinner').show();
+        //var docId = $(this).data('id1');
+        var $url = '//' + window.location.host + '/Home/DeleteDoc';
+
+
+        $.ajax({
+            type: 'POST',
+            url: $url,
+            data: { 'docId': docId, 'productId': productId },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#documents').html(result);
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+
+    function GetDocumentsByProductId(productId) {
+
+        $('#spinner').show();
+        var $url = '//' + window.location.host + '/Home/GetDocumentsByProductId';
+
+
+        $.ajax({
+            type: 'GET',
+            url: $url,
+            data: { 'productId': productId },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#documents').html(result);
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+</script>

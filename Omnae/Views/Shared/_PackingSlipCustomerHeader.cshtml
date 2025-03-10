@@ -1,0 +1,44 @@
+﻿@model Omnae.BusinessLayer.Models.PackingSlipViewModel
+
+<div>
+    <div class="col-xs-5">
+        @if (@Model.CompanyLogoUri != null)
+        {
+            <img src="@Model.CompanyLogoUri" height="200" style="margin-top:-30px"/>
+        }
+        else
+        {
+            <h2 class="green-text">@Model.CustomerName</h2>
+        }
+
+    </div>
+    <div class="col-xs-4">
+        <span>
+
+            @if (Model.CustomerAddress_AddressLine2 != null)
+            {
+                @Model.CustomerAddress_AddressLine2
+            }
+            @Model.CustomerAddress_AddressLine1<br />
+            @Model.CustomerAddress_City,
+            @if (Model.CustomerAddress_State != null)
+            {
+                @Model.AdminAddress_State<br />
+            }
+            @Model.CustomerAddress_CountryName,
+            @if (Model.CustomerAddress_PostalCode != null)
+            {
+                @Model.CustomerAddress_PostalCode
+            }
+            else if (Model.CustomerAddress_ZipCode != null)
+            {
+                @Model.CustomerAddress_ZipCode
+            }
+
+        </span>
+    </div>
+    <div class="offset-xs-1 col-xs-2 pull-xs-right">
+        T. @Model.CustomerPhoneNumber<br />
+        
+    </div>
+</div>

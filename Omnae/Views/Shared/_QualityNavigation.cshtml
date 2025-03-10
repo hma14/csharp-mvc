@@ -1,0 +1,262 @@
+﻿@{
+    var controller = ViewContext.Controller as IHaveUserContext;
+    var userType = controller.UserContext.UserType;
+}
+
+<nav id="second-navbar" class="navbar navbar-light  top-margin-40">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="secondnav">
+
+            @*<ul class="navbar-nav mr-auto pull-right dropdown">*@
+            <ul class="navbar-nav mr-auto pull-right dropdown">
+                <li class="nav-item btn-group">
+                    <!--Trigger-->
+                    <a class="nav-link dropdown-toggle btn btn-secondary buttonWidth2" id="ddlFilterProduct" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Product</a>
+                    <!--Menu-->
+                    @if (ViewBag.AllProducts != null)
+                    {
+                        <ul id="byProduct" class="dropdown-menu multi-columns">
+                            @*@foreach (var prod in ViewBag.AllProducts)
+                                {
+                                    <li><a href="@Url.Action("CompanyNCR", "Home", new { @filter = NCR_FILTERS.Product, @val = @prod.Id })" class="dropdown-item">@prod.PartNumber  <span class="small">( @prod.Name )</span></a></li>
+                                }*@
+
+                            @foreach (var prod in ViewBag.AllProducts)
+                            {
+                                <li>
+                                    @Ajax.ActionLink($"{@prod.PartNumber}", "CompanyNCR", "Home",
+                                             new
+                                             {
+                                                 @filter = NCR_FILTERS.Product,
+                                                 @val = @prod.Id
+                                             },
+                                             new AjaxOptions
+                                             {
+                                                 UpdateTargetId = "qa",
+                                                 InsertionMode = InsertionMode.Replace,
+                                                 HttpMethod = "GET",
+                                                 OnBegin = "$('#spinner').show();",
+                                                 OnSuccess = "$('#spinner').hide();",
+                                             },
+                                            new { @class = "dropdown-item" })
+                                </li>
+                            }
+
+                        </ul>
+                    }
+
+                </li>
+                <li class="nav-item btn-group">
+                    <!--Trigger-->
+                    <a class="nav-link dropdown-toggle btn btn-secondary  buttonWidth2" id="ddlFilterYear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Year</a>
+                    <!--Menu-->
+
+                    @if (ViewBag.Years != null)
+                    {
+                        <ul id="byYear" class="dropdown-menu single-column">
+                            @foreach (var year in ViewBag.Years)
+                            {
+                                <li>
+                                    @Ajax.ActionLink($"{@year}", "CompanyNCR", "Home",
+                                             new
+                                             {
+                                                 @filter = NCR_FILTERS.Year,
+                                                 @val = @year
+                                             },
+                                             new AjaxOptions
+                                             {
+                                                 UpdateTargetId = "qa",
+                                                 InsertionMode = InsertionMode.Replace,
+                                                 HttpMethod = "GET",
+                                                 OnBegin = "$('#spinner').show();",
+                                                 OnSuccess = "$('#spinner').hide();",
+                                             },
+                                            new { @class = "dropdown-item" })
+                                </li>
+                            }
+                        </ul>
+
+                    }
+                </li>
+                <li class="nav-item btn-group">
+                    <!--Trigger-->
+                    <a class="nav-link dropdown-toggle btn btn-secondary  buttonWidth2" id="ddlFilterUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if (userType == USER_TYPE.Customer)
+                        {
+                            @Html.Raw("Filter By Vendor")
+                        }
+                        else if (userType == USER_TYPE.Vendor || userType == USER_TYPE.Admin)
+                        {
+                            @Html.Raw("Filter By Customer")
+                        }
+                    </a>
+                    <!--Menu-->
+
+                    @if (userType == USER_TYPE.Customer && ViewBag.Vendors != null)
+                    {
+                        <ul id="byVendor" class="dropdown-menu columns">
+
+                            @foreach (var user in ViewBag.Vendors)
+                            {
+                                if (user != null)
+                                {
+                                    <li>
+                                        @Ajax.ActionLink($"{@user.Name}", "CompanyNCR", "Home",
+                                                      new
+                                                      {
+                                                          @filter = NCR_FILTERS.Vendor,
+                                                          @val = @user.Id
+                                                      },
+                                                      new AjaxOptions
+                                                      {
+                                                          UpdateTargetId = "qa",
+                                                          InsertionMode = InsertionMode.Replace,
+                                                          HttpMethod = "GET",
+                                                          OnBegin = "$('#spinner').show();",
+                                                          OnSuccess = "$('#spinner').hide();",
+                                                      },
+                                                     new { @class = "dropdown-item" })
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+                    }
+                    else if ((userType == USER_TYPE.Vendor || userType == USER_TYPE.Admin) && ViewBag.Customers != null)
+                    {
+                        <ul id="byCustomer" class="dropdown-menu columns">
+
+                            @foreach (var user in ViewBag.Customers)
+                            {
+                                if (user != null)
+                                {
+                                    <li>
+                                        @Ajax.ActionLink($"{@user.Name}", "CompanyNCR", "Home",
+                                                      new
+                                                      {
+                                                          @filter = NCR_FILTERS.Customer,
+                                                          @val = @user.Id
+                                                      },
+                                                      new AjaxOptions
+                                                      {
+                                                          UpdateTargetId = "qa",
+                                                          InsertionMode = InsertionMode.Replace,
+                                                          HttpMethod = "GET",
+                                                          OnBegin = "$('#spinner').show();",
+                                                          OnSuccess = "$('#spinner').hide();",
+                                                      },
+                                                     new { @class = "dropdown-item" })
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+                    }
+
+                </li>
+                @if (userType == USER_TYPE.Admin)
+                {
+                    <li class="nav-item btn-group">
+                        <!--Trigger-->
+                        <a class="nav-link dropdown-toggle btn btn-secondary  buttonWidth2" id="ddlFilterUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            @Html.Raw("Filter By Vendor")
+
+                        </a>
+                        <!--Menu-->
+                        <ul id="byVendor" class="dropdown-menu columns">
+
+                            @if (ViewBag.Vendors != null)
+                            {
+                                foreach (var user in ViewBag.Vendors)
+                                {
+                                    if (user != null)
+                                    {
+                                        <li>
+                                            @Ajax.ActionLink($"{@user.Name}", "CompanyNCR", "Home",
+                                                          new
+                                                          {
+                                                              @filter = NCR_FILTERS.Vendor,
+                                                              @val = @user.Id
+                                                          },
+                                                          new AjaxOptions
+                                                          {
+                                                              UpdateTargetId = "qa",
+                                                              InsertionMode = InsertionMode.Replace,
+                                                              HttpMethod = "GET",
+                                                              OnBegin = "$('#spinner').show();",
+                                                              OnSuccess = "$('#spinner').hide();",
+                                                          },
+                                                         new { @class = "dropdown-item" })
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+                <li class="nav-item btn-group">
+
+                    @Ajax.ActionLink("Clear Filter", "CompanyNCR", "Home",
+                                                          new
+                                                          {
+                                                              @filter = NCR_FILTERS.NoFilter,
+                                                              @val = (int?)null,
+                                                          },
+                                                          new AjaxOptions
+                                                          {
+                                                              UpdateTargetId = "qa",
+                                                              InsertionMode = InsertionMode.Replace,
+                                                              HttpMethod = "GET",
+                                                              OnBegin = "$('#spinner').show();",
+                                                              OnSuccess = "$('#spinner').hide();",
+                                                          },
+                                                         new {@id = "btnCancelFilter",  @class = "btn btn-secondary  buttonWidth3" })
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#byYear li').click(function () {
+            $(this).siblings().removeClass('active');
+
+            $('#byCustomer li.active').removeClass('active');
+            $('#byVendor li.active').removeClass('active');
+            $('#byProduct li.active').removeClass('active');
+        });
+
+        $('#byCustomer li').click(function () {
+            $(this).siblings().removeClass('active');
+
+            $('#byYear li.active').removeClass('active');
+            $('#byVendor li.active').removeClass('active');
+            $('#byProduct li.active').removeClass('active');
+        });
+        $('#byVendor li').click(function () {
+            $(this).siblings().removeClass('active');
+
+            $('#byYear li.active').removeClass('active');
+            $('#byCustomer li.active').removeClass('active');
+            $('#byProduct li.active').removeClass('active');
+        });
+        $('#byProduct li').click(function () {
+            $(this).siblings().removeClass('active');
+
+            $('#byYear li.active').removeClass('active');
+            $('#byCustomer li.active').removeClass('active');
+            $('#byVendor li.active').removeClass('active');
+        });
+    })
+
+</script>

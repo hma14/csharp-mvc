@@ -1,0 +1,70 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<div class="col-md-12 top-margin-20">
+
+    <h4>NCR Action <a title="You need to select one of the following buttons based on whom the root cause is belong to."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+    <div class="card-text md-form">
+        <h5>To take action on this NCR please Approve or Decline the Responsibility of this Non-Conformance Report.</h5>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <a id="@($"btnapprove{@Model.TaskData.TaskId}")" onclick="ShowApprove(@Model.TaskData.TaskId);"
+               class="btn btns grey-background-color buttonWidth">Approve Responsibility</a>
+        </div>
+        <div class="col-md-6">
+            <a id="@($"btndecline{@Model.TaskData.TaskId}")" onclick="ShowDecline(@Model.TaskData.TaskId);"
+               class="btn btns grey-background-color buttonWidth">Decline Responsibility</a>
+        </div>
+    </div>
+
+    @if (Model.NcrDescriptionVM != null)
+    {
+        <div class="approvedecline top-margin-20" id="@string.Format("approve{0}", @Model.TaskData.TaskId)">
+            @Html.Partial("_ApproveNCResponsibility", Model)
+        </div>
+
+        <div class="approvedecline top-margin-20" id="@string.Format("decline{0}", @Model.TaskData.TaskId)">
+            @Html.Partial("_DeclineNCResponsibility", Model)
+        </div>
+    }
+
+
+</div>
+
+<script type="text/javascript">
+    
+    var value1 = 'NCRApproval';
+    var value2 = 'NCRRootCauseOnCustomer';
+    
+    function ShowApprove(id) {
+        var btndecline = $('#btndecline' + id);
+        var btnappprove = $('#btnapprove' + id);
+        var decline = $('#decline' + id);
+        var appprove = $('#approve' + id);
+
+        decline.hide();
+        appprove.show();
+        btnappprove.removeClass('grey-background-color').addClass('accent-background-color');
+        btndecline.removeClass('accent-background-color').addClass('grey-background-color');
+
+        $("input[name=group][value=" + value2 + "]").prop('checked', false);
+        $("input[name=group][value=" + value1 + "]").prop('checked', true);
+
+        return true;
+    };
+
+    function ShowDecline(id) {
+        $('#approve' + id).hide();
+        $('#decline' + id).show();
+        $('#btndecline' + id).removeClass('grey-background-color').addClass('accent-background-color');
+        $('#btnapprove' + id).removeClass('accent-background-color').addClass('grey-background-color');
+
+        $("input[name=group][value=" + value1 + "]").prop('checked', false);
+        $("input[name=group][value=" + value2 + "]").prop('checked', true);
+
+        return true;
+    };
+
+</script>
+

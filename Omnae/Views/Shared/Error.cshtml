@@ -1,0 +1,36 @@
+﻿@using Microsoft.ApplicationInsights
+@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<div class="row top red-text">
+    <div class="offset-md-2 col-md-8">
+
+        <h2 class="text-xs-center"><i class="fa fa-exclamation-circle fa-1x"></i> Error</h2>
+        @{
+            if (!String.IsNullOrEmpty(ViewBag.errorMessage))
+            {
+                <p class="red-text">@ViewBag.errorMessage</p>
+            }
+            if (TempData["ErrorMessage"] != null)
+            {
+                <p class="red-text">@TempData["ErrorMessage"].ToString()</p>
+            }
+
+            if (Model != null)
+            {
+                var ai = new TelemetryClient();
+                ai.TrackException(Model.Exception);
+
+                <p class="text-danger"><i class="fa fa-exclamation-triangle"></i> Error Details: <br />@Model.Exception.Message</p>
+                if (Model.Exception.InnerException != null)
+                {
+                    <p class="text-danger"><i class="fa fa-exclamation-triangle"></i> Inner Exception: <br />@Model.Exception.InnerException</p>
+                }
+            }
+        }
+    </div>
+</div>
+

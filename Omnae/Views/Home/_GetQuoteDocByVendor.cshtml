@@ -1,0 +1,60 @@
+﻿@model Omnae.ViewModels.GetQuoteDocByVendorViewModel
+
+@using Omnae.Controllers
+
+<div class="col-md-12 top-margin-30">
+    @if (Model != null && Model.QuoteDocs != null && Model.QuoteDocs.Count > 0)
+    {
+        var controller = ViewContext.Controller as BaseController;
+        foreach (var doc in Model.QuoteDocs)
+        {
+            var docName = controller.GetCompanyIdFromQuoteName(doc.Name);
+            if (string.IsNullOrEmpty(docName))
+            {
+                <span class="col-md-12">
+                    <a href="@doc.DocUri">@doc.Name</a>
+                </span>
+                continue;
+            }
+
+
+            int vendorId = int.Parse(docName);
+            var vendor = controller.CompanyService.FindCompanyById(vendorId);
+            if (doc.TaskId != null)
+            {
+                var td = controller.TaskDataService.FindById(doc.TaskId.Value);
+                if (td != null && td.RFQBidId != null)
+                {
+                    var rfqbid = controller.RfqBidService.FindRFQBidById(td.RFQBidId.Value);
+                    if (rfqbid != null)
+                    {
+                        <span class="col-md-12"><a href="@doc.DocUri">@doc.Name</a> @string.Format("({0} - {1})", @vendor.Name, rfqbid.IsActive == true ? "Bid Winner" : "Bid Looser")</span>
+                    }
+                    else
+                    {
+                        <span class="col-md-12">
+                            <a href="@doc.DocUri">@doc.Name</a> @string.Format("({0})", vendor.Name)
+                        </span>
+                    }
+                }
+                else
+                {
+                    <span class="col-md-12">
+                        <a href="@doc.DocUri">@doc.Name</a> @string.Format("({0})", vendor.Name)
+                    </span>
+                }
+            }
+            else
+            {
+                <span class="col-md-12">
+                    <a href="@doc.DocUri">@doc.Name</a> @string.Format("({0})", vendor.Name)
+                </span>
+            }
+
+        }
+    }
+    else
+    {
+        <span class="col-md-12 red-text top-margin-30">Please select a part from the part dropdown list!</span>
+    }
+</div>

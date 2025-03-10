@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Restore DEMO Database";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-20">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-right"></i> @ViewBag.Title</h4>
+        <div class="card-block">
+            <div class="offset-md-1 col-md-10">
+
+                @using (Html.BeginForm("DemoRestore", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="text-xs-center  top-margin-30">
+                        <button type="submit" class="btn accent-background-color buttonWidth">Restore the DEMO Database</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

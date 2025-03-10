@@ -1,0 +1,154 @@
+﻿@model Omnae.ViewModels.LocationViewModel
+
+<style>
+    #map_canvas img {
+        max-width: none;
+    }
+</style>
+
+@section scripts {
+    <section class="scripts">
+
+        <script type="text/javascript">
+
+            //This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
+            $(document).ready(function () {
+                Initialize();
+            });
+
+            // Where all the fun happens
+            function Initialize() {
+
+                // Google has tweaked their interface somewhat - this tells the api to use that new UI
+                google.maps.visualRefresh = true;
+                var myLocation = new google.maps.LatLng(@Model.latitude, @Model.longitude);
+
+                // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+                var mapOptions = {
+                    zoom: 15,
+                    center: myLocation,
+                    mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+                };
+
+                // This makes the div with id "map_canvas" a google map
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                // This shows adding a simple pin "marker" - this happens to be the Tate Gallery in Liverpool!
+                var myLatlng = new google.maps.LatLng(@Model.latitude, @Model.longitude);
+
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title: 'Company Location'
+                });
+
+                // You can make markers different colors...  google it up!
+                marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+                // a sample list of JSON encoded data of places to visit in Liverpool, UK
+                // you can either make up a JSON list server side, or call it from a controller using JSONResult
+                var data = [
+                          { "Id": 1, "PlaceName": "Company Location", "OpeningHours":"9-5, M-F","GeoLong": @Model.latitude, "GeoLat": @Model.longitude }
+                ];
+
+                // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+                $.each(data, function (i, item) {
+                    var marker = new google.maps.Marker({
+                        'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                        'map': map,
+                        'title': item.PlaceName
+                    });
+
+                    // Make the marker-pin blue!
+                    marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                    // put in some information about each json object - in this case, the opening hours.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "<div class='infoDiv'><h2>" + item.PlaceName + "</h2>" + "<div><h4>Opening hours: " + item.OpeningHours + "</h4></div></div>"
+                    });
+
+                    // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow.open(map, marker);
+                    });
+
+                })
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1k79szFQQCeqLGG8GhfxYAIRBhiDVVuM&callback=Initialize" type="text/javascript"></script>
+    </section>
+}
+
+<div class="row top ">
+    <div class="offset-lg-1 col-lg-5">
+
+        <div class="card-block">
+
+            <!--Header-->
+            <div class="text-xs-center">
+                <h3><i class="far fa-edit"></i> Write to us:</h3>
+                <hr class="mt-2 mb-2">
+            </div>
+
+            @if (TempData["Result"] != null)
+            {
+                <div class="green-text text-md-center">@TempData["Result"].ToString()</div>
+            }
+
+            <!--Body-->
+            @*<p>We'll write rarely, but only the best content.</p>*@
+            <br>
+            @using (Html.BeginForm("Contact", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <!--Body-->
+                <div class="md-form">
+                    <i class="far fa-user prefix"></i>
+                    <input type="text" id="form3" name="name" class="form-control">
+                    <label for="form3">Your name</label>
+                </div>
+
+                <div class="md-form">
+                    <i class="far fa-envelope prefix"></i>
+                    <input type="text" id="form2" name="email" class="form-control">
+                    <label for="form2">Your email</label>
+                </div>
+
+                <div class="md-form">
+                    <i class="fas fa-tag prefix"></i>
+                    <input type="text" id="form32" name="subject" class="form-control">
+                    <label for="form34">Subject</label>
+                </div>
+
+                <div class="md-form">
+                    <i class="fas fa-pencil-alt prefix"></i>
+                    <textarea type="text" id="form8" name="content" class="md-textarea"></textarea>
+                    <label for="form8">Content</label>
+                </div>
+
+                <div class="md-form text-xs-center">
+                    <button type="submit" class="btn accent-background-color buttonWidth2">Submit</button>
+
+                    <div class="call">
+                        <br>
+                        <p>
+                            <h4>Or would you prefer to call?</h4>
+                            <br>
+                            <span class="font-weight-bold"><i class="fas fa-phone"> </i> + 1-800-420-8177</span>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-5 top-margin-20">
+        <h4>Or would you prefer to visit us?</h4>
+        <br />
+        <span class="font-weight-bold">
+            <i class="fas fa-map-marker-alt"> </i> Unit 201 - 810 Quayside Drive, New Westminster, BC, Canada V3M 6B9
+        </span>
+        <div id="map_canvas" style="height:500px;width:100%;"></div>
+    </div>
+
+</div>

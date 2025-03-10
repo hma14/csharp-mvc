@@ -1,0 +1,4 @@
+﻿Hi @Model.UserName,
+
+This is to notify that the customer requested to add extra price breaks upon the new quantities just added. 
+Please make quotes upon the new quantities.

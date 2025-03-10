@@ -1,0 +1,9 @@
+﻿
+Hi @Model.UserName,
+
+Your production run is complete for @Model.PartNumber from Omnae.com. 
+Purchase Order #: @Model.PONumber
+Your parts have shipped according to the following:
+
+Carrier @Model.Carrier
+Tracking No @Model.TrackingNumber

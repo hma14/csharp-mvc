@@ -1,0 +1,51 @@
+﻿@model Omnae.BusinessLayer.Models.NcrDescriptionViewModel
+
+<div class="col-md-12 no-padding-left">
+    <h5 class="top-margin-20">Uploaded Images or Files for Evidence</h5>
+    @if (Model.EvidenceImageUrl != null && Model.EvidenceImageUrl.Count > 0)
+    {
+        int i = 1;
+        <div class="col-md-12 no-padding-left top-margin-10">
+            @foreach (var url in Model.EvidenceImageUrl)
+            {
+                <a href="@url" target="_blank" class="col-md-3 no-padding">NC Evidence Image v-@i</a>
+                i++;
+            }
+        </div>
+    }
+
+    @if (Model.ArbitrateCustomerCauseImageRefUrl != null && Model.ArbitrateCustomerCauseImageRefUrl.Count > 0)
+    {
+        int i = 1;
+        <div class="col-md-12 no-padding-left top-margin-10">
+            @foreach (var url in Model.ArbitrateCustomerCauseImageRefUrl)
+            {
+                <a href="@url" target="_blank" class="col-md-3 no-padding">Customer Cause Image v-@i</a>
+                i++;
+            }
+        </div>
+    }
+    @if (Model.ArbitrateVendorCauseImageRefUrl != null && Model.ArbitrateVendorCauseImageRefUrl.Count > 0)
+    {
+        int i = 1;
+        <div class="col-md-12 no-padding-left top-margin-10">
+            @foreach (var url in Model.ArbitrateVendorCauseImageRefUrl)
+            {
+                <a href="@url" target="_blank" class="col-md-3 no-padding">Vendor Cause Image v-@i</a>
+                i++;
+            }
+        </div>
+    }
+
+    @if (Model.RootCauseOnCustomerImageRefUrl != null && Model.RootCauseOnCustomerImageRefUrl.Count > 0)
+    {
+        int i = 1;
+        <div class="col-md-12 no-padding-left top-margin-10">
+            @foreach (var url in @Model.RootCauseOnCustomerImageRefUrl)
+            {
+                <a href="@url" target="_blank" class="col-md-6 no-padding">Root Cause On Customer Image v-@i</a>
+                i++;
+            }
+        </div>
+    }
+</div>

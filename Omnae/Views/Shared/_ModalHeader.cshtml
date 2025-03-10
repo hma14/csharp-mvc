@@ -1,0 +1,20 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@using Omnae.Common
+
+@if (Model != null && Model.Product != null)
+{
+    <div class="modal-header primary-background-color">
+        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>*@
+        <div class="col-md-10 no-padding">
+            <h4 class="modal-title w-100 col-md-12" id="myModalLabel">@Model.Product.PartNumber @Model.Product.Name</h4>
+            <spin class="col-md-12">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), @Model.StateId))</spin>
+        </div>
+        <div class="col-md-2 no-padding">
+            @*@Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@Model.StateId))*@
+            <a class="top-margin-5 pull-md-right" href="@Model.Product.AvatarUri" target="_blank"><img src="@Model.Product.AvatarUri" height="45"/></a>
+        </div>
+    </div>
+}

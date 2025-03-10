@@ -1,0 +1,18 @@
+﻿@model Omnae.ViewModels.PayWithTermViewModel
+@{
+    ViewBag.Title = "PayWithTerm";
+}
+
+<div class="row top">
+    <div class="offset-md-3 col-md-6">
+        <div class="card">
+            <h5 class="card-header rgba-pink-light text-white">Pay with Term</h5>
+            <div class="card-block">
+                <p>Payable to Omnae.</p>
+                <p>The payment amount: <span class="green-text font-weight-bold">@string.Format("{0:C}", @Model.Amount)</span> will be made <span class="green-text font-weight-bold">@Model.Term</span> days after shipping by @Model.CompanyName</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

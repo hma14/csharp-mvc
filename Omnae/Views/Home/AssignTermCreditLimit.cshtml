@@ -1,0 +1,90 @@
+﻿@model Omnae.BusinessLayer.Models.CompaniesCreditRelationshipViewModel
+@{
+    ViewBag.Title = "AssignTermCreditLimit";
+}
+
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-right"></i> Assign Term & Credit Limit to Customer</h4>
+        <div class="card-block">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+            }
+            else if (TempData["Message"] != null)
+            {
+                <div class="green-text text-md-center">@TempData["Message"].ToString()</div>
+            }
+            <div class="top-margin-30">
+
+                @using (Html.BeginForm("AssignTermCreditLimit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    if (Model != null)
+                    {
+                        <div class="md-form col-md-5">
+                            @Html.DropDownListFor(model => model.VendorId, Model.Vendors, "-- Select Vendor --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-2">
+                            Assign to:
+                        </div>
+                        <div class="md-form col-md-5">
+                            @Html.DropDownListFor(model => model.CustomerId, Model.Customers, "-- Select Customer --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">To be assigned details</legend>
+                            <div class="col-md-12 top-margin-50">
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.TermDays, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.TermDays, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "30" } })
+                                    @Html.ValidationMessageFor(model => model.TermDays, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-4">
+                                    @*@Html.EnumDropDownListFor(model => model.Currency, new { @class = "form-control" })*@
+                                    @Html.DropDownListFor(model => model.Currency, Model.Currencies, "-- Select Currency --", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.CreditLimit, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "25000" } })
+                                    @Html.ValidationMessageFor(model => model.CreditLimit, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.DiscountDays, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.DiscountDays, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "15" } })
+                                    @Html.ValidationMessageFor(model => model.DiscountDays, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "4" } })
+                                    @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.Deposit, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Deposit, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "25" } })
+                                    @Html.ValidationMessageFor(model => model.Deposit, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-4">
+                                    @Html.LabelFor(model => model.ToolingDepositPercentage, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ToolingDepositPercentage, new { htmlAttributes = new { @class = "form-control", PlaceHolder = "50" } })
+                                    @Html.ValidationMessageFor(model => model.ToolingDepositPercentage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                        <div class="text-xs-center">
+                            <button type="submit" class="btn accent-background-color buttonWidth top-margin-30">Assign</button>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

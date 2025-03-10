@@ -1,0 +1,71 @@
+﻿@model Omnae.ViewModels.AddCompanyLogoViewModel
+
+@{
+    ViewBag.Title = "AddCompanyLogo";
+}
+
+<style>
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 75%;
+    }
+</style>
+
+<div class="container-fluid top-margin-30 offset-lg-3 col-md-6">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color text-md-center white-text"><i class="fas fa-plus-square"></i> Add Company Logo</h4>
+        <div class="card-block">
+            @if (@TempData["ErrorMessage"] != null)
+            {
+                <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+            }
+            <div class="col-md-12">
+                @using (Html.BeginForm("AddCompanyLogo", "Home", FormMethod.Post, new { id = "addCompanyLogo", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="top-margin-30 no-padding">
+                        <span class="col-md-3 font-weight-bold grey-text">Add your company Logo</span>
+                        <div class="upload-border no-padding col-md-9">
+                            @Html.TextBoxFor(model => model.CompanyLogo, new { type = "file", name = "logo", @id = "logo", @class = "no-padding" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 text-xs-center">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-20">Add</button>
+                    </div>
+                }
+                @if (TempData["Result"] != null)
+                {
+                    <div class="col-md-12 green-text top-margin-20">@TempData["Result"].ToString()</div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+    $("#addCompanyLogo").submit(function (event) {
+        $('#spinner').show();
+        var logo = $('#logo').val();
+        if (logo == '') {
+            alertify.error("You must choose a image file for logo first");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else {
+            this.submitButton.disabled = true;
+            return true;
+        }
+    });
+
+</script>

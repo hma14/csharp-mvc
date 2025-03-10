@@ -1,0 +1,30 @@
+﻿@model Omnae.BusinessLayer.Models.PackingSlipViewModel
+
+<div>
+    <div class="col-xs-5">
+        <img src="~/Images/Omnae_Logo_new.png" height="50" />
+    </div>
+    <div class="col-xs-4">
+        <span>
+
+            @if (Model.AdminAddress_AddressLine2 != null)
+            {
+                @Model.AdminAddress_AddressLine2
+            }
+            @Model.AdminAddress_AddressLine1<br />
+            @Model.AdminAddress_City,
+            @if (Model.AdminAddress_State != null)
+            {
+                @Model.AdminAddress_State<br />
+            }
+            @Model.AdminAddress_CountryName,
+            @Model.AdminAddress_PostalCode
+
+        </span>
+    </div>
+    <div class="offset-xs-1 col-xs-2 pull-xs-right">
+        T. 604.946.4799<br />
+        F. 604.946.3186<br />
+        TF.1.800.420.8177
+    </div>
+</div>

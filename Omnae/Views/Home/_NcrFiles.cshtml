@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Omnae.Model.Models.NCRImages>
+
+@{
+    ViewBag.Title = "_NcrFiles";
+}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+}
+@if (Model != null && Model.Any())
+{
+    foreach (var ncr in Model)
+    {
+        <div class="offset-md-1 col-md-10 top-margin-10">
+            NCR Desc:<span class="green-text">@ncr.NCReport.NCDescription</span>
+            File Name: <a href="@ncr.ImageUrl">@Path.GetFileName(ncr.ImageUrl)</a>
+            File Type: <span class="green-text">@Enum.GetName(typeof(NCR_IMAGE_TYPE), ncr.Type)</span>
+            <a class="del pull-xs-right" onclick="deleteNcrImage(@ncr.Id, @ncr.NCReportId);"><i class="fa fa-trash"></i></a>
+        </div>
+    }
+}

@@ -1,0 +1,11 @@
+﻿@model Omnae.ViewModels.GetPOByProductIdViewModel
+
+<div>
+    @if (Model != null)
+    {
+        foreach (var doc in Model.DocList)
+        {
+            <a class="col-md-4" href="@doc.DocUri" target="_blank">@doc.Name</a>
+        }
+    }
+</div>

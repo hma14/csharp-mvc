@@ -1,0 +1,68 @@
+﻿@model Omnae.ViewModels.GetQuoteDocByVendorViewModel
+
+
+@{
+    ViewBag.Title = "GetQuoteDocByVendor";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-20">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-left"></i> Get Vendor Quote Document</h5>
+        <div class="card-block">
+            @if (Model != null)
+            {
+                <div class="top-margin-30 col-md-12">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="red-text">@TempData["ErrorMessage"].ToString()</div>
+                    }
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.CustomerId, Model.Customers, "-- Select Customer --", new { @id = "customerId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                        </div>
+
+                        <div id="products" class="col-md-6"></div>
+
+                        <div id="result" class="top-margin-50"></div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#DateToChange').datepicker();
+
+        $('#GetQuoteDocByVendorForm').submit(function () {
+            $('#spinner').show();
+        });
+    });
+
+    $("#customerId")
+        .change(function () {
+
+            $('#spinner').show();
+            var custId = $("select option:selected").val();
+            var $url = '//' + window.location.host + '/Home/GetCustomerProducts';
+            
+
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: { 'custId': custId },
+                success: function (result) {
+                    $('#spinner').hide();
+                    $('#products').html(result);
+                },
+                error: function (error) {
+                    $('#spinner').hide();
+                    alertify.error(error.statusCode);
+                }
+            });
+        });
+
+</script>

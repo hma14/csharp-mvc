@@ -1,0 +1,56 @@
+﻿
+<style>
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 68%;
+    }
+</style>
+
+@section footerInlineScripts{
+    <script>
+
+        $(function() {
+            $("#file").fileinput({ browseClass: "btn btn-success" });
+        });
+
+        function ConfirmDelete() {
+            alertify.confirm("Do you really want to delete this document?", function (e) {
+                if (e) {
+                    alertify.success("Document is deleted.");
+                    location.reload();
+                }
+                else {
+                    alertify.error("You've clicked cancel");
+                    return false;
+                }
+            });
+            // no return here
+        }
+
+        function showMessage() {
+            //var message = "Thanks for createing a new product with Omnae! Your request is being reviewed by qualified factories. The factories want to be sure they make the rigth thing so they will have many questions. You will be notified by email and SMS when those questions come in. ";
+            var message = "Document upload succeeded. ";
+            alertify.log(message, "info", 0);
+            return true;
+        }
+
+    </script>
+}
+
+<div class="top-margin-40">
+    <span class="col-md-3 font-weight-bold">Upload Evidence</span>
+    <div class="upload-border no-padding col-md-9">
+        <input type="file" name="uploadedFile" multiple class="no-padding">
+    </div>
+    @*<div class="btn grey-background-color small-button col-md-3">
+        <span class="fileupload font-weight-bold">Upload Evidence</span>
+        <input type="file" name="uploadedFile" multiple>
+    </div>
+    <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Evidence Image (Optional)" disabled>
+    </div>*@
+</div>
+
+
+
+

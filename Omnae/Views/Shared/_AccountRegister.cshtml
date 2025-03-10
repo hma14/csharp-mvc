@@ -1,0 +1,56 @@
+﻿@model Omnae.ViewModels.CreateAccountForCustomerViewModel
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div class="md-form">
+    <span class="col-md-1 top-margin-30"><i class="far fa-user prefix"></i></span>
+
+    <span class="col-md-4 top-margin-30">
+        @Html.LabelFor(m => m.Resgister.FirstName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Resgister.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.FirstName, "", new { @class = "text-danger" })
+    </span>
+    <span class="col-md-3 top-margin-30">
+        @Html.LabelFor(m => m.Resgister.MiddleName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Resgister.MiddleName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.MiddleName, "", new { @class = "text-danger" })
+    </span>
+    <span class="col-md-3 top-margin-30">
+        @Html.LabelFor(m => m.Resgister.LastName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Resgister.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.LastName, "", new { @class = "text-danger" })
+    </span>
+</div>
+
+<div class="col-md-5">
+    <div class="md-form">
+        <i class="fas fa-at prefix"></i>
+        @Html.LabelFor(m => m.Resgister.Email, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Resgister.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.Email, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="offset-md-1 col-md-5">
+    <div class="md-form">
+        <i class="fas fa-mobile-alt prefix"></i>
+        @Html.LabelFor(m => m.Resgister.PhoneNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Resgister.PhoneNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="md-form">
+        <i class="fas fa-key prefix"></i>
+        @Html.LabelFor(m => m.Resgister.Password, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.Resgister.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.Password, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="offset-md-1 col-md-5">
+    <div class="md-form">
+        <i class="fas fa-key prefix"></i>
+        @Html.LabelFor(m => m.Resgister.ConfirmPassword, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.Resgister.ConfirmPassword, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Resgister.ConfirmPassword, "", new { @class = "text-danger" })
+    </div>
+</div>

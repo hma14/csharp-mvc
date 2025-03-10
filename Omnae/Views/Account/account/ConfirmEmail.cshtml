@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+
+
+        <div class="card-block">
+            <div>
+                <h4 class="card-text">
+                    Thank you for confirming your email.
+                </h4>
+                <p class="card-text">
+                    @*Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })*@
+
+                    Thank you for confirming your email. Please @Html.ActionLink("Click here to fulfill your registration", "ConfirmEmail", "Account",
+                        routeValues: new { @userId = @ViewBag.UserId}, htmlAttributes: new { id = "loginLink" })
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿@model Omnae.BusinessLayer.Models.NCRViewModel
+
+@{
+    ViewBag.Title = "NcrHistory";
+}
+@if (Model != null)
+{
+    @Html.Partial("_NcrHistory", Model)
+}
+else
+{
+    <div class="offset-md-2 col-md-10 top-margin-30">
+        <h5 class="red-text">No Non-Confomance Reports was found!</h5>
+        <a href="@ViewBag.ReturnUrl">Back</a>
+    </div>
+}

@@ -1,0 +1,16 @@
+﻿
+Hi @Model.UserName,
+
+Part Number: @Model.PartNumber
+Quantity: @Model.Quantity
+Price Paid: $@Model.Price
+Lead Time: @Model.LeadTime
+Attached File Link:
+@foreach (var doc in @Model.AttachedFiles)
+{
+    @doc.DocUri
+}
+
+Best regards,
+    
+Omnae Team

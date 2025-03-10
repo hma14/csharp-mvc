@@ -1,0 +1,9 @@
+﻿Hi @Model.UserName,
+
+This is to notify that the vendor has started to produce the parts regarding part # @Model.PartNumber of @Model.Description.
+@if (Model.RejectCorrectivePartsReason != null)
+{
+    <p>
+        Customer rejected corrective parts reason: @Model.RejectCorrectivePartsReason             
+    </p>
+}

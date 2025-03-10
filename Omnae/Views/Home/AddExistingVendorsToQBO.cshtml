@@ -1,0 +1,62 @@
+﻿
+@model Omnae.QuickBooks.ViewModels.AddExistingUsersToQBOViewModel
+
+@{
+    ViewBag.Title = "AddExistingVendorsToQBO";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h4 class="card-header text-md-center primary-background-color white-text"><i class="fas fa-plus"></i> Add Existing Vendors to QuickBooks Online</h4>
+            <div class="card-block">
+
+                @using (Html.BeginForm("AddExistingVendorsToQBO", "Home", FormMethod.Post, new { id = "AddExistingVendorsToQBO", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="md-form">
+                        @*@Html.DropDownListFor(model => model.VendorIds, ViewBag.VendorIdList as MultiSelectList, htmlAttributes: new { @class = "btn offset-md-2 col-md-8 grey-background-color dropdown-toggle", multiple = "multiple" })*@
+                        @Html.DropDownListFor(model => model.UserIds, Model.DdlCustomers, new { @class = "btn pre-scrollable offset-md-2 col-md-8 text-md-left grey-background-color", multiple = "multiple", size = 10 })
+
+                        @Html.ValidationMessageFor(model => model.UserIds, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="md-form text-xs-center col-md-12 top-margin-40">
+                        <button type="submit" class="btn accent-background-color buttonWidth">Submit</button>
+                    </div>
+
+                }
+
+
+            </div>
+            @if (TempData["Result"] != null)
+            {
+                <div class="card-block top-margin-20">
+                    <h5 class="green-text text-lg-center">@TempData["Result"].ToString()</h5>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="card-block top-margin-20">
+                    <h5 class="red-text error">@TempData["ErrorMessage"].ToString()</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#AddExistingVendorsToQBO').submit(function () {
+
+            $('.error').empty();
+            $('#spinner').show();
+        })
+
+    });
+</script>

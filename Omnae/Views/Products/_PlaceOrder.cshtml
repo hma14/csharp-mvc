@@ -1,0 +1,313 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+@using Omnae.Common
+@using System.Configuration;
+
+<style>
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 70%;
+    }
+</style>
+
+<div class="card-block">
+    @if (TempData["PlaceOrderError"] != null)
+    {
+        <p class="red-text">@TempData["PlaceOrderError"].ToString()</p>
+    }
+
+    <div class="col-md-12">
+        <h4 class="col-xs-6">Quantity</h4>
+        <h4 class="col-xs-6">Unit Price</h4>
+        @{
+            int i = 0;
+        }
+        @foreach (var pb in Model.PriceBreaks)
+        {
+            <div class="col-md-12 line">
+                @if (i == 0)
+                {
+                    <p id="moq" class="col-xs-6">@pb.Quantity (MOQ)</p>
+                }
+                else
+                {
+                    <p class="col-xs-6">@pb.Quantity</p>
+                }
+                <p class="col-xs-6">@string.Format("{0:C3}", @pb.UnitPrice)</p>
+
+            </div>
+            i++;
+        }
+
+        @{
+            if (Model.ExtraQuantityPriceBreaks != null)
+            {
+                i = 0;
+                foreach (var pb in Model.ExtraQuantityPriceBreaks)
+                {
+                    <div class="col-md-12 line">
+                        <p class="col-xs-6">@pb.Quantity</p>
+                        <p class="col-xs-6">@string.Format("{0:C3}", @pb.UnitPrice)</p>
+                    </div>
+                    i++;
+                }
+            }
+        }
+    </div>
+    <div class="col-md-12 grey-text">
+        <span class="red-text">*</span> Unit prices and price amount showing above and below are in US Dollars
+    </div>
+</div>
+
+<div class="card-block">
+
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new
+    {
+
+        id = "PlaceOrder",
+        data_parsley_validate = "",
+        enctype = "multipart/form-data",
+        onsubmit = "return checkForm(this)"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("productId", Model.Product.Id)
+        @Html.Hidden("taskId", Model.TaskId)
+        @Html.Hidden("StateId", Model.StateId)
+        @Html.Hidden("isReorder", Model.IsReorder)
+        @Html.Hidden("IsForOrderTooling", Model.IsForOrderTooling)
+        @Html.Hidden("ToolingCharges", Model.ToolingCharges)
+        @Html.Hidden("TaxRatePercentage", Model.TaxRatePercentage)
+        @Html.Hidden("OrderCompanyId", Model.OrderCompanyId)
+        @Html.HiddenFor(m => m.isEnterprise)
+        @Html.HiddenFor(m => m.NumberSampleIncluded)
+
+        <dl class="dl-horizontal  col-md-12">
+            <dt>
+                @Html.DisplayNameFor(model => model.Product.PartNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Product.PartNumber)
+            </dd>
+
+            @if (Model.CountryId == (int)COUNTRY.CANADA)
+            {
+                <dt>
+                    Tax Rate
+                </dt>
+                <dd>
+                    @Model.TaxRatePercentage
+                </dd>
+            }
+        </dl>
+        <div class="md-form col-md-12" id="result"></div>
+        <div class="col-md-8">
+            <div class="md-form">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label font-weight-bold" })
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control ddl green-text", @id = "quantity" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <a id="calculate" class="btn grey-background-color buttonWidth2">Calculate</a>
+        </div>
+
+        <div class="col-md-12 top-margin-30">
+            <span class="col-md-3 font-weight-bold">Upload PO Doc</span>
+            <div class="col-md-9">
+                @Html.TextBoxFor(model => model.PurchaseOrder, new { type = "file", multiple = true, name = "PurchaseOrder", @id = "PurchaseOrder", @class = "no-padding" })
+            </div>
+        </div>
+
+
+        <div class="md-form col-md-6 top-margin-30">
+            @Html.LabelFor(model => model.PONumber, new { htmlAttributes = new { @class = "control-label" } })
+            @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control", @name = "PONumber" } })
+            @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+        </div>
+        <div class="md-form col-md-6 top-margin-30">
+            @Html.LabelFor(model => model.Buyer, new { htmlAttributes = new { @class = "control-label" } })
+            @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "form-control", @name = "Buyer" } })
+            @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.DesireShippingDate, new { @class = "control-label" })
+            @Html.EditorFor(model => model.DesireShippingDate, new { htmlAttributes = new { @id = "DesireShippingDate", @class = "form-control", @name = "DesireShippingDate" } })
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.EarliestShippingDate, new { @class = "control-label" })
+            @Html.EditorFor(model => model.EarliestShippingDate, new { htmlAttributes = new { @id = "EarliestShippingDate", @class = "form-control", @name = "EarliestShippingDate" } })
+        </div>
+
+        if (TempData["AzureException"] != null)
+        {
+            <p class="red-text"> @TempData["AzureException"]</p>
+        }
+
+
+        <div class="col-md-6 top-margin-20">
+            <div class="md-form">
+                @Html.DropDownListFor(model => model.PaymentMethod, Model.PaymentMethods, new { @class = "btn grey-background-color dropdown-toggle col-md-11 ropdown-header" })
+            </div>
+        </div>
+        if (Model.isEnterprise)
+        {
+            <div class="col-md-6 top-margin-20">
+                <div class="md-form">
+                    @Html.DropDownListFor(model => model.ShippingAccountId, Model.ShippingAccountDDL, " Shipment Via ", new { @class = "btn grey-background-color dropdown-toggle col-md-11 ropdown-header" })
+                </div>
+            </div>
+        }
+
+        <div class="md-form text-xs-center col-md-12 top-margin-20">
+            <button type="submit" name="submitButton" id="btn-submit" class="btn accent-background-color buttonWidth2">Place Order</button>
+        </div>
+
+
+    }
+</div>
+
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+        $('#spinner').hide();
+
+        $('#DesireShippingDate').datepicker();
+        $('#EarliestShippingDate').datepicker();
+
+        function reset() {
+            $("#toggleCSS").attr("href", "../../themes/alertify.default.css");
+            alertify.set({
+                labels: {
+                    ok: "Agree",
+                    cancel: "Disagree"
+                },
+                delay: 5000,
+                buttonReverse: false,
+                buttonFocus: "ok"
+            });
+        };
+
+        $("#PlaceOrder").submit(function (event) {
+            $('#spinner').show();
+            event.preventDefault();
+
+            var paymethod = $('#PaymentMethod option:selected').val();
+
+
+
+            var $moq = $('#moq').text().split(' ')[0];
+            var $quantity = $('#quantity').val();
+
+            if ($('#quantity').val() == '') {
+                //alertify.set({ delay: 10000 });
+                alertify.error("Quantity is empty");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#result').text().indexOf('Quantity you entered is smaller than MOQ') != -1) {
+                alertify.error("Quantity you entered is smaller than MOQ!");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#result').text() == '') {
+                alertify.error("Click 'Calculate' button first!");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#result').text() != '' && parseInt($quantity, 10) < parseInt($moq, 10)) {
+                alertify.error('Quantity you entered is smaller than MOQ (Minimum Order Quantity) - ' + $moq + '. Please enter a quantity that must be equal or bigger than MOQ!');
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#PurchaseOrder').val() == '' || $('#PONumber').val() == '' || $('#Buyer').val() == '') {
+                alertify.error("PO Doc and PO Number and Buyer are required");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#DesireShippingDate').val() == '' || $('#EarliestShippingDate').val() == '') {
+                alertify.error("Desire Shipping Date and Earliest Shipping Date are required");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (paymethod == 0) {
+                alertify.error("Please select a Payment Method");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+
+
+                    var message = 'Delay in proof and sample approval may delay expected ship date. \
+                After orders are placed (with or without a PO), they are Non-Cancellable and Non-Returnable (NCNR). ';
+
+                    reset();
+                    alertify.confirm(message, function (e) {
+                        if (e) {
+                            alertify.success("You've clicked Agree");
+                            if (paymethod > 0) {
+                                $('#PlaceOrder').unbind('submit').submit();
+                            }
+                        }
+                        else {
+                            alertify.error("You've clicked Disagree");
+                            $('#spinner').hide();
+                            return false;
+                        }
+                    });
+
+                };
+        });
+
+
+
+
+        $('#calculate').click(function () {
+            $('#spinner').show();
+            var $moq = $('#moq').text().split(' ')[0];
+            var $quantity = $('#quantity').val();
+
+            if ($quantity == '') {
+                alertify.alert('Quantity is empty!');
+                return false;
+            }
+            if (parseInt($quantity, 10) < parseInt($moq, 10)) {
+                alertify.alert('Quantity you entered is smaller than MOQ (Minimum Order Quantity) - ' + $moq + '. Please enter a quantity that must be equal or bigger than MOQ!');
+                return false;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Calculate", "Products")',
+                type: 'GET',
+                contentType: 'application/html; charset=utf-8',
+                dataType: "html",
+                async: true,
+                data: { 'Id': '@Model.Product.Id', 'TaskId': '@Model.TaskId', 'Quantity': $quantity, 'isReorder': '@Model.IsReorder' },
+                beforeSend: function () { $("#spinner").show(); },
+                success: function (result) {
+                    $('#spinner').hide();
+
+                    $('#result').html(result);
+                },
+                error: function (e) {
+                    $('#spinner').hide();
+                    alertify.alert(e.responseText);
+                }
+            });
+
+            return false;
+        });
+
+        //$('#PlaceOrder').submit(function () {
+        //    $('#spinner').show();
+        //})
+
+    });
+
+</script>

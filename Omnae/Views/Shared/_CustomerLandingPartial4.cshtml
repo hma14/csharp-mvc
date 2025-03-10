@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+
+<style>
+    #grid4, #list4, .listview4, .gridview4, .hide_eye4, #action-indicator4 {
+        display: none;
+    }
+
+    .productInfo dt {
+        width: 200px !important;
+    }
+
+    .productInfo dd {
+        text-decoration: none !important;
+    }
+
+    .my-tag {
+        margin-right: 10px !important;
+        margin-top: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-11">Re-Orders</h4>
+        <span class="col-md-1 pull-right small-button">
+
+            <a href="#" class="col-md-6 switcher small-button listview4 pink-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="col-md-6 switcher small-button gridview4 green-text"><i class="fas fa-th fa-2x"></i></a>
+            <a class="col-md-6 switcher small-button show_eye4 green-text"><i class="fas fa-eye fa-2x"></i></a>
+            <a class="col-md-6 switcher small-button hide_eye4 pink-text"><i class="fas fa-eye-slash fa-2x"></i></a>
+        </span>
+        <br />
+
+        <hr class="gradient" />
+    </div>
+
+    <div id="more"></div>
+
+</div>
+
+<script>
+
+    $(function () {
+
+        $('.show_eye4').click(function () {
+
+            if ($('#more').find('#list4').length === 0) {
+
+                var $url = '//' + window.location.host + '/Home/PartialReorders';
+
+                $('#spinner').show();
+
+                $.ajax({
+                    type: 'GET',
+                    url: $url,
+                    success: function (result) {
+                        $('#spinner').hide();
+                        $('#more').html(result);
+
+                        $('#more').find('#list4').fadeIn('slow');
+                    },
+                    error: function (error) {
+                        $('#spinner').hide();
+                        alertify.error(error.statusCode);
+                    }
+                });
+            }
+
+            $('#more').find('#list4').fadeIn('slow');
+            $(this).hide();
+            $('.hide_eye4').show();
+            $('.gridview4').show();
+            $('#action-indicator4').css({ 'display': "none" });
+        });
+
+        $('.hide_eye4').click(function () {
+            $('#more').find('#list4').fadeOut('slow');
+            $('#more').find('#grid4').fadeOut('slow');
+            $(this).hide();
+            $('.show_eye4').show();
+            $('.listview4').hide();
+            $('.gridview4').hide();
+            var $flag = $('#grid4').find('a').hasClass('action-flag');
+            if ($flag === true) {
+                $('#action-indicator4').css({ 'display': "inline-block" });
+            };
+        });
+
+        $('.gridview4').click(
+            function (e) {
+                e.preventDefault();
+
+                $otherNode = $(this).parent().find('.listview4');
+                $('#more').find('#list4').fadeOut('slow');
+                $('#more').find('#grid4').fadeIn('slow');
+                $('.gridview4').hide();
+                $('.listview4').show();
+
+            });
+        $('.listview4').click(
+            function (e) {
+                e.preventDefault();
+
+                $otherNode = $(this).parent().find('.gridview4');
+                $('#more').find('#grid4').fadeOut('slow');
+                $('#more').find('#list4').fadeIn('slow');
+                $('.listview4').hide();
+                $('.gridview4').show();
+            });
+
+    });
+
+</script>

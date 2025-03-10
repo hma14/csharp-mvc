@@ -1,0 +1,178 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+
+@{
+    var td = Model.TaskData;
+    Order order = Model.Order;
+}
+<style>
+    .dl-horizontal dt {
+        padding: 0px !important;
+    }
+
+    .dl-horizontal dd {
+        padding: 0px !important;
+        margin: 0px !important;
+        width: 100% !important;
+    }
+
+    .my-tag {
+        margin-right: 10px !important;
+        margin-top: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="col-md-4">
+    <div class="card">
+
+        <!--Card Header-->
+
+        @Html.Partial("_CardHeader", @td)
+
+        <div class="wrapper">
+            <div class="card-image card-image-min-height">
+
+                <!--Card image-->
+
+                @{ var ext = @td.Product.AvatarUri != null ? Path.GetExtension(@td.Product.AvatarUri).ToUpper() : null; }
+                @if (ext != null && (ext == ".GIF" || ext == ".JPEG" || ext == ".JPG" || ext == ".PNG"))
+                {
+                    <div class="view overlay hm-white-slight z-depth-1 card-image-min-height">
+                        <img src=@td.Product.AvatarUri class="img-fluid center-block card-image-height" title="@td.Product.Name">
+                    </div>
+                }
+                else
+                {
+                    <div class="view overlay hm-white-slight z-depth-1 card-image-min-height">
+                        <h1 class="text-lg-center brown-text top-padding-80 card-image-height">@td.Product.PartNumber</h1>
+                    </div>
+                }
+            </div>
+
+            <div class="card-block my-card-text card-image-min-height">
+
+                <!--Card text-->
+
+                <dl class="productInfo dl-horizontal small">
+                    <dt>
+                        State
+                    </dt>
+                    <dd class="green-text">
+                        @Model.EnumName
+                    </dd>
+                    @if (order != null)
+                    {
+                        <dt>Order Date</dt>
+                        <dd>@(order.OrderDate.ToString("yyyy/MM/dd"))</dd>
+                        <dt>Order Qty</dt>
+                        <dd>@order.Quantity</dd>
+                        if (order.EstimateCompletionDate != null)
+                        {
+                            <dt>
+                                Est. Completion Date
+                            </dt>
+                            <dd>
+                                @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                            </dd>
+                        }
+                    }
+
+                    @Html.Partial("_NextStates", Model)
+                    @if (@td.StateId == (int)States.BackFromRFQ && @td.RevisingReason != null)
+                    {
+                        <dt>Revising Reason</dt>
+                        <dd>
+                            @td.RevisingReason
+                        </dd>
+                    }
+                </dl>
+                @if (@td.StateId == (int)States.OrderInitiated ||
+                    @td.StateId == (int)States.ReOrderInitiated ||
+                    @td.StateId == (int)States.ProofingComplete ||
+                    @td.StateId == (int)States.SampleComplete)
+                {
+                    <a class="btn accent-background-color btn-small pull-right btn-in-card" onclick="ShowModalView(@td.TaskId);" data-toggle="modal" data-target="@string.Format("#Modal{0}", @td.TaskId)">
+                        Action Needed
+                    </a>
+                }
+                else if (@td.StateId == (int)States.QuoteAccepted)
+                {
+                    <a class="btn accent-background-color btn-small pull-right btn-in-card" href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+                }
+
+            </div>
+        </div>
+        @*@Html.Partial("_ModalActionView", @td)*@
+        <div class="modal" id="@string.Format("Modal{0}", td.TaskId)" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+        <div class="card-data primary-background-color">
+            @if (@td.StateId == (int)States.BackFromRFQ ||
+                @td.StateId == (int)States.OrderInitiated ||
+                @td.StateId == (int)States.ReOrderInitiated ||
+                @td.StateId == (int)States.ProofingComplete ||
+                @td.StateId == (int)States.SampleComplete ||
+                @td.StateId == (int)States.QuoteAccepted)
+            {
+                <a class="col-xs-1 red-text action-flag">
+                    <i class="fas fa-flag" title="You have new action event to handle for this part!"></i>
+                </a>
+            }
+            else
+            {
+                <span class="col-xs-1"></span>
+            }
+            @if (td.StateId == (int)States.ProductionStarted || td.StateId == (int)States.ProductionComplete || td.StateId == (int)States.NCRClosed)
+            {
+                <a class="col-md-5 white-text padding-off" href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+            }
+            else
+            {
+                <span class="col-md-5 padding-off"></span>
+            }
+
+
+            @if (order != null)
+            {
+                <a class="col-md-4 white-text padding-off" href="@Url.Action("OrderDetails", "Orders", new { @id = @td.TaskId })">ORDER DETAILS</a>
+            }
+            else
+            {
+                <a class="col-md-4 white-text padding-off" href="@Url.Action("Details", "Orders", new { @id = @td.TaskId })">DETAILS</a>
+            }
+            @Html.AntiForgeryToken()
+            @if (@td.isTagged == true)
+            {
+                <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+            }
+            else
+            {
+                <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowModalView(taskId) {
+        var $url = '//' + window.location.host + '/Home/ShowModal';
+
+        $('#spinner').show();
+        $.ajax({
+            type: 'GET',
+            url: $url,
+            data: { 'Id': taskId },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#Modal' + taskId).html(result);
+                $('#Modal' + taskId).modal('show');
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+
+</script>

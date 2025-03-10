@@ -1,0 +1,92 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+@using Omnae.Common
+
+@if (Model.TaskData.StateId != (int)States.BidForRFQ)
+{
+    <h4 class="col-md-12 top-margin-20">Update RFQ <a title="Update RFQ if anyone of the following changes."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+}
+else
+{
+    <h4 class="col-md-12 top-margin-20">Bid for RFQ <a title="The information to be filled below is for bidding this RFQ."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+}
+
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(model => model.RFQVM.Id)
+
+@Html.HiddenFor(model => model.RFQVM.PriceBreakVM.ProductName)
+@Html.HiddenFor(model => model.RFQVM.PriceBreakVM.ProductAvatarUri)
+@Html.HiddenFor(model => model.RFQVM.PriceBreakVM.ProductId, Model.RFQVM.Id)
+
+
+
+
+<div class="col-md-6 top-margin-40">
+
+    <div class="md-form">
+        @Html.LabelFor(model => model.RFQVM.SampleLeadTime, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.RFQVM.SampleLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RFQVM.SampleLeadTime, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="md-form">
+        @Html.LabelFor(model => model.RFQVM.ProductionLeadTime, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.RFQVM.ProductionLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RFQVM.ProductionLeadTime, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="md-form">
+        @Html.LabelFor(model => model.RFQVM.ToolingSetupCharges, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.RFQVM.ToolingSetupCharges, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RFQVM.ToolingSetupCharges, "", new { @class = "text-danger" })
+
+    </div>
+</div>
+<div class="col-md-6 top-margin-40">
+
+    <div class="md-form">
+        @Html.LabelFor(model => model.RFQVM.HarmonizedCode, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.RFQVM.HarmonizedCode, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RFQVM.HarmonizedCode, "", new { @class = "text-danger" })
+    </div>
+
+    @if (Model.RFQVM.QuoteDoc == null)
+    {
+        <div class="md-form file-field row">
+            <div class="btn grey-background-color col-xs-4">
+                <span class="fileupload">Browse</span>
+                <input type="file" name="uploadedFile" multiple>
+            </div>
+            <div class="col-xs-7 file-path-wrapper">
+                <input class="file-path validate small text-xs-center" type="text" placeholder="Upload Official Quote Doc" disabled>
+            </div>
+
+            @if (TempData["AzureException"] != null)
+                {
+                <p class="red-text"> @TempData["AzureException"]</p>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="md-form">
+            <a href="@Model.RFQVM.QuoteDoc.DocUri">@Model.RFQVM.QuoteDoc.Name</a>
+            <a class="del pull-xs-right" href="@Url.Action("Delete", "Documents",new { @id = Model.RFQVM.QuoteDoc.Id, @actionName = "UpdateProduct", @controllerName = "Products" })"><i class="fa fa-trash"></i></a>
+        </div>
+    }
+
+</div>
+
+
+<h4 class="col-md-12 top-margin-20">Setup Pricebreaks <a title="Setup price breaks for customer."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+<div id="setuppricebreak">
+    @Html.Partial("_SetupPricebreaks", Model)
+</div>
+
+
+<h4 class="col-md-12 top-margin-20">Create Shipping Quote <a title="Fill the data for DHL shipping quote"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+@Html.Partial("_DHLShippingQuote", Model)
+

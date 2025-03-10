@@ -1,0 +1,77 @@
+﻿<nav id="second-navbar" class="navbar navbar-light  top-margin-40">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="secondnav">
+
+            <ul class="navbar-nav mr-auto pull-right dropdown">
+                <li class="nav-item btn-group">
+                    <!--Trigger-->
+                    <a class="nav-link dropdown-toggle btn btn-secondary buttonWidth2" id="ddlFilterProduct" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Product</a>
+                    <!--Menu-->
+
+                    <div  class="dropdown-menu dropdown" aria-labelledby="ddlFilterProduct">
+                        @if (TempData["AllProducts"] != null)
+                        {
+                            foreach (var prod in TempData["AllProducts"] as List<Product>)
+                            {
+                                if (prod == null)
+                                {
+                                    continue;
+                                }
+
+                                <a href="@Url.Action("GetInvoices", "Home", new { @filter = INVOICE_FILTERS.Product, @val = @prod.Id })" class="dropdown-item">@prod.PartNumber  <span class="small">( @prod.Name )</span></a>                               
+                            }
+                            <hr />
+                            <a href="@Url.Action("GetInvoices", "Home")" class="dropdown-item green-text">Clear Filter</a>
+                        }
+                    </div>
+                </li>
+                <li class="nav-item btn-group">
+                    <!--Trigger-->
+                    <a class="nav-link dropdown-toggle btn btn-secondary  buttonWidth2" id="ddlFilterYear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Year</a>
+                    <!--Menu-->
+
+                    <div class="dropdown-menu dropdown" aria-labelledby="ddlFilterYear">
+                        @if (TempData["Years"] != null)
+                        {
+                            foreach (var year in TempData["Years"] as List<int>)
+                            {
+                                <a href="@Url.Action("GetInvoices", "Home", new { @filter = INVOICE_FILTERS.Year, @val = year })" class="dropdown-item">@year</a>
+                            }
+                            <hr />
+                            <a href="@Url.Action("GetInvoices", "Home")" class="dropdown-item green-text">Clear Filter</a>
+                        }
+
+                    </div>
+                </li>
+                @*<li class="nav-item btn-group">
+                        <!--Trigger-->
+                        <a class="nav-link dropdown-toggle btn btn-secondary  buttonWidth2" id="ddlFilterUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @if (userType == USER_TYPE.Customer)
+                            {
+                                @Html.Raw("Filter By Vendor")
+                            }
+                            else
+                            {
+                                @Html.Raw("Filter By Customer")
+                            }
+                        </a>
+                        <!--Menu-->
+                        <div class="dropdown-menu dropdown" aria-labelledby="ddlFilterUser" >
+
+                            @if (ViewBag.Users != null)
+                            {
+                                foreach (var user in ViewBag.Users)
+                                {
+                                    if (user != null)
+                                    {
+                                        <a href="@Url.Action("GetInvoices", "Home", new { @filter = userType == USER_TYPE.Customer ? INVOICE_FILTERS.Vendor : INVOICE_FILTERS.Customer, @val = @user.Id })" class="dropdown-item">@user.Name</a>
+                                    }
+                                }
+                            }
+                        </div>
+                    </li>*@
+            </ul>
+        </div>
+    </div>
+</nav>
+

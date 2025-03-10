@@ -1,0 +1,108 @@
+﻿@model Omnae.ViewModels.DocumentProdIdViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section head{
+
+    <!--required for fileinput uploader -->
+    <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+}
+
+@section footerInlineScripts{
+    <!--required for fileinput uploader -->
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script>$("#file").fileinput({ browseClass: "btn btn-success" });</script>
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function ConfirmDelete() {
+            alertify.confirm("Do you really want to delete this document?", function (e) {
+                if (e) {
+                    alertify.success("Document is deleted.");
+                    location.reload();
+                }
+                else {
+                    alertify.error("You've clicked cancel");
+                    return false;
+                }
+            });
+            // no return here
+        }
+
+        function showMessage() {
+            //var message = "Thanks for createing a new product with Omnae! Your request is being reviewed by qualified factories. The factories want to be sure they make the rigth thing so they will have many questions. You will be notified by email and SMS when those questions come in. ";
+            var message = "Document upload succeeded. ";
+            alertify.log(message, "info", 0);
+            return true;
+        };
+
+
+    </script>
+}
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h4 class="card-header text-md-center primary-background-color white-text"><i class="fas fa-cloud-upload-alt"></i> Upload Document</h4>
+        <div class="card-block">
+            <div class="offset-md-1 col-md-10 top-margin-30">
+                @if (TempData["AzureException"] != null)
+                {
+                    <p class="red-text small text-xs-center"> @TempData["AzureException"]</p>
+                }
+                @using (Html.BeginForm("UploadProofingDoc", "Documents", FormMethod.Post, new
+                {
+                    id = "uploadform",
+                    data_parsley_validate = "",
+                    enctype = "multipart/form-data"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(x => x.ProductId)
+
+                    <div class="md-form top-margin-30 offset-md-1 col-md-10">
+                        <div class="file-field">
+                            <div class="btn grey-background-color">
+                                <span class="fileupload">Browse</span>
+                                <input type="file" name="uploadedFile" multiple>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload Proofing Document" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md-form offset-md-1 col-md-10">
+                        <div class="md-form text-xs-center">
+                            <button type="submit" class="btn accent-background-color buttonWidth top-margin-50" onclick="showMessage();">Upload</button>
+                        </div>
+                    </div>
+
+                }
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <br />
+                    <p class="text-xs-left shades-text"><i class="fa fa-info-circle fa-2x"></i>  <span class="red-text">@ViewBag.ErrorMessage</span></p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#uploadform').submit(function () {
+            $('#spinner').show();
+        })
+    });
+</script>
+
+
+

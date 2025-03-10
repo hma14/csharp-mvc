@@ -1,0 +1,311 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+
+@using System.Configuration;@TempData["PlaceOrderError"]
+@{
+    ViewBag.Title = "Re-Order";
+}
+
+<style>
+    .hidden {
+        display: none;
+    }
+
+    .dl-horizontal dt {
+        width: 200px !important;
+        margin-right: 5%;
+        text-align: right;
+    }
+</style>
+
+<div class="row my-min-height top-margin-65">
+    <!-- Nav tabs -->
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs tabs-3 indigo" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#productDetails" role="tab">Product Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#placeOrder" role="tab">Place Order</a>
+            </li>
+            @if (@ViewData["PDF"] != null)
+            {
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#poDoc" role="tab">Quote Doc</a>
+            </li>
+            }
+        </ul>
+    </div>
+    <!-- Tab panels -->
+    <div class="tab-content">
+
+        <!--Panel 1-->
+        <div class="tab-pane fade" id="productDetails" role="tabpanel">
+            @Html.Partial("_ProductDetails", Model)
+        </div>
+
+        <!--Panel 2-->
+        <div class="tab-pane fade in show active" id="placeOrder" role="tabpanel">
+            <div class="col-lg-5 offset-lg-1">
+                @{
+                int i = 0;
+                }
+                <div class="card card-cascade">
+                    <h5 class="card-header default-color-dark white-text">Price Breaks</h5>
+                    <div class="card-block">
+                        @if (TempData["PlaceOrderError"] != null)
+                        {
+                        <p class="red-text">@TempData["PlaceOrderError"]</p>
+                        }
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Unit Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pb in Model.PriceBreaks)
+                                {
+
+                                <tr>
+                                    @if (i == 0)
+                                    {
+                                    <td id="moq">@pb.Quantity (MOQ)</td>
+                                    }
+                                    else
+                                    {
+                                    <td>@pb.Quantity</td>
+                                    }
+                                    <td>$@pb.UnitPrice</td>
+                                </tr>
+                                i++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card card-cascade">
+                    <h5 class="card-header rgba-pink-light white-text">Order Quantity</h5>
+                    <div class="card-block">
+                        <br />
+                        @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new
+                        {
+                        id = "reorderform",
+                        data_parsley_validate = "",
+                        enctype = "multipart/form-data"
+                        }))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.Hidden("productId", Model.Product.Id)
+                        @Html.Hidden("taskId", Model.TaskId)
+                        @Html.Hidden("isReorder", Model.IsReorder)
+                        @Html.Hidden("PaymentMethod", Model.PaymentMethod)
+
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Product.PartNumber)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Product.PartNumber)
+                            </dd>
+
+                            @if (Model.CountryId == (int)COUNTRY.CANADA)
+                            {
+                            if (Model.ProvinceId != (int)CANADA_PROVINCES.British_Columbia)
+                            {
+                            <dt>
+                                GST Tax Rate
+                            </dt>
+                            <dd>
+                                @ConfigurationManager.AppSettings["GST"]
+                            </dd>
+                            }
+                            else
+                            {
+                            <dt>
+                                PST Tax Rate
+                            </dt>
+                            <dd>
+                                @ConfigurationManager.AppSettings["PST"]
+                            </dd>
+                            <dt>
+                                GST Tax Rate
+                            </dt>
+                            <dd>
+                                @ConfigurationManager.AppSettings["GST"]
+                            </dd>
+                            }
+                            }
+
+                        </dl>
+                        <div class="md-form" id="result"></div>
+
+                        <div class="md-form">
+                            <div class="offset-md-2 col-md-6">
+                                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "quantity" } })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-2 small">
+                                <a id="calculate" class="btn btn-amber small-button">Calculate</a>
+                            </div>
+
+                        </div>
+                        <br />
+
+                        <div class="md-form file-field pull-sm-left small col-md-12 top-margin-20">
+                            <div class="btn btn-brown small-button col-xs-4">
+                                <span>Choose PO</span>
+                                <input type="file" name="uploadedFile">
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="file-path validate text-xs-center" type="text" placeholder="Upload PO Doc (Optional)" disabled>
+                            </div>
+
+                            <div class="offset-md-2 col-md-6 top-margin-5">
+                                @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control", @id = "quantity" } })
+                                @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" }) (Optional Reference)
+                            </div>
+                            @if (TempData["AzureException"] != null)
+                            {
+                            <p class="red-text"> @TempData["AzureException"]</p>
+                            }
+                        </div>
+
+                        <div class="md-form  text-xs-center offset-md-2 col-md-8 top-margin-5">
+                            @Html.DropDownListFor(model => model.PaymentMethod, ViewBag.PaymentMethods as SelectList, new { @class = "btn btn-primary dropdown-toggle col-md-10" })
+                            @Html.ValidationMessageFor(model => model.PaymentMethod, "", new { @class = "text-danger" })
+                        </div>
+
+                        <br />
+                        <div class="md-form text-xs-center top-margin-20 col-md-12">
+                            <button type="submit" id="submit" class="btn btn-cyan buttonWidth">Order</button>
+                        </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Panel 3-->
+        @if (@ViewData["PDF"] != null)
+        {
+        <div class="tab-pane fade" id="poDoc" role="tabpanel">
+            @Html.Partial("_QuoteDoc")
+        </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+    $(function () {
+
+
+        $("#submit").click(function () {
+            var $moq = $('#moq').text().split(' ')[0];
+            var $quantity = $('#quantity').val();
+
+            if ($('#quantity').val() == '') {
+                //alertify.set({ delay: 10000 });
+                alertify.alert("Quantity is empty");
+                return false;
+            }
+            else if ($('#result').text().indexOf('Quantity you entered is smaller than MOQ') != -1) {
+                alertify.alert("Quantity you entered is smaller than MOQ!");
+                return false;
+            }
+            else if ($('#result').text() == '') {
+                alertify.alert("Click 'Calculate' button first!");
+                return false;
+            }
+            else if ($('#result').text() != '' && parseInt($quantity, 10) < parseInt($moq, 10)) {
+                alertify.alert('Quantity you entered is smaller than MOQ (Minimum Order Quantity) - ' + $moq + '. Please enter a quantity that must be equal or bigger than MOQ!');
+                return false;
+            }
+            else {
+                var message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non ego tecum iam ita iocabor, ut isdem his de rebus, \
+                               cum L. Hic Speusippus, hic Xenocrates, hic eius auditor Polemo, cuius illa ipsa sessio fuit, quam videmus. \
+                               Duo Reges: constructio interrete. Videsne ut, quibus summa est in voluptate, perspicuum sit quid iis faciendum sit aut non faciendum?';
+
+                reset();
+                alertify.confirm(message, function (e) {
+                    if (e) {
+                        alertify.success("You've clicked Agree");
+                        var dataToPost = $("#reorderform").serialize();
+                        var arr = JSON.stringify(dataToPost).split('&');
+                        var url = '//' + window.location.host + '/Orders/Create/';
+                        window.location.href = url + '?' + arr[1] + '&' + arr[8] + '&' + arr[6] + '&' + arr[5] + '&' + arr[7] + '&' + arr[2] + '&' + arr[10].split('"')[0] + '&' + arr[3];
+                    }
+                    else {
+                        alertify.error("You've clicked Disagree");
+                    }
+                });
+
+                return false;
+            };
+        });
+
+        function reset() {
+            $("#toggleCSS").attr("href", "../themes/alertify.default.css");
+            alertify.set({
+                labels: {
+                    ok: "Agree",
+                    cancel: "Disagree"
+                },
+                delay: 5000,
+                buttonReverse: false,
+                buttonFocus: "ok"
+            });
+        };
+
+        $('#calculate').click(function () {
+            var $moq = $('#moq').text().split(' ')[0];
+            var $quantity = $('#quantity').val();
+
+            if ($quantity == '') {
+                alertify.alert('Quantity is empty!');
+                return false;
+            }
+            if (parseInt($quantity, 10) < parseInt($moq, 10)) {
+                alertify.alert('Quantity you entered is smaller than MOQ (Minimum Order Quantity) - ' + $moq + '. Please enter a quantity that must be equal or bigger than MOQ!');
+                return false;
+            }
+
+
+            $.ajax({
+                url: '@Url.Action("Calculate", "Products")',
+                type: 'GET',
+                contentType: 'application/html; charset=utf-8',
+                dataType: "html",
+                async: false,
+                data: { 'Id': @Model.Product.Id, 'Quantity': $quantity, 'isReorder': true
+        },
+            success: function (result) {
+                $('#result').html(result);
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+            });
+
+    return false;
+        });
+    });
+
+
+
+</script>

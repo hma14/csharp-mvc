@@ -1,0 +1,7 @@
+﻿
+Hi @Model.UserName,
+
+Order has been initiated for @Model.PartNumber from Omnae.com. 
+The payment will be made soon.
+Please note: don't start the production yet until the state changes to "(Re)Order Paid".
+Purchase Order #: @Model.PONumber

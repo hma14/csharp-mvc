@@ -1,0 +1,103 @@
+﻿@model Omnae.ViewModels.ContinueRegistrationViewModel
+
+@{
+    ViewBag.Title = "ContinueRegistration";
+}
+
+<style>
+    .dynamic {
+        display: none;
+    }
+</style>
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-registered"></i> Continue Registration</h4>
+        <!--Form without header-->
+        <div class="card-block">
+            <div class="offset-md-1 col-md-10">
+                <div class="col-md-12">
+                    @if (TempData["ErrorMsg"] != null)
+                    {
+                        <div class="red-text">@TempData["ErrorMsg"]</div>
+                    }
+                    <br />
+                    @using (Html.BeginForm("ContinueRegistration", "Home", FormMethod.Post, new
+                    {
+                        id = "ContinueRegistrationform",
+                        enctype = "multipart/form-data",
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="md-form">
+                            <div class="md-form col-md-9">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 no-padding">
+                            <span class="col-md-4 no-padding font-weight-bold grey-text">Upload Company Logo</span>
+                            <div class="upload-border no-padding col-md-8">
+                                @Html.TextBoxFor(model => model.CompanyLogo, new { type = "file", name = "Logo", @id = "Logo", @class = "no-padding" })
+                            </div>
+                        </div>
+                        <div class="col-md-12 top-margin-30"></div>
+                        @Html.Partial("_Address")
+                        <div class="col-md-12">
+                            <div class="md-form col-md-6">
+                                <input type="checkbox" id="IsBilling" name="IsBilling" value="true">
+                                <label class="link" for="IsBilling">This is my Billing Address</label>
+                            </div>
+
+                            <div class="md-form col-md-6">
+                                <input type="checkbox" id="IsShipping" name="IsShipping" value="true">
+                                <label class="link" for="IsShipping">This is my Shipping Address</label>
+                            </div>
+                        </div>
+
+                        @Html.Partial("_BillingAddress", Model)
+
+                        @Html.Partial("_ShippingAddress", Model)
+
+                        <div class="text-xs-center col-md-12">
+                            <button type="submit" class="btn accent-background-color buttonWidth2">Create</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#IsBilling').change(function () {
+            var current = $(this);
+            var checked = current.is(':checked');
+            if (checked) {
+                $('#billAddrId').hide(1000);
+            }
+            else {
+                $('#billAddrId').show(1000);
+            }
+        })
+
+        $('#IsShipping').change(function () {
+            var current = $(this);
+            var checked = current.is(':checked');
+            if (checked) {
+                $('#shipAddrId').hide(1000);
+            }
+            else {
+                $('#shipAddrId').show(1000);
+            }
+        })
+    })
+</script>

@@ -1,0 +1,132 @@
+﻿@model Omnae.ViewModels.ReceivePaymentViewModel
+
+<div id="receivePayment">
+    <h5 class="card-header primary-background-color white-text text-md-center">
+        <i class="far fa-credit-card"></i> Make Payment
+    </h5>
+    <div class="card-block">
+        <div id="list1">
+
+            @if (TempData["MakePaymentError"] != null)
+            {
+                <div class="red-text text-md-center">@TempData["MakePaymentError"]</div>
+            }
+            <h4 class="text-md-center">Open Invoices</h4>
+            <div class="col-md-12 card-header default-color pull-left white-text status-title">
+                @*<span class="col-md-1 no-padding">Product</span>
+                    <span class="col-md-1 no-padding">Part No.</span>
+                    <span class="col-md-1 no-padding">Description</span>*@
+                <span class="col-md-2 no-padding">Company</span>
+                <span class="col-md-1 no-padding">Invoice Date</span>
+                <span class="col-md-1 no-padding">Due Date</span>
+                <span class="col-md-1 no-padding">Qty</span>
+                <span class="col-md-1 no-padding">Unit Price</span>
+                <span class="col-md-2 no-padding">Tooling Chargs</span>
+                <span class="col-md-1 no-padding">Sales Tax</span>
+                <span class="col-md-1 no-padding">Amount</span>
+                <span class="col-md-1 no-padding">Details</span>
+                <span class="col-md-1 no-padding">Action</span>
+            </div>
+
+            @foreach (var invoice in Model.OpenInvoices)
+            {
+
+                <div class="col-md-12 line small">
+                    @*<span class="col-md-1 no-padding">@invoice.ProductName</span>
+                        <span class="col-md-1 no-padding">@invoice.PartNumber</span>
+                        <span class="col-md-1 no-padding">@invoice.ProductDescription</span>*@
+                    <span class="col-md-2 no-padding">@invoice.CompanyName</span>
+                    <span class="col-md-1 no-padding">@invoice.InvoiceDate.ToString("yyyy-MM-dd")</span>
+                    <span class="col-md-1 no-padding">@invoice.DueDate.ToString("yyyy-MM-dd")</span>
+                    <div class="green-text">
+                        <span class="col-md-1 no-padding">@invoice.Quantity</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.UnitPrice)</span>
+                        <span class="col-md-2 no-padding">@string.Format("{0:C}", invoice.ToolingSetupCharges)</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.SalesTax)</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.Amount)</span>
+                    </div>
+                    <span class="col-md-1 no-padding">
+                        @Ajax.ActionLink("View", "InvoiceDetail", "Home", new { @Id = @invoice.Id },
+                                                                                                             new AjaxOptions
+                                                                                                             {
+                                                                                                                 UpdateTargetId = "invoiceDetails",
+                                                                                                                 HttpMethod = "GET",
+                                                                                                                 InsertionMode = InsertionMode.Replace,
+                                                                                                                 OnBegin = "$('#spinner').show();",
+                                                                                                                 OnSuccess = "$('#spinner').hide();"
+                                                                                                             })
+                    </span>
+                    <span class="col-md-1 no-padding">
+                        @Ajax.ActionLink("Make Payment", "MakePayment", "Home", new { @Id = @invoice.Id },
+                                                                                                             new AjaxOptions
+                                                                                                             {
+                                                                                                                 UpdateTargetId = "receivePayment",
+                                                                                                                 HttpMethod = "POST",
+                                                                                                                 InsertionMode = InsertionMode.Replace,
+                                                                                                                 OnBegin = "$('#spinner').show();",
+                                                                                                                 OnSuccess = "$('#spinner').hide();"
+                                                                                                             })
+                    </span>
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+    <div class="card-block">
+        <div id="list1">
+            <h4 class="text-md-center">Closed Invoices</h4>
+            <div class="col-md-12 card-header default-color pull-left white-text status-title">
+                @*<span class="col-md-1 no-padding">Product</span>
+                    <span class="col-md-1 no-padding">Part No.</span>
+                    <span class="col-md-2 no-padding">Description</span>*@
+                <span class="col-md-3 no-padding">Company</span>
+                <span class="col-md-1 no-padding">Invoice Date</span>
+                <span class="col-md-1 no-padding">Due Date</span>
+                <span class="col-md-1 no-padding">Qty</span>
+                <span class="col-md-1 no-padding">Unit Price</span>
+                <span class="col-md-2 no-padding">Tooling Charges</span>
+                <span class="col-md-1 no-padding">Sales Tax</span>
+                <span class="col-md-1 no-padding">Amount</span>
+                <span class="col-md-1 no-padding">Details</span>
+            </div>
+
+            @foreach (var invoice in Model.ClosedInvoices)
+            {
+
+                <div class="col-md-12 line small">
+                    @*<span class="col-md-1 no-padding">@invoice.ProductName</span>
+                        <span class="col-md-1 no-padding">@invoice.PartNumber</span>
+                        <span class="col-md-2 no-padding">@invoice.ProductDescription</span>*@
+                    <span class="col-md-3 no-padding">@invoice.CompanyName</span>
+                    <span class="col-md-1 no-padding">@invoice.InvoiceDate.ToString("yyyy-MM-dd")</span>
+                    <span class="col-md-1 no-padding">@invoice.DueDate.ToString("yyyy-MM-dd")</span>
+                    <div class="green-text">
+                        <span class="col-md-1 no-padding">@invoice.Quantity</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.UnitPrice)</span>
+                        <span class="col-md-2 no-padding">@string.Format("{0:C}", invoice.ToolingSetupCharges)</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.SalesTax)</span>
+                        <span class="col-md-1 no-padding">@string.Format("{0:C}", invoice.Amount)</span>
+                    </div>
+                    <span class="col-md-1 no-padding">
+                        @Ajax.ActionLink("View", "InvoiceDetail", "Home", new { @Id = @invoice.Id },
+                                                                                                                new AjaxOptions
+                                                                                                                {
+                                                                                                                    UpdateTargetId = "invoiceDetails",
+                                                                                                                    HttpMethod = "GET",
+                                                                                                                    InsertionMode = InsertionMode.Replace,
+                                                                                                                    OnBegin = "$('#spinner').show();",
+                                                                                                                    OnSuccess = "$('#spinner').hide();"
+                                                                                                                })
+                    </span>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="card-block">
+        <div class="top-margin-20" id="invoiceDetails"></div>
+    </div>
+</div>

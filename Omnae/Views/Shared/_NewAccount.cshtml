@@ -1,0 +1,26 @@
+﻿<style>
+    .text {
+        font-size:1.3em; font-weight:600;
+    }
+</style>
+
+<div class="container-fluid top-margin-30 grey-text">
+    <div class="offset-md-4 col-md-5">
+        <div class="card">
+            <div class="card-block">
+                <div class="col-lg-4 offset-lg-4 top-margin-30">                  
+                    <img src="~/Images/omnae transperency logo may rev.png" height="200"/>
+                </div>
+                <div class="col-lg-offset-1 col-md-10 top-margin-50">
+                    <h2 class="text-lg-center">Welcome to the Dashboard</h2>
+                    <p class="top-margin-30 text">This is where you can access and track all of your parts as they are developed.</p>
+
+                    <p class="top-margin-65 text">Let's get started and make your first RFQ.</p>
+                </div>
+                <div class="col-lg-12 top-margin-10 text-lg-center">
+                    @Html.ActionLink("Create New Part", "Create", "Products", null, new { @class = "btn accent-background-color buttonWidth2" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

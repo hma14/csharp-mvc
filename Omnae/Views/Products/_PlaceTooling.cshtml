@@ -1,0 +1,133 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+@using Omnae.Common
+@using System.Configuration;
+
+
+<div class="card-block">
+
+    @using (Html.BeginForm("Create", "Orders", FormMethod.Post, new
+    {
+        id = "PlaceTooling",
+        data_parsley_validate = "",
+        enctype = "multipart/form-data",
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("productId", Model.Product.Id)
+        @Html.Hidden("taskId", Model.TaskId)
+        @Html.Hidden("isReorder", Model.IsReorder)
+        @Html.Hidden("IsForOrderTooling", Model.IsForOrderTooling)
+        @Html.Hidden("ToolingCharges", Model.ToolingCharges)
+        @Html.Hidden("Total", Model.Total)
+        @Html.HiddenFor(m => m.isEnterprise)
+        @Html.HiddenFor(Model => Model.NumberSampleIncluded)
+        @Html.HiddenFor(m => m.OrderCompanyId)
+
+        <dl class="dl-horizontal  col-md-12">
+            <dt>
+                @Html.DisplayNameFor(model => model.Product.PartNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Product.PartNumber)
+            </dd>
+        </dl>
+
+        <div class="col-md-12 top-margin-30 no-padding">
+            <span class="col-md-3 font-weight-bold">Upload PO Doc</span>
+            @* @Html.LabelFor(model => model.PurchaseOrder, "Upload PO Doc", new { @class = "control-label col-md-2" } )*@
+            @Html.TextBoxFor(model => model.PurchaseOrder, new { type = "file", name = "PurchaseOrder", placeholder = "Upload PO Doc", @id = "PurchaseOrder", @class = "fileupload no-padding col-md-9 file-path validate small grey-text" })
+            @Html.ValidationMessageFor(model => model.PurchaseOrder, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-12 top-margin-30">
+            <div class="md-form col-md-6">
+                @Html.LabelFor(model => model.PONumber, new { htmlAttributes = new { @class = "control-label" } })
+                @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control", @name = "PONumber" } })
+                @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="md-form col-md-6">
+                @Html.LabelFor(model => model.Buyer, new { htmlAttributes = new { @class = "control-label" } })
+                @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "form-control", @name = "Buyer" } })
+                @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="top-margin-10">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.DesireShippingDate, new { @class = "control-label" })
+                @Html.EditorFor(model => model.DesireShippingDate, new { htmlAttributes = new { @id = "DesireShippingDate", @class = "form-control", @name = "DesireShippingDate" } })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.EarliestShippingDate, new { @class = "control-label" })
+                @Html.EditorFor(model => model.EarliestShippingDate, new { htmlAttributes = new { @id = "EarliestShippingDate", @class = "form-control", @name = "EarliestShippingDate" } })
+            </div>
+        </div>
+        if (TempData["AzureException"] != null)
+        {
+            <p class="red-text"> @TempData["AzureException"]</p>
+        }
+
+        <div class="col-md-6 top-margin-20">
+            <div class="md-form">
+                @Html.DropDownListFor(model => model.PaymentMethod, Model.PaymentMethods, new { @class = "btn grey-background-color dropdown-toggle col-md-11 ropdown-header" })
+            </div>
+        </div>
+        if (Model.isEnterprise)
+        {
+            <div class="col-md-6 top-margin-20">
+                <div class="md-form">
+                    @Html.DropDownListFor(model => model.ShippingAccountId, Model.ShippingAccountDDL, " Shipment Via ", new { @class = "btn grey-background-color dropdown-toggle col-md-11 ropdown-header" })
+                </div>
+            </div>
+        }
+
+        <div class="md-form text-xs-center col-md-12 top-margin-20">
+            <button type="submit" name="submitButton" id="btn-submit" class="btn accent-background-color buttonWidth2">Place Order</button>
+        </div>
+
+    }
+</div>
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#DesireShippingDate').datepicker();
+        $('#EarliestShippingDate').datepicker();
+
+        var selectPaymentMethod = false;
+        $('#PlaceTooling').submit(function (event) {
+            event.preventDefault();
+            $('#spinner').show();
+
+            var buyer = $('#Buyer').val();
+            var paymethod = $('#PaymentMethod option:selected').val();
+
+            if ($('#PurchaseOrder').val() == '' || $('#PONumber').val() == '') {
+                alertify.error("PO Doc and PO Number are required");
+                return false;
+            }
+            else if (buyer == '') {
+                alertify.error("Buyer are required");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if ($('#DesireShippingDate').val() == '' || $('#EarliestShippingDate').val() == '') {
+                alertify.error("Desire Shipping Date and Earliest Shipping Date are required");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (paymethod == 0) {
+                alertify.error("Please select a Payment Method");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+                $('#PlaceTooling').unbind('submit').submit();
+                this.submitButton.disabled = true;
+                return true;
+            }
+        });
+
+    })
+
+</script>

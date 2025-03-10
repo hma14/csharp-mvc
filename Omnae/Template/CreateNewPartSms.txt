@@ -1,0 +1,6 @@
+﻿
+Hi @Model.UserName
+
+Thanks for creating a new part on Omnae.com!
+Your part, @Model.PartNumber is being reviewed by our team and select qualified manufacturers. Please allow us 1 business day to get back to you with feedback. 
+You can view your part’s progress in the Alerts section of your Omnae Dashboard.

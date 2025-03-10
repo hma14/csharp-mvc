@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+This is to notify you that a request revision for the part, @Model.PartNumber is pending.

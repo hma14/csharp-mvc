@@ -1,0 +1,7 @@
+﻿
+Hi @Model.UserName,
+
+This is to confirm the order of @Model.PartNumber from Omnae.com
+Quantity @Model.Quantity
+Lead Time @Model.ProductionLeadTime (business days)
+

@@ -1,0 +1,83 @@
+﻿@model Omnae.QuickBooks.ViewModels.BillViewModel
+
+<div class="col-xs-12 top-margin-30">
+
+
+
+    @if (Model != null)
+    {
+
+        <h2 class="col-xs-12 green-text top-margin-20">Bill #: @Model.BillNumber</h2>
+
+
+        <div class="col-xs-12 top-margin-20">
+
+            <div class="card-header default-color white-text status-title top-margin-30">
+                <span class="col-xs-2  no-padding">Part Name</span>
+                <span class="col-xs-2 no-padding">Part No.</span>
+                <span class="col-xs-2 no-padding">Revision</span>
+                <span class="col-xs-2 no-padding">Description</span>
+                <span class="col-xs-2 no-padding">Quantity</span>
+                <span class="col-xs-2 no-padding">Unit Price</span>
+            </div>
+            @if (Model.Quantity > 0 && Model.UnitPrice > 0)
+            {
+                <div class="col-xs-12 line">
+                    <span class="col-xs-2">@Model.ProductName</span>
+                    <span class="col-xs-2">@Model.PartNumber</span>
+                    <span class="col-xs-2">@Model.PartRevision</span>
+                    <span class="col-xs-2">@Model.ProductDescription</span>
+                    <span class="col-xs-2 green-text">@Model.Quantity</span>
+                    <span class="col-xs-2 green-text">@($"{Model.UnitPrice:C3}")</span>
+                </div>
+            }
+            @if (Model.ToolingCharges > 0)
+            {
+                <div class="col-xs-12 line">
+                    <span class="col-xs-2">@Model.ProductName</span>
+                    <span class="col-xs-2">@Model.PartNumber</span>
+                    <span class="col-xs-2">@Model.PartRevision</span>
+                    <span class="col-xs-2">Tooling Charges</span>
+                    <span class="col-xs-2 green-text">1</span>
+                    <span class="col-xs-2 green-text">@($"{Model.ToolingCharges:C3}")</span>
+                </div>
+            }
+            <div class="col-xs-12 line">
+                <div class="col-xs-8">
+                    <span class="pull-right">SUB TOTAL</span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-6 pull-right green-text">
+                        @($"{Model.Total:C}")
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-12 line">
+                <div class="col-xs-8">
+                    <span class="pull-right">SALES TAX</span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-6 pull-right green-text">                        
+                        @($"{Model.SalesTax:C}")
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-12 line">
+                <div class="col-xs-8">
+                    <span class="pull-right">TOTAL</span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-6 pull-right green-text">
+                        @($"{(Model.Total + Model.SalesTax):C}")
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-12 top-margin-30 red-text">
+            <h4 class="text-lg-center">Provided parameter is empty!</h4>
+        </div>
+    }
+</div>

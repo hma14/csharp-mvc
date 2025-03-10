@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+This is to notify that the bid deadline for @Model.PartNumber is passed. 

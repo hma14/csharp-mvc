@@ -1,0 +1,6 @@
+﻿
+Hi @Model.UserName,
+
+We have made payment for @Model.PartNumber from Omnae.com. 
+Please confirm the receival of the payment.
+Purchase Order #: @Model.PONumber

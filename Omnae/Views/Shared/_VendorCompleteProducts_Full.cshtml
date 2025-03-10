@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+
+<style>
+    #grid4, .listview4, #action-indicator4 {
+        display: none;
+    }
+</style>
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-9">Completed Products</h4>
+
+        <a id="action-indicator4" class="col-md-1 red-text" title="There are new action event need your attention, click show to find out!">
+            <i class="fas fa-exclamation-triangle"></i>
+        </a>
+        <div class="col-md-2  small-button" style="float:right; width:150px;">
+            <a class="col-md-6 switcher small-button listview4 green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a class="col-md-6 switcher small-button gridview4 pink-text"><i class="fas fa-th fa-2x"></i></a>
+
+        </div>
+        <br />
+        <hr class="gradient" />
+    </div>
+
+
+    @if (Model != null && Model.Count() > 0)
+    {
+
+        <div id="grid4" class="card-block">
+
+            @foreach (var tdvm in @Model)
+            {
+                @Html.Partial("_VendorLandingGridView", tdvm)
+            }
+        </div>
+
+        <div id="list4" class="card-block">
+            <div class="col-md-12">
+
+                @Html.Partial("_DashboardVendorRowColumnNames")
+                @foreach (var tdvm in @Model)
+                {
+                    @Html.Partial("_VendorLandingListView", @tdvm)
+                }
+            </div>
+        </div>
+        foreach (var tdvm in @Model)
+        {
+            <div class="modal" id='Modal@(tdvm.TaskData.TaskId)' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+        }
+
+    }
+
+</div>
+

@@ -1,0 +1,53 @@
+﻿@model Omnae.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+
+<div class="card-block" style="min-height:535px;">
+
+    <h3 class="card-title text-xs-center"><i class="fa fa-sign-in"></i> Login</h3>
+    <hr />
+    <h4>Use social account:</h4>
+    @{
+        var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+        if (loginProviders.Count() == 0)
+        {
+            <div>
+                <p class="card-text">
+                    There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support logging in via external services.
+                </p>
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm("ExternalLogin", "Account", new { id = "externalLoginForm", ReturnUrl = Model.ReturnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                <div id="socialLoginList">
+                    <ul class="nav navbar-nav nav-flex-icons text-xs-center">
+                        @foreach (AuthenticationDescription p in loginProviders)
+                        {
+                            <li class="nav-item">
+                                @if (p.Caption.ToLower() == "facebook")
+                                {
+                                    <button type="submit" class="btn-floating btn-large btn-fb" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-facebook"></i></button>
+                                }
+                                else if (p.Caption.ToLower() == "google")
+                                {
+
+                                    <button type="submit" class="btn-floating btn-large btn-gplus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-google-plus"></i></button>
+
+                                }
+                                else if (p.Caption.ToLower() == "twitter")
+                                {
+                                    <button type="submit" class="btn-floating btn-large btn-tw" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-twitter"></i></button>
+                                }
+
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            }
+        }
+    }
+</div>

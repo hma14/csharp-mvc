@@ -1,0 +1,57 @@
+﻿@model Omnae.Model.Models.Aspnet.SimplifiedUser
+
+@{
+    ViewBag.Title = "User Detail";
+}
+
+<div class="container-fluid top-margin-30">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h4 class="card-header">
+                @ViewBag.Title
+                <small class="float-sm-right">@Html.ActionLink("Back to List", "Index", new { @class = "btn btn-light" })</small>
+            </h4>
+            <div class="card-block">
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Email)<dt>
+                    <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.FirstName)</dt>
+                    <dd>@Html.DisplayFor(model => model.FirstName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.MiddleName)</dt>
+                    <dd>@Html.DisplayFor(model => model.MiddleName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.LastName)</dt>
+                    <dd>@Html.DisplayFor(model => model.LastName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.UserType)</dt>
+                    <dd>@Html.DisplayFor(model => model.UserType)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Active)</dt>
+                    <dd><span>@Model.Active.ToString()</span></dd>
+                </dl>
+            </div>
+
+            <div class="text-xs-center top-margin-30">
+                @Html.ActionLink("Edit User", "Edit", new { id = Model.Id }, new { @class = "btn accent-background-color" })
+                @Html.ActionLink("Resend Confirmation E-mail", "ResendConfirmation", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
+                @if (Model.Active == true)
+                {
+                    @Html.ActionLink("Deactivate User", "Deactivate", new { id = Model.Id }, new { @class = "btn btn-warning" })
+                }
+                else
+                {
+                    @Html.ActionLink("Activate User", "Activate", new { id = Model.Id }, new { @class = "btn btn-warning" })
+                }
+
+                @Html.ActionLink("Reset User Password", "ResetPassword", new { id = Model.Id }, new { @class = "btn btn-warning" })
+            </div>
+        </div>
+    </div>
+</div>
+

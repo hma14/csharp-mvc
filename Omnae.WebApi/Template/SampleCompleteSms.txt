@@ -1,0 +1,8 @@
+﻿
+Hi @Model.UserName,
+
+Samples are complete for @Model.PartNumber from Omnae.com. 
+Your assigned factory has shipped samples for you to review.
+Purchase Order #: @Model.PONumber
+Carrier @Model.Carrier
+Tracking No @Model.TrackingNumber

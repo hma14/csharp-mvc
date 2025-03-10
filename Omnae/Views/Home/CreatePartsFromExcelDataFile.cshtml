@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "CreatePartsFromExcelDataFile";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center">Create Parts from Excel Data File</h5>
+
+        <div class="card-block">
+            <div class="top-margin-30 offset-md-1 col-md-10">
+                @using (Html.BeginForm("CreatePartsFromExcelDataFile", "Home", FormMethod.Post, new
+                {
+                    id = "fileform",
+                    data_parsley_validate = "",
+                    enctype = "multipart/form-data",
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="md-form text-md-center">
+                        @Html.DropDownList("Id", ViewBag.Companies as SelectList, "-- Select Company --", new { @id = "companyId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                    </div>
+
+                    <div class="md-form file-field" style="top:50px;">
+                        <div class="btn grey-background-color col-md-2 tn-sm">
+                            <span class="fileupload">Browse</span>
+                            <input class="small-button" type="file" name="uploadedFile" id="fileName">
+                        </div>
+                        <div class="md-form col-md-10">
+                            <input class="file-path validate text-xs-center" type="text" placeholder="Choose Excel Data File" disabled>
+                        </div>
+                    </div>
+                    <div class="md-form text-xs-center">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth2  top-margin-100">Submit</button>
+                    </div>
+
+                }
+
+                @if (TempData["ExcelDataFile"] != null)
+                {
+                    string filePath = TempData["ExcelDataFile"] as String;
+                    <a href="@filePath">Download Input Excel Data File</a>
+                }
+
+                <div class="card-block top-margin-10 col-md-12">
+                    @if (TempData["Result"] != null)
+                    {
+                        <div class="green-text text-md-center">@TempData["Result"].ToString()</div>
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#fileform').submit(function () {
+            var companyId = $('#companyId option:selected').val();
+            var fileName = $('#fileName').val();
+            $('#spinner').show();
+
+            if (companyId == 0) {
+                alertify.error("You must select a company");
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else if (fileName == '') {
+                alertify.error("Choose an Excel data file ");
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else {
+                this.submitButton.disabled = true;
+                return true;
+            }
+        })
+    });
+</script>

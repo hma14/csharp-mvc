@@ -1,0 +1,82 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<style>
+    .myddl {
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="col-md-12 top-margin-20">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.CountryCode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.Postalcode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.CountryCode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.Postalcode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.PaymentAccountNumber)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.PaymentCountryCode)
+
+
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Package Details</legend>
+        @*<div class="md-form col-md-4  top-margin-40 myddl">
+                @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.PaymentCountryCode, new { @class = "form-control" })
+            </div>*@
+        <div class="md-form col-md-6 top-margin-40 myddl">
+            @Html.DropDownListFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.DimensionUnit,
+                                  Model.RFQVM.ShippingQuoteVM.BkgDetails.DdlDimensionUnit as SelectList, new { @id="dimentionUnit", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.DimensionUnit, "", new { @class = "text-danger" })
+        </div>
+        <div class="md-form col-md-6 top-margin-40 myddl">
+            @Html.DropDownListFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.WeightUnit,
+                                  Model.RFQVM.ShippingQuoteVM.BkgDetails.DdlWeightUnit as SelectList, new { @id="weightUnit", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.WeightUnit, "", new { @class = "text-danger" })
+        </div>
+
+        @*<div class="md-form col-md-3 top-margin-40">
+                @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, "", new { @class = "text-danger" })
+            </div>*@
+
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Pieces</legend>
+            <div id="Pieces">
+                @Html.Partial("_ShippingAddPiece", Model)
+            </div>
+
+
+        </fieldset>
+    </fieldset>
+
+</div>
+
+<script>
+
+    $(function () {
+
+        $('#dimentionUnit').click(function() {
+            var selectedUnit = $('#dimentionUnit option:selected').val();
+            if (selectedUnit === 'CM') {
+                $('#weightUnit').val('KG');
+            } else if (selectedUnit === 'IN') {
+                $('#weightUnit').val('LB');
+            }
+        });
+
+        $('#weightUnit').click(function() {
+            var selectedUnit = $('#weightUnit option:selected').val();
+            if (selectedUnit === 'KG') {
+                $('#dimentionUnit').val('CM');
+            } else if (selectedUnit === 'LB') {
+                $('#dimentionUnit').val('IN');
+            }
+        });
+
+   });
+
+</script>

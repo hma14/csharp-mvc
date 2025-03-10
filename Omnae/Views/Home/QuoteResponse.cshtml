@@ -1,0 +1,103 @@
+﻿@model Omnae.ShippingAPI.DHL.Models.ResponseQuote
+
+@{
+    ViewBag.Title = "QuoteResponse";
+}
+<style>
+    .dl-horizontal dt {
+        width: 50%;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .dl-horizontal dd {
+        width: 100%;
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+    }
+
+        .dl-horizontal dd span {
+            margin-left: 200px !important;
+            text-align: left;
+        }
+</style>
+
+<div class="container-fluid top-margin-30 offset-lg-1 col-md-10">
+    <div class="card">
+        <h4 class="primary-background-color white-text grid-min-height text-md-center"  style="padding-top:20px;">DHL Shipping Quote Response</h4>
+        <div class="card-block">
+
+
+            @{ int i = 0; int j = 0;}
+            <div class="card-block">
+                <h4 class="card-title text-md-center">Quote Info</h4>
+                <br />
+                @if (@Model.BkgDetails.QtdShps != null && @Model.BkgDetails.QtdShps.Any())
+                {
+                    foreach (var qtdShp in @Model.BkgDetails.QtdShps)
+                    {
+                        if (qtdShp.LocalProductName.Equals("MEDICAL EXPRESS") || qtdShp.LocalProductName.Equals("EXPRESS EASY NONDOC"))
+                        {
+                            continue;
+                        }
+
+
+                        i++;
+                        <div class="col-md-6">
+                            @*<div class="card-title">No. @i</div>*@
+
+                            <dl class="dl-horizontal">
+                                <dt>Product Name</dt>
+                                <dd class="red-text bold">@qtdShp.LocalProductName</dd>
+                                <dt>Delivery Date</dt>
+                                <dd>@qtdShp.DeliveryDate</dd>
+                                <dt>Days to Take for Delivery</dt>
+                                <dd>@qtdShp.TotalTransitDays</dd>
+                                <dt>Shipping Charge</dt>
+                                <dd>@string.Format("{0:C}", @qtdShp.ShippingCharge)</dd>
+
+                            </dl>
+                            <hr />
+
+                        </div>
+                    }
+                }
+            </div>
+            @*<div class="card-block">
+                <h4 class="card-title text-md-center">Services</h4>
+                @foreach (var srv in Model.Srvs)
+                {
+                    j++;
+                    <div class="card-title">No. @j</div>
+                    <dl class="dl-horizontal">
+                        <dt>Global Product Code</dt>
+                        <dd>
+                            @srv.GlobalProductCode
+                        </dd>
+                        @foreach (var mrkSrv in @srv.MrkSrvs)
+                        {
+                            if (mrkSrv.LocalProductCode != null)
+                            {
+                                <dt>Local Product Code</dt>
+                                <dd>@mrkSrv.LocalProductCode</dd>
+                                    <dt>Product Short Name</dt>
+                                    <dd>@mrkSrv.ProductShortName</dd>
+                                    <dt>Local Product Name</dt>
+                                    <dd>@mrkSrv.LocalProductName</dd>
+                                    <dt>Network Type Code</dt>
+                                    <dd>@mrkSrv.NetworkTypeCode</dd>
+                                    <dt>POffered Customer Agreement</dt>
+                                    <dd>@mrkSrv.POfferedCustAgreement</dd>
+                                    <dt>TransInd</dt>
+                                    <dd>@mrkSrv.TransInd</dd>
+                            }
+                        }
+                    </dl>
+                }
+            </div>*@
+
+        </div>
+    </div>
+
+</div>

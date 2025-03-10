@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using Omnae.Common
+@using System.Configuration
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+<style>
+    div#grid4, .listview4 {
+        display: none;
+    }
+
+    .productInfo dt {
+        width: 200px !important;
+    }
+
+    .productInfo dd {
+        text-decoration: none !important;
+    }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    int i = 1;
+    int maxIcons = Convert.ToInt16(ConfigurationManager.AppSettings["MaxIconsInGrid"]);
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+
+    <div id="grid4" class="card-block">
+
+        @foreach (var tdvm in @Model)
+        {
+            var td = tdvm.TaskData;
+            var order = tdvm.Order;
+            //var productUnitPrice = td.Product?.PriceBreak?.UnitPrice;
+            var productUnitPrice = order?.UnitPrice ?? order?.SalesPrice;
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="primary-background-color white-text grid-min-height" style="padding-top:8px;">
+                        @if (td.Product != null)
+                        {
+                            <div class="col-md-7">
+                                <span class="margin-off my-h5">
+                                    @td.Product.PartNumber
+                                    @td.Product.PartNumberRevision
+                                    <br />
+                                    @td.Product.Name
+                                    @if (@td.IsRiskBuild == true)
+                                    {
+                                        <span class="yellow-text" style="font-size:1.2em;" title="Risk Build">*</span>
+                                    }
+                                </span>
+                            </div>
+                        }
+                        <span class="col-md-3 white-text  no-padding">
+                            @if (@td.StateId == (int)States.ProductionComplete)
+                            {
+                                @Html.Raw("Ready to Order")
+                            }
+
+                        </span>
+                        <span class="col-md-1 pull-right no-padding my-margin">
+                            @Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@td.StateId))
+                        </span>
+                    </div>
+                    @*<a href="~/Products/ReOrder/@td.TaskId" class="wrapper" title="Click to re-order">*@
+                    <div class="wrapper">
+                        <div class="card-image card-image-min-height">
+
+                            <!--Card image-->
+
+                            @Html.Partial("_CardImage", td)
+
+                        </div>
+
+                        <div class="card-block my-card-text card-image-min-height">
+
+                            <!--Card text-->
+
+                            <dl class="productInfo dl-horizontal">
+                                <dt>
+                                    State
+                                </dt>
+                                <dd class="green-text font-weight-bold">
+                                    @tdvm.EnumName
+                                </dd>
+
+
+
+                                @if (order != null)
+                                {
+
+                                    <dt>Order Date</dt>
+                                    <dd>@order.OrderDate.ToString("yyyy-MM-dd")</dd>
+                                    <dt>
+                                        Order Qty
+                                    </dt>
+                                    <dd>
+                                        @order.Quantity
+                                    </dd>
+                                    if (@order.DesireShippingDate != null)
+                                    {
+                                        <dt>Desired Delivery Date</dt>
+                                        <dd>@order.DesireShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                    }
+                                    if (@order.EarliestShippingDate != null)
+                                    {
+                                        <dt>Earliest Ship Date</dt>
+                                        <dd>@order.EarliestShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                    }
+                                    if (order.EstimateCompletionDate != null)
+                                    {
+                                        <dt>
+                                            Est. Completion Date
+                                        </dt>
+                                        <dd>
+                                            @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                                        </dd>
+                                    }
+                                    if (order.CustomerPONumber != null)
+                                    {
+                                        <dt>
+                                            PO #
+                                        </dt>
+                                        <dd class="green-text">
+                                            @order.CustomerPONumber
+                                        </dd>
+                                    }
+                                }
+
+
+                                @if (@td.StateId >= (int)States.ProductionStarted && @td.StateId != (int)States.ProductionComplete)
+                                {
+
+                                    @Html.Partial("_NextStates", @tdvm)
+                                }
+                                else
+                                {
+                                    if (productUnitPrice != null)
+                                    {
+                                        <dt>Pricing</dt>
+                                        <dd>@string.Format("{0:C}", @productUnitPrice)</dd>
+                                    }
+                                    <dt>Leading time</dt>
+                                    <dd>@td.Product.ProductionLeadTime (Business Days)</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="card-data primary-background-color text-md-center">
+                        <span class="col-md-10  white-text padding-off">
+                            @if (order == null)
+                            {
+                                <a class="col-md-10 white-text text-md-center" href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+                            }
+                            else
+                            {
+                                <a class="col-md-10 white-text text-md-center" href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+                            }
+                        </span>
+
+                        @Html.AntiForgeryToken()
+                        @if (@td.isTagged == true)
+                        {
+                            <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                        }
+                        else
+                        {
+                            <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            if (i == maxIcons)
+            {
+                break;
+            }
+            i++;
+        }
+
+        @if (Model.Count() > maxIcons)
+        {
+            <a class="font-weight-bold text-lg-center" href="@Url.Action("RedirectToFullView", "Home", new { @num = 4})"><h5 class="col-md-12">...More</h5></a>
+        }
+    </div>
+
+    <div id="list4" class="card-block">
+        <div class="col-md-12">
+            @Html.Partial("_DashboardRowColumnNames")
+            @foreach (var td in @Model)
+            {
+                @Html.Partial("_CustomerLandingListView", @td)
+            }
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+
+
+        $('.wrapper').mouseenter(
+
+            function () {
+                alert('enter');
+                $(this).find(".card-image").hide();
+                $(this).find(".my-card-text").show();
+            },
+            function () {
+                $(this).find(".card-image").hide();
+                $(this).find(".my-card-text").show();
+            }
+        );
+
+        $('.wrapper').mouseleave(
+            function () {
+                alert('leave');
+                $(this).find(".my-card-text").hide();
+                $(this).find(".card-image").show();
+            },
+            function () {
+                $(this).find(".my-card-text").hide();
+                $(this).find(".card-image").show();
+            }
+        );
+    });
+</script>

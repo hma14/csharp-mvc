@@ -1,0 +1,73 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+
+
+<div class="offset-md-1 col-md-10 top-margin-20">
+    <div class="col-md-12 top-margin-20">
+        <h5 class="col-md-6 top-margin-20">Quantity</h5>
+        <h5 class="col-md-6 top-margin-20">Price Per Unit ($)</h5>
+        @for (int i = 0; i < Model.RFQVM.PriceBreakVM.PriceBreakList.Count; i++)
+        {
+            @Html.HiddenFor(d => Model.RFQVM.PriceBreakVM.PriceBreakList[i].ProductId)
+            @Html.HiddenFor(d => Model.RFQVM.PriceBreakVM.PriceBreakList[i].Quantity)
+
+            <div class="col-md-6 top-margin-20">
+                @Html.EditorFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].Quantity, new { htmlAttributes = new { @class = "form-control no-margin", @readonly = true } })
+            </div>
+            <div class="col-md-6 top-margin-20">
+                @if (Model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice != null)
+                {
+                    @Html.HiddenFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice)
+                    @Html.EditorFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice, new { htmlAttributes = new { @class = "form-control no-margin" } })
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice, new { htmlAttributes = new { @class = "form-control no-margin" } })
+                    @Html.ValidationMessageFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice, "", new { @class = "text-danger" })
+                }
+            </div>
+
+
+            @*<a class="col-md-6 top-margin-20 xeditable" style="vertical-align:top;line-height:3.1rem;" data-pk="@Model.RFQVM.PriceBreakVM.PriceBreakList[i].Id" data-name="UnitPrice" data-value="@Model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice">
+                    @Html.EditorFor(model => model.RFQVM.PriceBreakVM.PriceBreakList[i].UnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+                </a>*@
+        }
+    </div>
+</div>
+
+
+@*<script type="text/javascript">
+
+        $('.del').click(function () {
+
+            var $id = $(this).data('id');
+
+            $.ajax({
+                url: '@Url.Action("DeletePriceBreak", "Products")',
+                type: 'POST',
+                data: { id: $id },
+                success: function(result)
+                {
+                    $('#setuppricebreak').html(result);
+
+                }
+            })
+        });
+
+
+        $.fn.editable.defaults.mode = 'inline';
+        $('.xeditable').editable({
+            type: 'text',
+            url: "@Url.Action("ModifyPriceBreak", "Products")",
+            savenochange: true,
+            success: function (response, newValue) {
+                $(this).val(newValue);
+                //$('.form-control').val('');
+                //window.location.reload();
+            },
+            error: function (response, newValue) {
+                alert("Error " + response);
+            }
+        });
+
+    </script>*@

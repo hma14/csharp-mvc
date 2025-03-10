@@ -1,0 +1,315 @@
+﻿
+@model Omnae.BusinessLayer.Models.StateTrackingViewModel
+
+
+<style>
+    .dl-horizontal dt {
+        text-align: left;
+    }
+
+    #build dt {
+        width: 30%;
+    }
+
+    #build dd {
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    p {
+        margin-bottom: 0px !important;
+    }
+
+
+
+    .stateHistory {
+        display: none;
+    }
+</style>
+
+@{
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+}
+
+<div class="col-md-12 top-margin-30">
+    <div>
+        <div class="col-md-4">
+            <!-- Nav tabs -->
+            @Html.Partial("_OrderNavigation", Model)
+        </div>
+        <div class="col-md-8">
+            <div class="col-md-8 no-padding">
+                <h4 class="col-md-11" style="text-align:right;">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(States), @Model.StateId))</h4>
+                <span class="col-md-1 green-text pull-right">
+                    @Html.Raw(@Utils.GetStateIconUrl(stateIconMapping, (States)@Model.StateId))
+                </span>
+            </div>
+            <a href="@Url.Action("Contact", "Home")" class="btn accent-background-color col-md-3 pull-right">Contact Correspondent</a>
+
+        </div>
+    </div>
+    <div class="col-lg-6 top-margin-20">
+        <div class="card">
+            <div class="card-block orderdetail-min-height">
+                @{ var ext = Path.GetExtension(@Model.Product.AvatarUri).ToUpper(); }
+                @if (Model.Product.AvatarUri != null && (ext == ".GIF" || ext == ".JPEG" || ext == ".JPG" || ext == ".PNG"))
+                {
+                    <div class="view overlay hm-white-slight card-image-min-height col-md-5">
+                        <img src=@Model.Product.AvatarUri class="img-fluid center-block" title="@Model.Product.Name">
+                    </div>
+                }
+                <div class="col-md-7" style="min-height:117px;">
+                    <h4 class="col-md-10">@Model.Product.Name</h4>
+
+
+                    @Html.AntiForgeryToken()
+                    @if (Model.IsTagged == true)
+                    {
+                        <a class="col-md-2 my-tag green-text" data-id1="@Model.TaskId" style="text-align:right;"><i class="fas fa-tag"></i></a>
+                    }
+                    else
+                    {
+                        <a class="col-md-2 my-tag" data-id1="@Model.TaskId" style="text-align:right;"><i class="fas fa-tag"></i></a>
+                    }
+
+                    <h4 class="col-md-12">@Model.Product.PartNumber</h4>
+                    <h4 class="col-md-12">@Model.Product.PartNumberRevision</h4>
+                    <p class="col-md-12">@Model.Product.Description</p>
+                    @if (Model.StateId >= States.ProductionStarted || Model.StateId == States.ReOrderPaid)
+                    {
+                        <a class="col-md-12" href="~/Products/ReOrder/@Model.TaskId">RE-ORDER</a>
+                    }
+                    else if (Model.StateId >= States.QuoteAccepted && (Model.StateId < States.OrderPaid || Model.StateId >= States.SampleApproved))
+                    {
+                        <a class="col-md-12" href="~/Products/PlaceOrder/@Model.TaskId">PLACE ORDER</a>
+                    }
+
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <h4>Source File</h4>
+                        <ul class="small">
+                            @foreach (var doc in Model.Product.Documents)
+                            {
+                                if (doc.DocType == (int)DOCUMENT_TYPE.QUOTE_PDF)
+                                {
+                                    continue;
+                                }
+                                if (doc.DocType == (int)DOCUMENT_TYPE.QBO_PURCHASEORDER_PDF && Model.UserType == USER_TYPE.Customer && Model.isEnterprise == false)
+                                {
+                                    continue;
+                                }
+                                <li style="word-break:break-all;">
+                                    <a href="@doc.DocUri">@doc.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Build</h4>
+                        <dl id="build" class="dl-horizontal">
+                            <dt>Type</dt>
+                            <dd>@Model.Product.BuildType</dd>
+                            <dt>Material</dt>
+                            <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(MATERIALS_TYPE), @Model.Product.Material))</dd>
+                            @if (Model.Product.Material == MATERIALS_TYPE.PrecisionMetals)
+                            {
+                                if (@Model.Product.MetalType != null && @Model.Product.MetalsProcesses != null)
+                                {
+                                    <dt>Metals</dt>
+                                    <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(Metal_Type), @Model.Product.MetalType))</dd>
+                                    <dt>Process</dt>
+                                    <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(Metals_Processes), @Model.Product.MetalsProcesses))</dd>
+                                }
+                            }
+                            else if (Model.Product.Material == MATERIALS_TYPE.PrecisionPlastics)
+                            {
+                                if (@Model.Product.PrecisionPlastics != null && @Model.Product.PlasticsProcesses != null)
+                                {
+                                    <dt>Plastics</dt>
+                                    <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(Precision_Plastics), @Model.Product.PrecisionPlastics))</dd>
+                                    <dt>Process</dt>
+                                    <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(Plastics_Processes), @Model.Product.PlasticsProcesses))</dd>
+                                }
+                            }
+
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="col-md-6">
+                        <h4>Lead Time</h4>
+                        <dl class="dl-horizontal">
+                            @if (Model.Product.ToolingLeadTime != null)
+                            {
+                                <dt>Tooling</dt>
+                                <dd>@Model.Product.ToolingLeadTime <span class="grey, small">bus. days</span></dd>
+                            }
+                            <dt>Sample</dt>
+                            <dd>@Model.Product.SampleLeadTime <span class="grey, small">bus. days</span></dd>
+                            <dt>Production</dt>
+                            <dd>@Model.Product.ProductionLeadTime <span class="grey, small">bus. days</span></dd>
+
+                        </dl>
+
+                    </div>
+                    <div class="col-md-6">
+                        @if (@Model.Order != null)
+                        {
+                            <h4>@Model.Order.Quantity Ordered</h4>
+                        }
+                        else
+                        {
+                            <h4>No Order Placed yet</h4>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 class="row text-xs-center">Part State History  <a class="minusplus green-text" href="#" style="text-decoration:none;"><i class="fas fa-plus-square"></i></a></h4>
+        <div class="stateHistory">
+            @Html.Partial("_ProductStateHistory", Model.ProductStateTrackings)
+        </div>
+        @Html.Partial("_OrderMileStone", Model.OrderStateTrackings)
+    </div>
+
+
+    <div class="card col-lg-6 top-margin-20">
+        <div class="card-block orderdetail-min-height">
+            <h4 class="green-text">Order Details</h4><br />
+            @if (Model.Order != null)
+            {
+                <dl class="dl-horizontal">
+                    <dt>Unit Price</dt>
+                    <dd class="green-text">@($"{@Model.Order.UnitPrice:C}")</dd>
+                    <dt>Sales Tax</dt>
+                    <dd class="green-text">@($"{@Model.Order.SalesTax:C}")</dd>
+                    <dt>Quantity</dt>
+                    <dd>@Model.Order.Quantity</dd>
+                    <dt>Sales Total</dt>
+                    <dd class="green-text">@($"{@Model.Order.SalesPrice:C}")</dd>
+                    <dt>No. Sample Incl.</dt>
+                    <dd>@Model.NumberSampleIncluded</dd>
+                    <dt>Ordered Date</dt>
+                    <dd>@Model.Order.OrderDate.ToString("yyyy-MM-dd")</dd>
+                    @if (@Model.Order.EstimateCompletionDate != null)
+                    {
+                        <dt>Est. Completion Date</dt>
+                        <dd>@Model.Order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")</dd>
+                    }
+                    <dt>Customer PO #</dt>
+                    <dd>@Model.Order.CustomerPONumber</dd>
+                    @if (Model.Order.Product != null && Model.Order.Product.VendorCompany != null && Model.isEnterprise == true)
+                    {
+                        <dt>Vendor Name</dt>
+                        <dd>@Model.Order.Product.VendorCompany.Name</dd>
+                    }
+                    <dt>Customer Name</dt>
+                    <dd>@Model.Order.Product.CustomerCompany.Name</dd>
+                    <dt>Is Enterprise</dt>
+                    <dd>@Model.isEnterprise</dd>
+                </dl>
+            }
+        </div>
+    </div>
+
+    <div class="card col-lg-6 top-margin-35">
+        <div class="card-block orderdetail-min-height">
+            <h4 class="green-text">Shipping</h4><br />
+            <dl class="dl-horizontal">
+                <dt>Shipping To</dt>
+                @if (@Model.Order.Shipping != null && @Model.Order.Shipping.Address != null)
+                {
+                    if (@Model.Order.Shipping.Address.AddressLine2 != null)
+                    {
+                        <dd>
+                            @string.Format("{0} - {1}, {2}, {3}, {4}",
+                                                      @Model.Order.Shipping.Address.AddressLine2,
+                                                      @Model.Order.Shipping.Address.AddressLine1,
+                                                      @Model.Order.Shipping.Address.City,
+                                                      @Model.Order.Shipping.Address.StateProvince?.Name,
+                                                      @Model.Order.Shipping.Address.Country.CountryName)
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd>
+                            @string.Format("{0}, {1}, {2}, {3}",
+                                                      @Model.Order.Shipping.Address.AddressLine1,
+                                                      @Model.Order.Shipping.Address.City,
+                                                      @Model.Order.Shipping.Address.StateProvince?.Name,
+                                                      @Model.Order.Shipping.Address.Country.CountryName)
+                        </dd>
+                    }
+                }
+
+                @if (Model.Order.ShippedDate != null)
+                {
+                    <dt>Ship Date</dt>
+                    <dd>@Model.Order.ShippedDate?.ToString("yyyy-MM-dd")</dd>
+                }
+                @if (Model.Order.OrderDate != null)
+                {
+                    <dt>Ordered Date</dt>
+                    <dd>@Model.Order.OrderDate.ToString("yyyy-MM-dd")</dd>
+                }
+
+                @if (@Model.Order.TrackingNumber != null)
+                {
+                    <dt>Tracking #</dt>
+                    <dd>
+                        @Ajax.ActionLink(@Model.Order.TrackingNumber, "TrackingShippingStatus", "Orders", new { @id = @Model.Order.TrackingNumber },
+                                                           new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "shippingStatus", OnBegin = "$('#spinner').show();", OnSuccess = "$('#spinner').hide();" },
+                                                           new { @id = "trackinglink" })
+                    </dd>
+                    <dt>Carrier Name</dt>
+                    <dd>@Model.Order.CarrierName</dd>
+                }
+            </dl>
+        </div>
+    </div>
+    <div id="trackingWrapper" class="col-lg-12  top-margin-20">
+        <div class="card">
+            <h4 class="card-header warning-color white-text text-md-center">Tracking Shipment Status</h4>
+            <div class="card-block">
+                <div id="shippingStatus">
+                    @Html.Partial("_TrackingShippingStatus", Model.DHLResponse)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#trackinglink').click(function () {
+            $('#trackingWrapper').show();
+        });
+
+
+
+        var $events = $('.stateHistory');
+        $events.hide();
+
+        $('.minusplus').click(function () {
+            $events.animate({ opacity: 'toggle', height: 'toggle' }, 2000);
+
+            if ($(this).find($('.fa-minus-square')).hasClass('fa-minus-square')) {
+
+                $(this).find($('.fa-minus-square')).removeClass('fa-minus-square').addClass('fa-plus-square');
+            }
+            else if ($(this).find($('.fa-plus-square')).hasClass('fa-plus-square')) {
+
+                $(this).find($('.fa-plus-square')).removeClass('fa-plus-square').addClass('fa-minus-square');
+            }
+
+            return false;
+        });
+
+    });
+</script>

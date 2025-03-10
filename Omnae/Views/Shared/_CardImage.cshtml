@@ -1,0 +1,22 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@if (Model.Product != null)
+{
+    if (Model.Product.AvatarUri != null)
+    {
+
+        var ext = Path.GetExtension(@Model.Product.AvatarUri).ToUpper();
+        if ((ext == ".GIF" || ext == ".JPEG" || ext == ".JPG" || ext == ".PNG"))
+        {
+            <div class="view overlay hm-white-slight card-image-min-height">
+                <img src=@Model.Product.AvatarUri class="img-fluid center-block card-image-height center" title="@Model.Product.Name">
+            </div>
+        }
+    }
+    else
+    {
+        <div class="view overlay hm-white-slight z-depth-1 card-image-min-height">
+            <h1 class="text-lg-center brown-text top-padding-80 card-image-height">@Model.Product.PartNumber.ToString().PadLeft(8, '0')</h1>
+        </div>
+    }
+}

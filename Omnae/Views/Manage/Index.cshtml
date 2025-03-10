@@ -1,0 +1,210 @@
+﻿@model Omnae.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<style>
+    .manage-account.dl-horizontal dt {
+        width: 250px;
+        margin-right: 50px;
+    }
+
+   
+</style>
+
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-keyboard"></i> Basic Information</h4>
+        <div class="card-block">
+            <div class="md-form text-xs-center">
+                @if (Model.HasPassword)
+                {
+                    using (Html.BeginForm("ChangePassword", "Manage"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn grey-background-color buttonWidth">Change your password</button>
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("SetPassword", "Manage"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn grey-background-color buttonWidth">Create a new password</button>
+                    }
+                }
+            </div>
+            <div class="md-form col-lg-offset-1">
+                <dl class="manage-account dl-horizontal">
+                    <dt>Current External Logins: </dt>
+                    <dd>@Model.Logins.Count</dd>
+                    <dt>&nbsp;&nbsp;</dt>
+                    <dd>
+                        @using (Html.BeginForm("ManageLogins", "Manage"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn grey-background-color buttonWidth">Manage External Logins</button>
+                        }
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="md-form col-lg-offset-1">
+                <dl class="manage-account dl-horizontal">
+                    <dt>
+                        Phone Number:
+                    </dt>
+                    <dd>
+                        @(Model.PhoneNumber ?? "None")
+                    </dd>
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                        <dd>
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        </dd>
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                        <dd>
+                            @using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                            }
+                        </dd>
+                    }
+                    else
+                    {
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                        <dd>
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        </dd>
+                    }
+                </dl>
+            </div>
+            <div class="md-form  col-lg-offset-1">
+                <dl class="manage-account dl-horizontal">
+                    <dt>
+                        Two-Factor Authentication:
+                    </dt>
+                    <dd>
+                        @if (Model.TwoFactor)
+                        {
+                            using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Raw("Enabled")
+                                <text>[<input type="submit" value="Disable" class="btn-link" />]</text>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Raw("Disabled")
+                                <text>[<input type="submit" value="Enable" class="btn-link" />]</text>
+                            }
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        @*<div class="card-block">
+                <dl class="manage-account dl-horizontal">
+                    <dt>
+                        Password:
+                    </dt>
+                    <dd>
+                        @if (Model.HasPassword)
+                        {
+                            @Html.ActionLink("Change your password", "ChangePassword")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Create", "SetPassword")
+                        }
+                    </dd>
+                    <dt>
+                        External Logins:
+                    </dt>
+                    <dd>
+                        @Model.Logins.Count [ @Html.ActionLink("Manage", "ManageLogins") ]
+                    </dd>
+                    <dt>
+                        Phone Number:
+                    </dt>
+                    <dd>
+                        @(Model.PhoneNumber ?? "None")
+                    </dd>
+
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                        <dd>
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        </dd>
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                            <dd>
+                                @using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                                }
+                            </dd>
+                    }
+                    else
+                    {
+                        <dt>
+                            &nbsp;&nbsp;
+                        </dt>
+                        <dd>
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        </dd>
+                    }
+
+                    <dt>
+                        Two-Factor Authentication:
+                    </dt>
+                    <dd>
+                        @if (Model.TwoFactor)
+                        {
+                            using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Raw("Enabled")
+                                <text>[<input type="submit" value="Disable" class="btn-link" />]</text>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Raw("Disabled")
+                                <text>[<input type="submit" value="Enable" class="btn-link">]</text>
+                            }
+                        }
+                    </dd>
+
+                </dl>
+                <br />
+                <div class="text-xs-center">
+                    <p class="text-success">@ViewBag.StatusMessage</p>
+                </div>
+            </div>*@
+    </div>
+</div>
+</div>

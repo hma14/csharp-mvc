@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.NcrInfoViewModel>
+
+<div class="card">
+    <div class="card-block">
+        <div class="row card-header default-color text-md-center status-title white-text">
+            <span class="col-md-1">NCR ID</span>
+            <span class="col-md-1">NCR No.</span>
+            <span class="col-md-2">Date Initiated</span>
+            <span class="col-md-2">Root Cause</span>
+            <span class="col-md-3">Vendor</span>
+            <span class="col-md-1">Cost</span>
+            <span class="col-md-2">Date Closed</span>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            int i = 0;
+
+            foreach (var md in Model)
+            {
+                i++;
+                <div class="row line text-md-center">
+                    <a href="@Url.Action("NcrDetails", "Home", new { @id = md.Id })" title="click to show NCR details">
+                        <span class="col-md-1">@md.Id</span>
+                        @if (md.UserType == USER_TYPE.Customer)
+                        {
+                            <span class="col-md-1">
+                                @md.NCRNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="col-md-1">
+                                @md.NCRNumberForVendor
+                            </span>
+                        }
+                        @if (md.DateInitiated != null)
+                        {
+                            <span class="col-md-2">@md.DateInitiated.Value.ToString("yyyy-MM-dd")</span>
+                            <span class="col-md-2">@md.RootCause</span>
+                            <span class="col-md-3">@md.Vendor</span>
+                            <span class="col-md-1">@md.Cost</span>
+                            <span class="col-md-2">@md.DateClosed</span>
+                        }
+                    </a>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+

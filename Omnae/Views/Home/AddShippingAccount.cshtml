@@ -1,0 +1,148 @@
+﻿@model Omnae.ViewModels.ShippingAccountViewModel
+
+@{
+    ViewBag.Title = "AddShippingAccount";
+}
+
+<div class="col-md-12 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-plus-square"></i> Add Shipping Account</h4>
+        <div class="card-block">
+            <div class="top-margin-30 col-md-12">
+
+                @using (Html.BeginForm("AddShippingAccount", "Home", FormMethod.Post, new { id = "addShippingAccount", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    if (Model != null && Model.Companies != null)
+                    {
+                        <div class="md-form col-md-3">
+                            @Html.DropDownListFor(model => model.CompanyId, Model.Companies, "-- Select Customer --", new { @id = "companyId", @class = "form-control " })
+                            @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+                        </div>
+                    }
+
+                    <div class="md-form col-md-3">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @id = "Name", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form col-md-2">
+                        @Html.LabelFor(model => model.AccountNumber, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @id = "accountNumber", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form col-md-2">
+                        @Html.EnumDropDownListFor(model => model.Carrier, "-- Select a Carrier --", new { @id = "carrier", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Carrier, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="md-form col-md-2">
+                        @Html.EnumDropDownListFor(model => model.CarrierType, "-- Select a Carrier Type --", htmlAttributes: new { @id = "carrierType", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CarrierType, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="md-form text-xs-center col-md-12">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-20">Add</button>
+                    </div>
+                    <div id="existingAccounts" class="col-md-12 top-margin-20">
+                        @if (Model.ShippingAccountList != null && Model.ShippingAccountList.Any())
+                        {
+                            @Html.Partial("_ShippingAccount", Model)
+                        }
+                    </div>
+                }
+            </div>
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="card-block top-margin-20">
+                    <h5 class="red-text error">@TempData["ErrorMessage"].ToString()</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function DeleteShippingAccount($id) {
+
+        $url = '//' + window.location.host + '/Home/DeleteShippingAccount';
+        $('#spinner').show();        
+        $.ajax({
+            url: $url,
+            type: 'GET',
+            data: { id: $id },
+            success: function (result) {
+                $('#existingAccounts').html(result);
+                $('#spinner').hide();
+            },
+            error: function (e) {
+                alertify.alert(e.responseText);
+            }
+        })
+    }
+
+
+    $('#companyId').change(function () {
+        $url = '//' + window.location.host + '/Home/GetShippingAccount';
+        $('#spinner').show();
+        var $companyId = $('#companyId option:selected').val();
+        $.ajax({
+            url: $url,
+            type: 'GET',
+            data: { companyId: $companyId },
+            success: function (result) {
+                $('#existingAccounts').html(result);
+                $('#spinner').hide();
+            },
+            error: function (e) {
+                alertify.alert(e.responseText);
+            }
+        })
+    });
+
+
+
+    $("#addShippingAccount").submit(function (event) {
+        $('#spinner').show();
+        var companyId = $('#companyId option:selected').val();
+        var carrier = $('#carrier option:selected').val();
+        var carrierType = $('#carrierType option:selected').val();
+        var accountNumber = $('#accountNumber').val();
+
+        if (companyId == 0) {
+            alertify.error("You must choose a customer");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (carrier == 0) {
+            alertify.error("You must choose a carrier");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (carrierType == 0) {
+            alertify.error("You must choose a carrier type");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (accountNumber == '') {
+            alertify.error("You must enter a account number belong to this carrier");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else {
+            this.submitButton.disabled = true;
+            return true;
+        }
+    });
+
+</script>

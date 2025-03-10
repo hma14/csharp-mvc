@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<req:DCTRequest xsi:schemaLocation="http://www.dhl.com DCT-req.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:req="http://www.dhl.com">
+  <GetQuote>
+    <Request>
+      <ServiceHeader>
+        <MessageTime>2023-05-11T16:57:30.4993695-07:00</MessageTime>
+        <MessageReference>0987654321098765432109876543</MessageReference>
+        <SiteID>PADTECH</SiteID>
+        <Password>IKOisxW8ac</Password>
+      </ServiceHeader>
+    </Request>
+    <From>
+      <CountryCode>TW</CountryCode>
+      <Postalcode>23557</Postalcode>
+      <City>New Taipei City </City>
+    </From>
+    <BkgDetails>
+      <PaymentCountryCode>CA</PaymentCountryCode>
+      <Date>2023-05-11</Date>
+      <ReadyTime>PT10H21M</ReadyTime>
+      <ReadyTimeGMTOffset>+01:00</ReadyTimeGMTOffset>
+      <DimensionUnit>CM</DimensionUnit>
+      <WeightUnit>KG</WeightUnit>
+      <ShipmentWeight>10</ShipmentWeight>
+      <Volume>200</Volume>
+      <Pieces>
+        <Piece>
+          <PieceID>1</PieceID>
+          <Height>20</Height>
+          <Depth>20</Depth>
+          <Width>10</Width>
+          <Weight>10</Weight>
+        </Piece>
+      </Pieces>
+      <PaymentAccountNumber>952694830</PaymentAccountNumber>
+      <IsDutiable>Y</IsDutiable>
+    </BkgDetails>
+    <To>
+      <CountryCode>CA</CountryCode>
+      <Postalcode>T7g1y5</Postalcode>
+      <City>Vancouver</City>
+    </To>
+    <Dutiable>
+      <DeclaredCurrency>USD</DeclaredCurrency>
+      <DeclaredValue>355.278</DeclaredValue>
+    </Dutiable>
+  </GetQuote>
+</req:DCTRequest>

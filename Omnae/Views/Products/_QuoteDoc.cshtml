@@ -1,0 +1,7 @@
+﻿<div class="col-lg-10 offset-lg-1" style="position:absolute;">
+
+    <object class="col-lg-12" data="data:application/pdf;base64,@System.Convert.ToBase64String((Byte[])ViewData["PDF"])" type="application/pdf" height="900">
+        <embed src="data:application/pdf;base64, @System.Convert.ToBase64String((Byte[])ViewData["PDF"])" type="application/pdf" />
+    </object>
+
+</div>

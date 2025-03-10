@@ -1,0 +1,187 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+@using Omnae.Common
+@using Omnae.Controllers
+
+<style>
+    .approvedecline {
+        display: none;
+    }
+
+    #ncr dt {
+        width: 45% !important;
+        padding: 0px !important;
+        font-size: 1em;
+    }
+
+    #ncr dd {
+        width: 100% !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        font-size: 1em;
+    }
+
+    .my-label {
+        margin-bottom: 50px;
+    }
+</style>
+
+@if (Model != null && Model.NcrDescriptionVM != null)
+{
+
+    <div id="ncr" class="card-block">
+        <h4 class="top-margin-20 pink-text">NCR Details</h4>
+
+        <div class="col-md-6 no-padding">
+            <dl class="dl-horizontal">
+                <dt>
+                    Customer
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.Customer
+                </dd>
+                <dt>
+                    PO Number
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.PONumber
+                </dd>
+                <dt>
+                    Part No.
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.ProductPartNo
+                </dd>
+                <dt>
+                    Revision
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.PartRevisionNo
+                </dd>
+                <dt>
+                    Detected By
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.NCDetectedby
+                </dd>               
+            </dl>
+        </div>
+
+
+        <div class="col-md-6 wrapper no-padding">
+            <dl class="dl-horizontal">
+
+                @if (Model.NcrDescriptionVM.NCDetectedDate != null)
+                {
+                    <dt>Initiate Date</dt>
+                    <dd>@Model.NcrDescriptionVM.NCDetectedDate.Value.ToString("MM/dd/yyyy")</dd>
+                }
+                @if (Model.NcrDescriptionVM.DateNcrClosed != null)
+                {
+                    <dt>Close Date</dt>
+                    <dd>@Model.NcrDescriptionVM.DateNcrClosed.Value.ToString("MM/dd/yyyy")</dd>
+                }
+                <dt>
+                    Vendor/supplier
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.Vendor
+                </dd>
+               
+                <dt>
+                    Affected Qty
+                </dt>
+                <dd><span class="green-text">@Model.NcrDescriptionVM.Quantity</span>  (out of <span class="green-text">@Model.NcrDescriptionVM.TotalProductQuantity</span> )</dd>
+                <dt>
+                    Originator
+                </dt>
+                <dd>
+                    @Model.NcrDescriptionVM.NCOriginator
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-12 no-padding-left">
+            <div>
+                @Html.LabelFor(model => model.NcrDescriptionVM.NCDescription, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.NcrDescriptionVM.NCDescription, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+            </div>
+
+            <div>
+                @Html.LabelFor(model => model.NcrDescriptionVM.Expectation, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.NcrDescriptionVM.Expectation, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+            </div>
+
+            @if (Model.NcrDescriptionVM.RootCauseFurtherDetails != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.RootCauseFurtherDetails, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.RootCauseFurtherDetails, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.CorrectiveAction, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.CorrectiveAction, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.ActionTakenDetails, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.ActionTakenDetails, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.ActionTakenVerifiedBy, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.ActionTakenVerifiedBy, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.RejectCorrectiveActionReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.RejectCorrectiveActionReason, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.RejectCorrectiveActionReason, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.RejectRootCauseReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.RejectRootCauseReason, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.RejectRootCauseReason, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.RootCauseOnCustomerReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.RootCauseOnCustomerReason, new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.RootCauseOnCustomerReason, new { rows = 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.ArbitrateVendorCauseReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.ArbitrateVendorCauseReason, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.ArbitrateVendorCauseReason, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.ArbitrateCustomerCauseReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+
+            @if (Model.NcrDescriptionVM.RejectCorrectivePartsReason != null)
+            {
+                <div>
+                    @Html.LabelFor(model => model.NcrDescriptionVM.RejectCorrectivePartsReason, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.NcrDescriptionVM.RejectCorrectivePartsReason, new { rows= 5, columns = 50, @class = "form-control", @readonly = true })
+                </div>
+            }
+        </div>
+
+        @Html.Partial("_NcrImages", Model.NcrDescriptionVM)
+
+    </div>
+}
+

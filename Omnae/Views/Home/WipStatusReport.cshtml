@@ -1,0 +1,96 @@
+﻿@model IList<Omnae.ViewModels.WipStatusReportViewModel>
+@{
+    ViewBag.Title = "WipStatusReport";
+}
+
+<style>
+    .cmdbak {
+        background: content-box;
+        background-color: aliceblue;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 20px;
+        align-content: center;
+    }
+</style>
+
+<div class="col-md-12 small top-margin-20">
+
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-file-alt"></i> WIP Status Report</h4>
+        <div class="card-block">
+            @if (Model != null && Model.Any())
+            {
+                <span class="col-md-1 text-md-left  no-padding font-weight-bold green-text">Filtered By</span>
+                <div class="col-md-12 cmdbak">
+
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => Model[0].CustomerId, TempData["Customers"] as SelectList, "-- Select Customer --", new { @id = "customerId", @class = "btn grey-background-color dropdown-toggle col-md-12 top-margin-15" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => Model[0].VendorId, TempData["Vendors"] as SelectList, "-- Select Vendor --", new { @id = "vendorId", @class = "btn grey-background-color dropdown-toggle  col-md-12 top-margin-15" })
+                    </div>
+                    <div class="col-md-2">
+                        <span class="green-text font-weight-bold">Start Date</span>
+                       <input class="form-control" name = "WipReportStartDate" id = "WipReportStartDate" />
+                    </div>
+                    <div class="col-md-2">
+                        <span class="green-text font-weight-bold">End Date</span>
+                        <input class="form-control" name="WipReportEndDate" id="WipReportEndDate" />
+                        @*@Html.Editor("WipReportEndDate", new { name = "WipReportEndDate", @id = "WipReportEndDate" })*@
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn accent-background-color  right col-md-12 top-margin-15" onclick="GetWipStatusReport();">Get WIP Status</a>
+
+                    </div>
+                </div>
+                <div id="Result">
+
+                </div>
+            }
+            else
+            {
+                <div class="text-lg-center green-text font-weight-bold">Whoops! No WIP Avaiable yet!</div>
+            }
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        $('#WipReportStartDate').datepicker();
+        $('#WipReportEndDate').datepicker();
+
+        $('#customerId').change(function () { $('#customerId').val($(this).val()); });
+        $('#vendorId').change(function () { $('#vendorId').val($(this).val()); });
+    });
+    
+
+    function GetWipStatusReport() {
+        var $url = '//' + window.location.host + '/Home/GetWipStatusReportByFilters';
+        
+        var start = $('#WipReportStartDate').val();
+        var end = $('#WipReportEndDate').val();
+        if (start != '' && end != '' && start > end) {
+            alertify.error("Start date must be earlier than or equal to end date!");
+            return false;
+        }
+
+        $('#spinner').show();
+        $.ajax({
+            type: 'POST',
+            url: $url,
+            data: { 'customerId': $('#customerId').val(), 'vendorId': $('#vendorId').val(), 'start': start, 'end': end },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#Result').html(result);
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+
+</script>

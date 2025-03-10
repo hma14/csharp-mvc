@@ -1,0 +1,65 @@
+﻿@model Omnae.Model.Models.Aspnet.SimplifiedUser
+
+@{
+    ViewBag.Title = "Activate User";
+}
+
+@if (ViewBag.Message != null)
+{
+    <h2>@ViewBag.Message</h2>
+}
+@if (ViewBag.Error != null)
+{
+    <h3>@ViewBag.Error</h3>
+}
+
+<div class="container-fluid top-margin-30">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h4 class="card-header">
+                @ViewBag.Title
+                <small class="float-sm-right">@Html.ActionLink("Back to List", "Index", new { @class = "btn btn-light" })</small>
+            </h4>
+            <div class="card-block">
+                <dl class="dl-horizontal">
+                    <dt>@Html.DisplayNameFor(model => model.Email)
+                    <dt>
+                    <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.FirstName)</dt>
+                    <dd>@Html.DisplayFor(model => model.FirstName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.MiddleName)</dt>
+                    <dd>@Html.DisplayFor(model => model.MiddleName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.LastName)</dt>
+                    <dd>@Html.DisplayFor(model => model.LastName)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+                    <dd>@Html.DisplayFor(model => model.PhoneNumber)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.UserType)</dt>
+                    <dd>@Html.DisplayFor(model => model.UserType)</dd>
+
+                    <dt>@Html.DisplayNameFor(model => model.Active)</dt>
+                    <dd><span>@Model.Active.ToString()</span></dd>
+                </dl>
+            </div>
+
+            <div class="text-xs-center top-margin-30">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <h3>Are you sure you want to delete this?</h3>
+
+                        <input type="submit" value="Activate" class="btn btn-default" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

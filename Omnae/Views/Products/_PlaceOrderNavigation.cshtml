@@ -1,0 +1,74 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+
+@using Omnae.Common
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+<div class="tabs-wrapper">
+    <ul class="nav nav-tabs primary-background-color" role="tablist">
+
+        <li class="nav-item tabs-5">
+            <a class="nav-link active " data-toggle="tab" href="#placeOrder" role="tab">Place Order</a>
+        </li>
+
+
+        <li class="dropdown text-md-center mysubmenu">
+            <!--Trigger-->
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">Revisions</a>
+            <!--Menu-->
+            <ul class="dropdown-menu dropdowns shorter">
+                <li><a href="@Url.Action("CreatePartRevision", "Products", new {@prodId=@Model.Product.Id})" class="dropdown-item">Create a New Part Revision</a></li>
+                @foreach (var revision in Model.PartRevisions)
+                {
+                    if (revision.StateId < States.QuoteAccepted)
+                    {
+                        <li><a href="@Url.Action("Details", "Orders", new { @id=@revision.TaskId })" class="dropdown-item">@revision.Name</a></li>
+                    }
+                    else if (revision.StateId > States.QuoteAccepted && revision.StateId < States.ProductionStarted)
+                    {
+                        <li><a href="@Url.Action("OrderDetails", "Orders", new { @id=@revision.TaskId })" class="dropdown-item">@revision.Name</a></li>
+                    }
+                    else if (revision.StateId == States.QuoteAccepted)
+                    {
+                        <li><a href="@Url.Action("PlaceOrder", "Products", new { @id = revision.TaskId, @revisionId = revision.Id })" class="dropdown-item">@revision.Name</a></li>
+                    }
+                    else 
+                    {
+                        <li><a href="@Url.Action("ReOrder", "Products", new { @id = revision.TaskId, @revisionId = revision.Id })" class="dropdown-item">@revision.Name</a></li>
+                    }
+
+                }
+            </ul>
+        </li>
+
+        <li class="dropdown text-md-center mysubmenu">
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="">Quality</a>
+            <ul class="dropdown-menu dropdowns shorter">
+                @{
+                    var controller = ViewContext.Controller as BaseController;
+                    Order order = null;
+                    var orders = controller.OrderService.FindOrdersByProductId(Model.ProductId);
+                    if (orders != null && orders.Count > 0)
+                    {
+                        order = orders.Last();
+                    }
+                }
+                @if (order != null)
+                {
+                    <li><a href="@Url.Action("ChooseOrderForNCR", "Products", new { @id = Model.Product.Id, @taskId = Model.TaskId })" class="dropdown-item">Create Non-Comformity Report</a></li>
+                }
+                <li><a href="@Url.Action("NcrHistory", "Products", new {@id=@Model.Product.Id})" class="dropdown-item">NCR History</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown text-md-center mysubmenu">
+            <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="">Actions</a>
+            <ul class="dropdown-menu dropdowns shorter">
+                @if (Model.StateId == (int) States.QuoteAccepted || Model.StateId == (int) States.ProductionComplete)
+                {
+                    <li><a href="@Url.Action("AddQuantity", "Products", new { @id = Model.Product.Id, @taskid = Model.TaskId })" class="dropdown-item">Add Quantities</a></li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>

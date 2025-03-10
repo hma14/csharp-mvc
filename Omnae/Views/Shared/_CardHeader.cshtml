@@ -1,0 +1,40 @@
+﻿@model Omnae.Model.Models.TaskData
+@{
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+
+    var controller = ViewContext.Controller as IHaveUserContext; //TODO: Remove the Invocation of the Controller from the View
+    USER_TYPE userType = controller.UserContext.UserType;
+}
+
+@if (Model.Product != null)
+{
+    <div class="primary-background-color white-text grid-min-height">
+        <div class="col-md-10">
+            <span class="margin-off my-h5">
+                @Model.Product.PartNumber
+                @Model.Product.PartNumberRevision                
+                <br />
+                @Model.Product.Name
+                @if (@Model.IsRiskBuild == true)
+                {
+                    <span class="yellow-text" style="font-size:1.2em;" title="Risk Build">*</span>
+                }
+            </span>
+        </div>
+
+
+        @if (userType == USER_TYPE.Customer)
+        {
+            <div class="col-md-2 pull-right">
+                <span class="pull-right" style="padding-top:15px;">@Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@Model.StateId))</span>
+            </div>
+        }
+        else if (userType == USER_TYPE.Vendor)
+        {
+            <div class="col-md-2 pull-right">
+                <a href="@Model.Product.AvatarUri" target="_blank" ><img class="thumb  pull-right" src=@Model.Product.AvatarUri alt="" title="Origin Image" style="padding-top:15px;" /></a>
+            </div>
+        }
+    </div>
+}
+

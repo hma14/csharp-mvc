@@ -1,0 +1,6 @@
+﻿
+Hi @Model.UserName
+Thank you for creating an account on Omnae.com
+Please check your email for a confirmation message.
+Thanks,
+The Omnae Team

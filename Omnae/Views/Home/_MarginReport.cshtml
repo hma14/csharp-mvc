@@ -1,0 +1,181 @@
+﻿@model IList<Omnae.BusinessLayer.Models.TransactionViewModel>
+
+@if (Model != null)
+{
+    <style>
+        th, td {
+            border: thin solid;
+            text-align: center;
+            color: black;
+            font-size: 0.9em;
+            text-align: center;
+            vertical-align: middle;
+            height: 40px;
+        }
+
+        .title {
+            font-size: 1.4em;
+            background-color: antiquewhite;
+        }
+
+
+
+        .sector1 {
+            background-color: aquamarine;
+        }
+
+        #subtitle2 {
+            font-size: 1.4em;
+        }
+
+        .sector2 {
+            background-color: lightcyan;
+        }
+
+        #subtitle3 {
+            font-size: 1.4em;
+        }
+
+        .sector3 {
+            background-color: beige;
+            text-align: center;
+        }
+
+        .sector4 {
+            background-color: bisque;
+        }
+    </style>
+
+
+
+    <table class="table table-bordered">
+        <tr>
+            <th class="title" align="center" valign="middle" colspan="23">Profit / Loss Sheet</th>
+        </tr>
+        <tr>
+            <th class="sector1" align="center" valign="middle" colspan="3">&nbsp;</th>
+            <th id="subtitle2" class="sector2" align="center" valign="middle" colspan="8">Sales</th>
+            <th id="subtitle3" class="sector3" align="center" valign="middle" colspan="9">Purchase</th>
+            <th class="sector4" align="center" valign="middle" colspan="3">&nbsp;</th>
+        </tr>
+        <tr>
+
+            <th class="sector1">@Html.LabelFor(m => Model[0].CustomerName)</th>
+            <th class="sector1">@Html.LabelFor(m => Model[0].PNRev)</th>
+            <th class="sector1">@Html.LabelFor(m => Model[0].Quantity)</th>
+
+            <th class="sector2">@Html.LabelFor(m => Model[0].OrderDate)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].ShipDate)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].EstimateNumber)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].CustomerTotal1)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].CustomerToolingSetup)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].CustomerTotal2)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].ExchangeRate)</th>
+            <th class="sector2">@Html.LabelFor(m => Model[0].CustomerNetTotalCAD)</th>
+
+
+            <th class="sector3">@Html.LabelFor(m => Model[0].PONumber)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorName)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorTotal1)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorToolingSetup)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorTotal2)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].ExchangeRate)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorTotalCAD)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].ShippingCAD)</th>
+            <th class="sector3">@Html.LabelFor(m => Model[0].VendorNetTotalCAD)</th>
+            <th class="sector4">@Html.LabelFor(m => Model[0].ProfitLossCAD)</th>
+            <th class="sector4">@Html.LabelFor(m => Model[0].GrossProfitMargin)</th>
+            <th class="sector4">@Html.LabelFor(m => Model[0].InvoiceNumber)</th>
+        </tr>
+
+
+        @if (Model != null && Model.Any())
+        {
+            decimal CustomerNetTotalCAD = 0m;
+            decimal VendorTotal1 = 0m;
+            decimal VendorToolingSetup = 0m;
+            decimal VendorTotal2 = 0m;
+            decimal VendorTotalCAD = 0m;
+            decimal ShippingCAD = 0m;
+            decimal VendorNetTotalCAD = 0m;
+            decimal ProfitLossCAD = 0m;
+            double GrossProfitMargin = 0d;
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="sector1">@Html.DisplayFor(m => item.CustomerName) </td>
+                    <td class="sector1">@Html.DisplayFor(m => item.PNRev)</td>
+                    <td class="sector1">@Html.DisplayFor(m => item.Quantity)</td>
+
+                    <td class="sector2">@item.OrderDate.ToShortDateString()</td>
+                    <td class="sector2">@(item.ShipDate != null ? item.ShipDate.Value.ToShortDateString() : null)</td>
+                    <td class="sector2">@Html.DisplayFor(m => item.EstimateNumber)</td>
+                    <td class="sector2">@string.Format("{0:C2}", item.CustomerTotal1)</td>
+                    <td class="sector2">@string.Format("{0:C2}", item.CustomerToolingSetup)</td>
+                    <td class="sector2">@string.Format("{0:C2}", item.CustomerTotal2)</td>
+                    <td class="sector2">@Html.DisplayFor(m => item.ExchangeRate)</td>
+                    <td class="sector2">@string.Format("{0:C2}", item.CustomerNetTotalCAD)</td>
+
+                    <td class="sector3">
+                        @if (item.PONumber != null && !item.PONumber.Equals("0"))
+                        {
+                            <a href="@item.POUri" target="_blank">@Html.DisplayFor(m => item.PONumber)</a>
+                        }
+                    </td>
+                    <td class="sector3">@Html.DisplayFor(m => item.VendorName)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.VendorTotal1)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.VendorToolingSetup)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.VendorTotal2)</td>
+                    <td class="sector3">@Html.DisplayFor(m => item.ExchangeRate)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.VendorTotalCAD)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.ShippingCAD)</td>
+                    <td class="sector3">@string.Format("{0:C2}", item.VendorNetTotalCAD)</td>
+
+                    <td class="sector4">@string.Format("{0:C2}", item.ProfitLossCAD)</td>
+                    <td class="sector4">@string.Format("{0:F0}%", item.GrossProfitMargin)</td>
+                    <td class="sector4">@Html.DisplayFor(m => item.InvoiceNumber)</td>
+                </tr>
+
+                CustomerNetTotalCAD += item.CustomerNetTotalCAD;
+                VendorTotal1 += item.VendorTotal1;
+                VendorToolingSetup += item.VendorToolingSetup;
+                VendorTotal2 += item.VendorTotal2;
+                VendorTotalCAD += item.VendorTotalCAD;
+                ShippingCAD += item.ShippingCAD;
+                VendorNetTotalCAD += item.VendorNetTotalCAD;
+                ProfitLossCAD += item.ProfitLossCAD;
+                GrossProfitMargin += item.GrossProfitMargin;
+            }
+
+
+            <tr style="height:35px;">
+                &nbsp;
+            </tr>
+            <tr>
+                <td colspan="10">&nbsp;</td>
+                <td class="sector2">@string.Format("{0:C2}", CustomerNetTotalCAD)</td>
+                <td colspan="2">&nbsp;</td>
+                <td class="sector3">@string.Format("{0:C2}", VendorTotal1)</td>
+                <td class="sector3">@string.Format("{0:C2}", VendorToolingSetup)</td>
+                <td class="sector3">@string.Format("{0:C2}", VendorTotal2)</td>
+                <td>&nbsp;</td>
+                <td class="sector3">@string.Format("{0:C2}", VendorTotalCAD)</td>
+                <td class="sector3">@string.Format("{0:C2}", ShippingCAD)</td>
+                <td class="sector3">@string.Format("{0:C2}", VendorNetTotalCAD)</td>
+                <td class="sector4">@string.Format("{0:C2}", ProfitLossCAD)</td>
+                <td class="sector4">@string.Format("{0:F0}%", GrossProfitMargin / Model.Count())</td>
+                <td>&nbsp;</td>
+            </tr>
+        }
+
+    </table>
+
+}
+else
+{
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+    }
+}

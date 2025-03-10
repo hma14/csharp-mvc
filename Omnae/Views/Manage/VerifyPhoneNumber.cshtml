@@ -1,0 +1,32 @@
+﻿@model Omnae.Models.VerifyPhoneNumberViewModel
+@{
+    ViewBag.Title = "Verify Phone Number";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-3">
+
+        @using (Html.BeginForm("VerifyPhoneNumber", "Manage", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("phoneNumber", @Model.PhoneNumber)
+
+            <h3><i class="fa fa-keyboard-o fa-2x"></i> Enter verification code</h3>
+            <br />
+            <h5>@ViewBag.Status</h5>
+
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="md-form">
+                <i class="fa fa-code prefix"></i>
+                @Html.LabelFor(m => m.Code, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+            </div>
+            
+            <div class="md-form">
+                <div class="md-form text-xs-center top-margin-50">
+                    <button type="submit" id="submit" class="btn btn-cyan buttonWidth">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

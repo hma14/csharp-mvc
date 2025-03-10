@@ -1,0 +1,104 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TaskData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Html.DisplayNameFor(model => model.CustomerCompany.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerCompany.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VendorCompany.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VendorCompany.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdminId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdminId)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RejectReason)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RejectReason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedUtc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedUtc)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

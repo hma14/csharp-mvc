@@ -1,0 +1,556 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<style>
+    #revisereason dt, dd {
+        text-align: left;
+    }
+
+    .tracking {
+        display: none;
+    }
+</style>
+
+@{
+    USER_TYPE userType = Model.UserType;
+
+    var docs = Model.RevisingDocs;
+
+}
+
+@using (Html.BeginForm("TaskStateHandler", "Home", FormMethod.Post, new { id = "TaskStateHandler", enctype = "multipart/form-data", onsubmit = "return checkForm(this)" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.TaskData.TaskId)
+
+    @Html.HiddenFor(x => x.VendorInvoiceVM.NumberSampleIncluded)
+
+
+    if (Model.NcrDescriptionVM != null)
+    {
+        @Html.HiddenFor(x => x.NcrDescriptionVM.OrderId)
+        @Html.HiddenFor(x => x.NcrDescriptionVM.TaskId)
+        @Html.HiddenFor(x => x.NcrDescriptionVM.ProductId)
+        @Html.HiddenFor(x => x.NcrDescriptionVM.StateId)
+        @Html.Partial("_NCR", Model)
+    }
+    if (!(userType == USER_TYPE.Vendor && Model.NcrDescriptionVM != null && Model.NcrDescriptionVM.StateId == States.NCRCustomerCorrectivePartsAccepted))
+    {
+        <div class="top-margin-30">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Action</legend>
+                @foreach (var trigger in Model.StTransition.PermittedTriggers)
+                {
+                    if (trigger >= Triggers.CustomerCancelOrderRequest && trigger <= Triggers.VendorAcceptCancelOrderRequest)
+                    {
+                        continue;
+                    }
+                    if ((trigger == Triggers.RevisingRFQ || trigger == Triggers.RevisionRequired) && (userType == USER_TYPE.Customer))
+                    {
+                        <fieldset class="form-group">
+                            <label for=@trigger>
+                                @Html.RadioButtonFor(m => m.group, trigger, new { @id = @trigger, @class = "hidden" })
+                                <h4 class="red-text bold">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@trigger.ToString())</h4>
+                            </label>
+                        </fieldset>
+                        if (Model.NcrDescriptionVM != null && Model.NcrDescriptionVM.ArbitrateCustomerCauseReason != null)
+                        {
+                            <div class="top-margin-20">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, htmlAttributes: new { @class = "control-label" })
+                                <textarea id="ArbitrateCustomerCauseReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Revison Cause ...">
+                            @Model.NcrDescriptionVM.ArbitrateCustomerCauseReason
+                        </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else if (Model.NcrDescriptionVM != null)
+                        {
+                            <div class="top-margin-20">
+                                <h5>Revision Reason</h5>
+                                <span class="col-xs-12 grey-text small">Please append your feedback below</span>
+                                <div id=@($"reason_content{Model.TaskData.TaskId}")>
+                                    @Html.LabelFor(model => model.TaskData.RevisingReason, htmlAttributes: new { @class = "control-label" })
+                                    @*@Html.TextAreaFor(model => model.TaskData.RevisingReason, new { rows = 5, cols = 50, @class = "form-control", placeholder = "Revison reason ..." })*@
+                                    <textarea id="RevisingReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Revison Cause ...">
+                                @Model.TaskData.RevisingReason
+                            </textarea>
+                                    @Html.ValidationMessageFor(model => model.TaskData.RevisingReason, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+                        <div class="col-md-6">
+                            <h5>Revision Suggestion</h5>
+                            <textarea id="RevisingSuggestion" data-pk="@Model.TaskData.TaskId" rows=5 cols=50 class="form-control xeditable" placeholder="Revising Suggestion ...">
+                                @Model.TaskData.RevisingReason
+                    </textarea>
+                            @if (docs != null && docs.Any())
+                            {
+                                <div class="small">
+                                    @foreach (var doc in docs)
+                                    {
+                                        if (doc.UserType != null)
+                                        {
+                                            <a href="@doc.DocUri" title="Click to download" target="_blank">@doc.Name <span class="green-text">(@Enum.GetName(typeof(USER_TYPE), doc.UserType))</span></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@doc.DocUri" target="_blank">@doc.Name</a>
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="col-xs-12">Your Revison Proposal</h5>
+                            <br />
+                            <div>
+                                <div class="file-field">
+                                    <div class="btn grey-background-color">
+                                        <span class="fileupload">Browse</span>
+                                        <input type="file" name="uploadedFile" multiple>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate small text-xs-center" type="text" placeholder="Upload Revison" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        if (trigger == Triggers.NCRApproval ||
+                            trigger == Triggers.NCRCorrectivePartsReceival ||
+                            trigger == Triggers.NCRCorrectivePartsComplete ||
+                            trigger == Triggers.NCRArbitrateDispute ||
+                            trigger == Triggers.NCRCustomerRevision ||
+                            trigger == Triggers.NCRClose ||
+                            trigger == Triggers.ReviewRFQBid ||
+                            trigger == Triggers.RevisingRFQ ||
+                            trigger == Triggers.ReadyForTooling ||
+                            trigger == Triggers.ToolingComplete ||
+                            trigger == Triggers.CompleteSample ||
+                            trigger == Triggers.InProduction ||
+                            trigger == Triggers.CompleteProduction ||
+                            trigger == Triggers.PendingPaymentMade ||
+                            trigger == Triggers.PendingReorderPaymentMade ||
+                            trigger == Triggers.OrderPaid ||
+                            trigger == Triggers.PaidReOrder ||
+                            trigger == Triggers.StartedProof ||
+                            trigger == Triggers.ProofApproval ||
+                            trigger == Triggers.CorrectingProof ||
+                            trigger == Triggers.CreateInvoiceForVendor ||
+                            trigger == Triggers.CompleteInvoiceForVendor ||
+                            trigger == Triggers.CorrectingSample)
+                        {
+                            <div class="md-form col-md-12">
+                                <fieldset class="form-group">
+                                    <div for=@trigger>
+                                        @Html.RadioButtonFor(m => m.group, trigger, new { @id = @trigger, @class = "hidden" })
+                                        <h4 class="red-text">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@trigger.ToString())</h4>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            if (trigger == Triggers.ToolingComplete || trigger == Triggers.InProduction)
+                            {
+                                <div class="offset-md-1 col-md-10">
+                                    @Html.LabelFor(m => m.EstimateCompletionDate, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(m => m.EstimateCompletionDate, new { htmlAttributes = new { name = "EstimateCompletionDate", @id = "EstimateCompletionDate", @class = "form-control" } })
+                                </div>
+                            }
+                        }
+                        else if (trigger == Triggers.NCRRootCauseOnCustomer || trigger == Triggers.RevisingRFQ)
+                        {
+                            <div class="md-form col-md-12 top-margin-20 hidden">
+                                <fieldset class="form-group">
+                                    <div for=@trigger>
+                                        @Html.RadioButtonFor(m => m.group, trigger, new { @id = @trigger })
+                                        <h4 class="red-text">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@trigger.ToString())</h4>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        }
+                        else if (trigger == Triggers.RevisionRequired ||
+                                 trigger == Triggers.BiddingRFQ ||
+                                 trigger == Triggers.RFQCancelled ||
+                                 trigger == Triggers.ReadyToOrder ||
+                                 trigger == Triggers.SetupUnitPricesForExtraQuantities)
+                        {
+                            string idName = $"{@trigger}{@Model.TaskData.TaskId}";
+
+                            <div class="md-form col-md-12 top-margin-20 hidden">
+                                <fieldset class="form-group hidden">
+                                    <div for=@idName>
+                                        @Html.RadioButtonFor(m => m.group, trigger, new { @id = @idName })
+                                        <h4 class="red-text">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@trigger.ToString())</h4>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="md-form col-md-12 top-margin-20">
+                                <fieldset class="form-group">
+                                    <div for=@trigger class="col-md-12">
+                                        @Html.RadioButtonFor(m => m.group, trigger, new { @id = @trigger })
+                                        <h4 class="red-text">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@trigger.ToString())</h4>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        }
+
+                        if (trigger == Triggers.ProofRejected || trigger == Triggers.RejectedSample)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(m => m.TaskData.RejectReason, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.TaskData.RejectReason, new { rows = 5, columns = 50, @id = "rejectReason", @class = "form-control", placeholder = "Reject Reason ..." })
+                                @Html.ValidationMessageFor(model => model.TaskData.RejectReason, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="offset-md-1 col-md-10 top-margin-30 no-padding">
+                                <span class="col-md-3 grey-text">Upload a document</span>
+                                <div class="no-padding col-md-9">
+                                    @Html.TextBoxFor(model => model.RejectReasonDoc, new { type = "file", multiple = true, name = "RejectReasonDoc", @id = "RejectReasonDoc", @class = "no-padding" })
+                                </div>
+                            </div>
+                            <br />
+                        }
+                        else if ((trigger == Triggers.RevisingRFQ ||
+                                  trigger == Triggers.ReviewRFQBid ||
+                                  trigger == Triggers.RevisionRequired) && (userType == USER_TYPE.Vendor))
+                        {
+                            <div>
+                                @if (Model != null)
+                                {
+                                    Html.RenderPartial("_RFQRevision", Model);
+                                }
+                            </div>
+                        }
+                        else if (trigger == Triggers.SetupUnitPricesForExtraQuantities && userType == USER_TYPE.Vendor)
+                        {
+                            <div>
+                                @if (Model != null)
+                                {
+                                    Html.RenderPartial("_BidRFQ", Model);
+                                }
+                            </div>
+                        }
+                        else if (trigger == Triggers.CompleteSample || trigger == Triggers.CompleteProduction)
+                        {
+                            string strTaskId = Model.TaskData.TaskId.ToString();
+                            var docpackingslip = Model.PackingSlipDocs.Where(x => x.Name.Contains("packing_slip_tid_" + strTaskId)).FirstOrDefault();
+
+                            <div class="col-md-12 top-margin-30 no-padding">
+                                <span class="col-md-4 grey-text">Upload Inspection Report</span>
+                                <div class="no-padding col-md-8">
+                                    @Html.TextBoxFor(model => model.PackingSlipInspectionReport, new { type = "file", multiple = true, name = "InspectionReport", @id = "InspectionReport", @class = "no-padding" })
+                                </div>
+                            </div>
+                            <div class="col-md-12 top-margin-20">
+                                <span>
+                                    You must
+                                    <a id='clkPackingSlip@(Model.OrderId)' href="#">
+                                        click here
+                                    </a>
+                                    <span id='docuri@(Model.OrderId)'>  </span>
+                                    before you can enter Tracking # and Carrier Name.
+                                </span>
+                            </div>
+                            <div id='tracking@(Model.OrderId)' class="tracking offset-md-1">
+                                <div class="col-md-6 top-margin-30">
+                                    @Html.LabelFor(model => model.TrackingNumber, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.TrackingNumber, new { htmlAttributes = new { @id = "TrackingNumber", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TrackingNumber, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-6 top-margin-30">
+
+                                    @Html.LabelFor(model => model.CarrierName, htmlAttributes: new { @class = "control-label" })
+                                    @if (Model.TaskData.isEnterprise && Model.CarrierName != null)
+                                    {
+                                        @Html.HiddenFor(model => model.CarrierName)
+                                        @Html.EditorFor(model => model.CarrierName, new { htmlAttributes = new { @id = "CarrierName", @class = "form-control green-text", @readonly = "readonly" } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.CarrierName, new { htmlAttributes = new { @id = "CarrierName", @class = "form-control" } })
+                                    }
+                                    @Html.ValidationMessageFor(model => model.CarrierName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        else if (trigger == Triggers.NCRApproval)
+                        {
+                            @Html.Partial("_NCRChooseResponsibility", Model)
+                        }
+                        else if (trigger == Triggers.NCRCorrectivePartsComplete || trigger == Triggers.NCRClose)
+                        {
+                            <br />
+                            if (trigger == Triggers.NCRClose)
+                            {
+                                <div class="col-md-12">
+                                    <span class="font-weight-bold">Note</span>: Determine if similar non-conformances may exist or are likely to arise in the future. If likelihood is determined, update the risk or opportunity registers as necessary. If not, close the NCR.
+                                </div>
+                            }
+
+                            if (trigger == Triggers.NCRCorrectivePartsComplete && Model.NcrDescriptionVM != null)
+                            {
+                                <div class="md-form col-md-6">
+                                    @Html.LabelFor(model => model.NcrDescriptionVM.TrackingNumber, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.NcrDescriptionVM.TrackingNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NcrDescriptionVM.TrackingNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="md-form col-md-6">
+                                    @Html.LabelFor(model => model.NcrDescriptionVM.CarrierName, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.NcrDescriptionVM.CarrierName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NcrDescriptionVM.CarrierName, "", new { @class = "text-danger" })
+                                </div>
+                            }
+                        }
+                        else if (trigger == Triggers.NCRRejectCorrectiveAction && Model.NcrDescriptionVM != null)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.RejectCorrectiveActionReason, new { @class = "control-label" })
+                                <textarea id="RejectCorrectiveActionReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols="50" class="form-control xeditable" placeholder="Customer Cause ...">
+                                @Model.NcrDescriptionVM.RejectCorrectiveActionReason
+                            </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.RejectCorrectiveActionReason, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else if (trigger == Triggers.NCRRejectRootCause && Model.NcrDescriptionVM != null)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.RejectRootCauseReason, new { @class = "control-label" })
+                                <textarea id="RejectRootCauseReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Customer Cause ...">
+                                @Model.NcrDescriptionVM.RejectRootCauseReason
+                            </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.RejectRootCauseReason, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else if (trigger == Triggers.NCRCorrectiveReceivedRejected && Model.NcrDescriptionVM != null)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.RejectCorrectivePartsReason, new { @class = "control-label" })
+                                <textarea id="RejectCorrectivePartsReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Customer Cause ...">
+                                @Model.NcrDescriptionVM.RejectCorrectivePartsReason
+                            </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.RejectCorrectivePartsReason, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else if ((trigger == Triggers.NCRArbitrateCustomerCause || trigger == Triggers.NCRArbitrateCustomerCauseDamage) && Model.NcrDescriptionVM != null)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, new { @class = "control-label" })
+                                <textarea id="ArbitrateCustomerCauseReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Customer Cause ...">
+                                @Model.NcrDescriptionVM.ArbitrateCustomerCauseReason
+                            </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.ArbitrateCustomerCauseReason, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="md-form offset-md-1 col-md-10">
+
+                                @Html.Partial("_UploadNCDoc")
+
+                            </div>
+                        }
+                        else if (trigger == Triggers.NCRArbitrateVendorCause && Model.NcrDescriptionVM != null)
+                        {
+                            <div class="offset-md-1 col-md-10">
+                                @Html.LabelFor(model => model.NcrDescriptionVM.ArbitrateVendorCauseReason, new { @class = "control-label" })
+                                @*@Html.TextAreaFor(model => model.NcrDescriptionVM.ArbitrateVendorCauseReason,  new { rows = 5, cols = 50,  @class = "form-control xeditable", placeholder = "Vendor Cause ..." })*@
+                                <textarea id="ArbitrateVendorCauseReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Vendor Cause ...">
+                            @Model.NcrDescriptionVM.ArbitrateVendorCauseReason
+                        </textarea>
+                                @Html.ValidationMessageFor(model => model.NcrDescriptionVM.ArbitrateVendorCauseReason, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="md-form offset-md-1 col-md-10">
+
+                                @Html.Partial("_UploadNCDoc")
+
+                            </div>
+                        }
+                        else if (trigger == Triggers.CompleteInvoiceForVendor)
+                        {
+                            <div>
+                                @if (Model != null)
+                                {
+                                    Html.RenderPartial("_CreateInvoiceForVendor", Model);
+                                }
+                            </div>
+                        }
+                    }
+                }
+            </fieldset>
+
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="col-md-12 red-text small">@TempData["ErrorMessage"].ToString()</div>
+            }
+
+            <div>
+                @if (Model.HideSubmitButton != true)
+                {
+                    <button id="btnSubmit" type="submit" name="submitButton" onclick="return isRadioButtonChecked();" class="btn grey-background-color pull-lg-right buttonWidth2 top-margin-30">Submit</button>
+                }
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#clkPackingSlip@(Model.OrderId)').click(function() {
+
+            $('#spinner').show();
+            var $orderId = @Model.OrderId; //$(this).data('id1');
+
+            var $url = '//' + window.location.host + '/Home/CreatePackingSlip';
+            $.ajax({
+                url: $url,
+                type: 'GET',
+                data: { orderId: $orderId },
+                success: function (result) {
+                    $('#spinner').hide();
+                    $('#clkPackingSlip' + $orderId).hide();
+                    $('#docuri' + $orderId).html(result);
+
+                },
+                error: function (e) {
+                    $('#spinner').hide();
+                    alertify.alert(e.responseText);
+                }
+            });
+        });
+
+
+        $('#TaskStateHandler').submit(function (event) {
+            $('#spinner').show();
+            var estimateCompletionDate = $('#EstimateCompletionDate').val();
+            var trackingNumber = $('#TrackingNumber').val();
+            var carrierName = $('#CarrierName').val();
+            var inspectionReport = $('#InspectionReport').val();
+            var numberSampleIncluded = $('#NumberSampleIncluded').val();
+            var uploadQuote = $('#uploadedQuoteFile').val();
+            var invoicenumberForTooling = $('#AttachedInvoiceNumberForTooling').val();
+            var attachmentForTooling = $('#AttachInvoiceForTooling').val();
+            var invoicenumber = $('#AttachedInvoiceNumber').val();
+            var attachment = $('#AttachInvoice').val();
+            var harmonizedCode = $('#HarmonizedCode').val();
+            var toolingSetupCharges = $('#ToolingSetupCharges').val();
+
+            if (estimateCompletionDate == '') {
+                alertify.error("Estimate Completion Date must be selected");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (inspectionReport == '') {
+                alertify.error("Inspection Report must be provided");
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (trackingNumber == '') {
+                alertify.error("Tracking number must be provided");
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else if (carrierName == '') {
+                alertify.error("Carrier name must be provided");
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+
+            else if (uploadQuote == '' && $("input[name=group][value='ReadyToOrder']").prop('checked') == true) {
+                alertify.error('You must upload you Quote document');
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else if ((numberSampleIncluded == '' || numberSampleIncluded == 0) && $("input[name=group][value='ReadyToOrder']").prop('checked') == true) {
+                alertify.error('Number of Sample Included must be provided');
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else if (invoicenumberForTooling == '') {
+                alertify.error('Attached Invoice Number For Tooling Setup is required.');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (attachmentForTooling == '') {
+                alertify.error('You must attach your Invoice For Tooling Setup.');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (invoicenumber == '') {
+                alertify.error('Attached Invoice Number is required.');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (attachment == '') {
+                alertify.error('You must attach your Invoice.');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (harmonizedCode == '') {
+                alertify.error('Harmonized Code is required');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (toolingSetupCharges == '' || toolingSetupCharges == 0) {
+                alertify.error('Tooling Setup Charges is required');
+                $('#spinner').hide();
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+
+                this.submitButton.disabled = true;
+                return true;
+            }
+        });
+
+
+        $('#EstimateCompletionDate').datepicker();
+
+
+        var $url = '//' + window.location.host + '/Home/ModifyNCCauseReasons';
+
+        $.fn.editable.defaults.mode = 'inline';
+        $('.xeditable').editable({
+
+            url: function (params) {
+                return $.ajax({
+                    type: 'POST',
+                    url: $url,
+                    data: JSON.stringify(params),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    async: true,
+                    cache: false,
+                    success: function (response, newValue) {
+                        $(this).html(newValue);
+                    },
+                    error: function () {
+                        alertify.error("Error in Ajax");
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+

@@ -1,0 +1,68 @@
+﻿@model Omnae.BusinessLayer.Models.PriceBreakViewModel
+
+
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+@{
+    int i = 0;
+}
+
+@if (TempData["AzureException"] != null)
+{
+    <p class="red-text">
+        @TempData["AzureException"]
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Unit Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var pb in Model.PriceBreakList)
+            {
+
+            <tr>
+                @if (i == 0)
+                {
+                    <td><a class="xeditable" data-pk="@pb.Id" data-name="Quantity" data-value="@pb.Quantity">@pb.Quantity (MOQ)</a></td>
+                }
+                else
+                {
+                    <td><a class="xeditable" data-pk="@pb.Id" data-name="Quantity" data-value="@pb.Quantity">@pb.Quantity</a></td>
+                }
+
+                <td><a class="xeditable" data-pk="@pb.Id" data-name="UnitPrice" data-value="@pb.UnitPrice">@string.Format("{0:C}", @pb.UnitPrice)</a></td>
+                <td><a id="@pb.Id" class="del" href="@Url.Action("DeletePriceBreak", "Products",new { @id = @pb.Id })"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+
+<script>
+
+    $.fn.editable.defaults.mode = 'inline';
+    $('.xeditable').editable({
+        type: 'text',
+        url: "@Url.Action("ModifyPriceBreak", "Products")",
+        savenochange: true,
+        success: function (response, newValue) {
+            $(this).val(newValue);
+            //$('.form-control').val('');
+            //window.location.reload();
+        },
+        error: function (response, newValue) {
+            alert("Error " + response);
+        }
+    });
+
+</script>

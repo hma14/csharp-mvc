@@ -1,0 +1,9 @@
+﻿
+Hi @Model.UserName,
+
+@Model.Content
+Please log in to @Model.Url and follow the instruction.
+
+Best regards,
+    
+Omnae Team

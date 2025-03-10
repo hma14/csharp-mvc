@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<req:KnownTrackingRequest xmlns:req="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com&#xD;&#xA;						TrackingRequestKnown.xsd">
+  <Request>
+    <ServiceHeader>
+      <MessageTime>2017-08-30T16:38:56.4257299-07:00</MessageTime>
+      <MessageReference>0987654321098765432109876543</MessageReference>
+      <SiteID>PADTECH</SiteID>
+      <Password>IKOisxW8ac</Password>
+    </ServiceHeader>
+  </Request>
+  <LanguageCode>en</LanguageCode>
+  <AWBNumber>
+  </AWBNumber>
+  <LevelOfDetails>ALL_CHECK_POINTS</LevelOfDetails>
+</req:KnownTrackingRequest>

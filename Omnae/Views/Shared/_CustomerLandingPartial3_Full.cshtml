@@ -1,0 +1,165 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using Omnae.Common
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+
+<style>
+    div#list3, .gridview3 {
+        display: none;
+    }
+
+    .productInfo.dl-horizontal dt {
+        width: 200px !important;
+    }
+
+    .my-tag {
+        margin-right: 10px !important;
+        margin-top: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-11">First Orders</h4>
+        <span class="col-md-1 pull-right small-button">
+
+            <a href="#" class="switcher small-button listview3 green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="switcher active small-button gridview3 pink-text"><i class="fas fa-th fa-2x"></i></a>
+        </span>
+        <br />
+        <hr class="gradient" />
+    </div>
+
+    <div id="grid3" class="card-block">
+        @foreach (var tdvm in @Model)
+        {
+            var td = tdvm.TaskData;
+            var order = tdvm.Order;
+            var productUnitPrice = td.Product?.PriceBreak?.UnitPrice;
+
+
+            <div class="col-md-4">
+                <div class="card">
+
+                    <!--Card Header-->
+
+                    @Html.Partial("_CardHeader", td)
+
+                    <a href="~/Products/PlaceOrder/@td.TaskId" class="wrapper" title="Click to Place Order">
+                        <div class="card-image card-image-min-height">
+
+                            <!--Card image-->
+
+                            @Html.Partial("_CardImage", td)
+
+                        </div>
+
+                        <div class="card-block my-card-text card-image-min-height">
+
+                            <!--Card text-->
+
+                            <dl class="productInfo dl-horizontal">
+                                <dt>
+                                    State
+                                </dt>
+                                <dd class="green-text font-weight-bold">
+                                    @tdvm.EnumName
+                                </dd>
+
+
+                                @if (order != null)
+                                {
+                                    <dt>Order Date</dt>
+                                    <dd>@order.OrderDate.ToString("yyyy-MM-dd")</dd>
+                                    <dt>
+                                        Order Qty
+                                    </dt>
+                                    <dd>
+                                        @order.Quantity
+                                    </dd>
+                                    if (@order.DesireShippingDate != null)
+                                    {
+                                        <dt>Desired Delivery Date</dt>
+                                        <dd>@order.DesireShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                    }
+                                    if (@order.EarliestShippingDate != null)
+                                    {
+                                        <dt>Earliest Ship Date</dt>
+                                        <dd>@order.EarliestShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                    }
+                                    if (order.EstimateCompletionDate != null)
+                                    {
+                                        <dt>
+                                            Est. Completion Date
+                                        </dt>
+                                        <dd>
+                                            @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                                        </dd>
+                                    }
+                                    if (order.CustomerPONumber != null)
+                                    {
+                                        <dt>
+                                            PO #
+                                        </dt>
+                                        <dd class="green-text">
+                                            @order.CustomerPONumber
+                                        </dd>
+                                    }
+                                }
+
+                                @if (productUnitPrice != null)
+                                {
+                                    <dt>Pricing</dt>
+                                    <dd>@string.Format("{0:C}", @productUnitPrice)</dd>
+                                }
+                                <dt>Leading time</dt>
+                                <dd>@td.Product.ProductionLeadTime (Business Days)</dd>
+                            </dl>
+                        </div>
+                    </a>
+
+                    <div class="card-data primary-background-color">
+                        <span class="col-md-5  white-text padding-off">
+                            @if (@td.StateId >= (int)States.QuoteAccepted && (@td.StateId < (int)States.OrderPaid || @td.StateId >= (int)States.SampleApproved))
+                            {
+                                <a href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+                            }
+                        </span>
+                        @if (@order != null)
+                        {
+                            <a class="col-md-5 white-text padding-off" href="@Url.Action("OrderDetails", "Orders", new { @id = @td.TaskId })">ORDER DETAILS</a>
+                        }
+                        else
+                        {
+                            <a class="col-md-5 white-text padding-off" href="@Url.Action("Details", "Orders", new { @id = @td.TaskId })">DETAILS</a>
+                        }
+                        @Html.AntiForgeryToken()
+                        @if (@td.isTagged == true)
+                        {
+                            <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                        }
+                        else
+                        {
+                            <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div id="list3" class="card-block">
+
+        <div class="col-md-12">
+            @Html.Partial("_DashboardRowColumnNames")
+            @foreach (var td in @Model)
+            {
+                @Html.Partial("_CustomerLandingListView", @td)
+            }
+
+        </div>
+
+    </div>
+</div>

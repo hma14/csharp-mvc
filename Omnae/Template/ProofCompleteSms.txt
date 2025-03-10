@@ -1,0 +1,9 @@
+﻿
+Hi @Model.UserName,
+
+Your production proof is ready for @Model.PartNumber from Omnae.com. 
+Please login to Omnae.com and review it carefully.
+Purchase Order #: @Model.PONumber
+
+Thanks,
+The Omnae Team

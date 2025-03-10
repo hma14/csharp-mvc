@@ -1,0 +1,71 @@
+﻿@model Omnae.BusinessLayer.Models.CalculateResultViewModel
+
+<style>
+    dt {
+        width:70%!important;
+    }
+</style>
+
+@if (@ViewBag.Msg != null)
+{
+    <p class="red-text">@ViewBag.Msg</p>
+}
+else
+{
+
+    @Html.Hidden("salesTax", Model.SalesTax)
+    @Html.Hidden("unitPrice", Model.UnitPrice)
+    @Html.Hidden("total", Model.Total)
+    @Html.Hidden("ToolingCharges", Model.ToolingCharges)
+    @Html.Hidden("TaxRate", Model.TaxRate)
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd id="unitPrice">
+            @string.Format("{0:C3}", Model.UnitPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ToolingCharges)
+        </dt>
+
+        <dd>
+            @string.Format("{0:C}", Model.ToolingCharges != null ? Model.ToolingCharges : 0m)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionCharge)
+        </dt>
+
+        <dd>
+            @string.Format("{0:C}", Model.ProductionCharge)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+
+        <dd>
+            @string.Format("{0:C}", Model.Subtotal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalesTax)
+        </dt>
+
+        <dd>
+            @string.Format("{0:C}", Model.SalesTax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+
+        </dt>
+
+        <dd id="salesPrice">
+            @string.Format("{0:C}", Model.Total)
+        </dd>
+
+    </dl>
+}

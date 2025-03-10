@@ -1,0 +1,70 @@
+﻿@model List<Omnae.ViewModels.RFQLogViewModel>
+
+@using Omnae.Common
+
+@{
+    ViewBag.Title = "RFQLog";
+}
+<div class="col-md-12 small top-margin-20">
+
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-file-alt"></i> RFQ Log</h4>
+        <div class="card-block">
+            @if (Model != null)
+            {
+                int i = 0;
+                <table id="rfqlog" class="table table-bordered tablesorter">
+                    <colgroup>
+                        <col style="width:4%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+                        <col style="width:11%;" />
+
+                    </colgroup>
+                    <thead>
+                        <tr class="title">
+                            <th style="text-align:center;">#</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].RFQCreatedDate)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].CustomerName)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].ProductType)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].PartNumber)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].RevisionNumber)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].QuoteAcceptDate)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].SelectedVendorName)</th>
+                            <th class="header">@Html.LabelFor(m => Model[0].CurrentState)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rw in Model)
+                        {
+                            i++;
+                            <tr class="line">
+                                <td style="text-align:center;">@i</td>
+                                <td>@rw.RFQCreatedDate.Value.ToString("MM/dd/yyyy")</td>
+                                <td>@rw.CustomerName</td>
+                                <td>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(MATERIALS_TYPE), @rw.ProductType))</td>
+                                <td>@rw.PartNumber</td>
+                                <td>@rw.RevisionNumber</td>
+                                <td>@string.Format("{0}", rw.QuoteAcceptDate != null ? rw.QuoteAcceptDate.Value.ToString("MM/dd/yyyy") : null)</td>
+                                <td>@rw.SelectedVendorName</td>
+                                <td>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), rw.CurrentState))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#rfqlog')
+            .tablesorter({ widthFixed: true, widgets: ['zebra'] });
+            //.tablesorterPager({ container: $("#pager") });
+    });
+</script>

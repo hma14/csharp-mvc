@@ -1,0 +1,3 @@
+﻿Hi @Model.UserName,
+
+This is to notify that the vendor is asking customer for approval for the replacement/rework of the NCR regarding part # @Model.PartNumber of @Model.Description.

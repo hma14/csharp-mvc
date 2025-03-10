@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<p:DCTRequest xmlns:p="http://www.dhl.com" xmlns:p1="http://www.dhl.com/datatypes" xmlns:p2="http://www.dhl.com/DCTRequestdatatypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com DCT-req.xsd ">
+  <GetQuote>
+    <Request>
+      <ServiceHeader>
+        <MessageTime>2017-09-06T12:53:40.5926693-07:00</MessageTime>
+        <MessageReference>0987654321098765432109876543</MessageReference>
+        <SiteID>PADTECH</SiteID>
+        <Password>IKOisxW8ac</Password>
+      </ServiceHeader>
+    </Request>
+    <From>
+      <CountryCode>au</CountryCode>
+      <Postalcode>2000</Postalcode>
+    </From>
+    <BkgDetails>
+      <PaymentCountryCode>JP</PaymentCountryCode>
+      <Date>2017-09-06</Date>
+      <ReadyTime>PT10H21M</ReadyTime>
+      <ReadyTimeGMTOffset>+01:00</ReadyTimeGMTOffset>
+      <DimensionUnit>CM</DimensionUnit>
+      <WeightUnit>KG</WeightUnit>
+      <Pieces>
+        <Piece>
+          <PieceID>1</PieceID>
+          <Height>30</Height>
+          <Depth>20</Depth>
+          <Width>10</Width>
+          <Weight>1</Weight>
+        </Piece>
+      </Pieces>
+      <PaymentAccountNumber>952694830</PaymentAccountNumber>
+      <IsDutiable>N</IsDutiable>
+      <NetworkTypeCode>AL</NetworkTypeCode>
+      <InsuredValue>555.0</InsuredValue>
+      <InsuredCurrency>JPY</InsuredCurrency>
+    </BkgDetails>
+    <To>
+      <CountryCode>JP</CountryCode>
+      <Postalcode>1000000</Postalcode>
+    </To>
+    <Dutiable>
+      <DeclaredCurrency>EUR</DeclaredCurrency>
+      <DeclaredValue>234.0</DeclaredValue>
+    </Dutiable>
+  </GetQuote>
+</p:DCTRequest>

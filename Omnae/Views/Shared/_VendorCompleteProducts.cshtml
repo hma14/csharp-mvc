@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using System.Configuration
+
+
+@if (Model != null && Model.Count() > 0)
+{
+
+    int i = 0;
+    int maxIcons = Convert.ToInt16(ConfigurationManager.AppSettings["MaxIconsInGrid"]);
+
+    <div id="grid4" class="card-block">
+
+        @foreach (var tdvm in @Model)
+        {
+            @Html.Partial("_VendorLandingGridView", tdvm)
+        }
+    </div>
+
+    <div id="list4" class="card-block">
+        <div class="col-md-12">
+            @*<div class="col-md-12 card-header default-color pull-left white-text status-title">
+                    <span class="col-md-1 no-padding">Avatar</span>
+                    <span class="col-md-2 no-padding">Part # Rev. Name</span>
+                    <span class="col-md-1 no-padding">Customer</span>
+                    <span class="col-md-1 no-padding">Order Date</span>
+                    <span class="col-md-1 no-padding">Lead Time</span>
+                    <span class="col-md-1 no-padding">Qty</span>
+                    <span class="col-md-1 no-padding">Unit Price</span>
+                    <span class="col-md-1 no-padding">PO #</span>
+                    <span class="col-md-2 no-padding">
+                        <span class="col-md-7">State</span>
+                        <span class="col-md-5">State Icon</span>
+                    </span>
+                    <span class="col-md-1">Details</span>
+                </div>*@
+            @Html.Partial("_DashboardVendorRowColumnNames")
+            @foreach (var tdvm in @Model)
+            {
+                @Html.Partial("_VendorLandingListView", @tdvm)
+                i++;
+            }
+            @if (i == maxIcons)
+            {
+                <a class="font-weight-bold text-lg-center" href="@Url.Action("RedirectToFullView", "Home", new { @num = 5})" target="_blank"><h5>...More</h5></a>
+            }
+        </div>
+    </div>
+    foreach (var tdvm in @Model)
+    {
+        <div class="modal" id='Modal@(tdvm.TaskData.TaskId)' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+    }
+
+}
+
+
+

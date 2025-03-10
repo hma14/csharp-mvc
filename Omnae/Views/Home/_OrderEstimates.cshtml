@@ -1,0 +1,12 @@
+﻿@model Omnae.ViewModels.ChangeEstForCustomerViewModel
+
+
+@if (Model != null)
+{
+    @Html.DropDownListFor(model => model.OrderId, Model.OrderList, "-- Select Order --", new { @class = "btn grey-background-color dropdown-toggle col-md-12" })
+    @Html.ValidationMessageFor(model => model.OrderId, "", new { @class = "text-danger" })
+}
+else
+{
+    <span class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</span>
+}

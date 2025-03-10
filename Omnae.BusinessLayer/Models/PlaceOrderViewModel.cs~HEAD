@@ -1,0 +1,81 @@
+﻿using Omnae.Common;
+using Omnae.Model.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web;
+using System.Web.Mvc;
+
+namespace Omnae.BusinessLayer.Models
+{
+    public class PlaceOrderViewModel
+    {
+        public Product Product { get; set; }
+        public int ProductId { get; set; }
+        public int TaskId { get; set; }
+        public List<PBreaks> PriceBreaks { get; set; }
+        public List<PBreaks> ExtraQuantityPriceBreaks { get; set; }
+        public int?  Quantity { get; set; }
+        public decimal? UnitPrice { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+       // public decimal? SalesPrice { get; set; }
+        public decimal? Total { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        public decimal? SalesTax { get; set; }
+
+        public int CountryId { get; set; }
+        public int? ProvinceId { get; set; }
+
+        [Display(Name = "Purchase Order Doc")]
+        [Required(ErrorMessage = "Purchase Order Doc is required")]
+        public HttpPostedFileBase[] PurchaseOrder { get; set; }
+
+        [Display(Name = "PO Number")]
+        [Required(ErrorMessage = "PO Number is required")]
+        public string PONumber { get; set; }
+
+        [Display(Name = "Payment Methods")]
+        public PAYMENT_METHODS PaymentMethod { get; set; }
+        public SelectList PaymentMethods { get; set; }
+
+        public bool IsReorder { get; set; }
+        public bool IsExtraQuantities { get; set; }
+
+        public States StateId { get; set; }
+        public bool IsForOrderTooling { get; set; }
+
+
+        public StateLastUpdatedViewModel LastUpdated { get; set; }
+        public List<OrderStateTracking> OrderStateTrackings { get; set; }
+        public List<ProductStateTracking> ProductStateTrackings { get; set; }
+        public List<PartRevision> PartRevisions { get; set; }
+
+        public decimal? ToolingCharges { get; set; }
+
+        public string Buyer { get; set; }
+
+        [Display(Name = "Requested Delivery Date")]
+        public DateTime? DesireShippingDate { get; set; }
+
+        [Display(Name = "Earliest Delivery Date")]
+        public DateTime? EarliestShippingDate { get; set; }
+        public double? TaxRate { get; set; }
+        public string TaxRatePercentage { get; set; }
+        public bool isEnterprise { get; set; }
+        public string ShipVia { get; set; }
+        public SelectList ShipVias { get; set; }
+        public int NumberSampleIncluded { get; set; }
+    }
+
+    public class PBreaks
+    {
+        [Required]
+        public int? Quantity { get; set; }
+
+        [Required]
+        [Display(Name = "Unit Price")]
+        public decimal? UnitPrice { get; set; }
+        public decimal? ToolingSetupCharges { get; set; }
+
+    }
+}

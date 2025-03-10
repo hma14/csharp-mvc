@@ -1,0 +1,168 @@
+﻿@model Omnae.BusinessLayer.Models.ShippingQuoteRequestViewModel
+
+@{
+    ViewBag.Title = "ShippingQuote";
+}
+
+<style>
+    .myddl {
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="row top-margin-30 grey-text small">
+
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <div class="card-header primary-background-color text-xs-center"><h4>Create Shipping Quote</h4></div>
+            <div class="card-block">
+                <div class="text-xs-center">
+
+                </div>
+                <br />
+
+                @using (Html.BeginForm("ShippingQuote", "Home", FormMethod.Post, new { id = "createQuote", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(m => m.Destination.City)
+                    @Html.HiddenFor(m => m.Destination.CountryCode)
+                    @Html.HiddenFor(m => m.Destination.Postalcode)
+                    @Html.HiddenFor(m => m.Origin.City)
+                    @Html.HiddenFor(m => m.Origin.CountryCode)
+                    @Html.HiddenFor(m => m.Origin.CountryCode)
+                    @Html.HiddenFor(m => m.Destination.City)
+                    @Html.HiddenFor(m => m.Dutiable.DeclaredCurrency)
+
+
+
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">From Country</legend>
+                        <div class="md-form col-md-3 top-margin-20">
+                            @Html.DropDownListFor(model => model.Origin.CountryCode, ViewBag.CountryCode as SelectList, "-- From Country --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Origin.CountryCode, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="md-form offset-md-1 col-md-4">
+                            @Html.LabelFor(model => model.Origin.Postalcode, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Origin.Postalcode, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+
+
+                        <div class="md-form col-md-4">
+                            @Html.LabelFor(model => model.Origin.City, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Origin.City, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">To Country</legend>
+                        <div class="md-form col-md-3 top-margin-20">
+                            @Html.DropDownListFor(model => model.Destination.CountryCode, ViewBag.CountryCode as SelectList, "-- To Country --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Destination.CountryCode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form offset-md-1 col-md-4">
+                            @Html.LabelFor(model => model.Destination.Postalcode, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Destination.Postalcode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Destination.Postalcode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-4">
+                            @Html.LabelFor(model => model.Destination.City, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Destination.City, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </fieldset>
+                    <br />
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Package Details</legend>
+                        <div class="md-form col-md-3  top-margin-20 myddl">
+                            @Html.DropDownListFor(model => model.BkgDetails.PaymentCountryCode, ViewBag.CountryCode as SelectList, "-- Payment Country --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.PaymentCountryCode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-2 top-margin-20 myddl">
+                            @Html.DropDownListFor(model => model.BkgDetails.DimensionUnit, ViewBag.DdlDimensionUnit as SelectList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.DimensionUnit, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-2 top-margin-20 myddl">
+                            @Html.DropDownListFor(model => model.BkgDetails.WeightUnit, ViewBag.DdlWeightUnit as SelectList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.WeightUnit, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form offset-md-1 col-md-2">
+                            @Html.LabelFor(model => model.BkgDetails.ShipmentWeight, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.BkgDetails.ShipmentWeight, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.ShipmentWeight, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-2">
+                            @Html.LabelFor(model => model.BkgDetails.Volume, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.BkgDetails.Volume, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.Volume, "", new { @class = "text-danger" })
+                        </div>
+
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Pieces</legend>
+                            <div id="Pieces">
+                                @Html.Partial("_ShippingAddPiece", Model)
+                            </div>
+                            <div class="offset-md-8 col-md-2">
+                                @Ajax.ActionLink("Add Piece", "AddPieces", "Home", null, new AjaxOptions
+                           {
+                               HttpMethod = "GET",
+                               InsertionMode = InsertionMode.InsertAfter,
+                               UpdateTargetId = "Pieces",
+
+                           }, new { @class = "pull-right" })
+                            </div>
+                            <div class="col-md-2">
+                                @Ajax.ActionLink("Remove Piece", "RemovePieces", "Home", null, new AjaxOptions
+                           {
+                               HttpMethod = "GET",
+                               InsertionMode = InsertionMode.Replace,
+                               UpdateTargetId = "Pieces",
+
+                           }, new { @class = "pull-right" })
+
+                            </div>
+
+                        </fieldset>
+                    </fieldset>
+
+
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Dutiable</legend>
+                        <div class="md-form col-md-3 top-margin-20">
+                            @Html.DropDownListFor(model => model.BkgDetails.IsDutiable, ViewBag.DdlIsDutiable as SelectList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BkgDetails.IsDutiable, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form offset-md-1 col-md-4">
+                            @Html.LabelFor(model => model.Dutiable.DeclaredCurrency, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Dutiable.DeclaredCurrency, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Dutiable.DeclaredCurrency, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-4">
+                            @Html.LabelFor(model => model.Dutiable.DeclaredValue, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Dutiable.DeclaredValue, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Dutiable.DeclaredValue, "", new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+
+                    <div class="md-form text-xs-center">
+                        <button type="submit" class="btn accent-background-color buttonWidth">Send Quote</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $('#createQuote').submit(function () {
+        $('#spinner').show();
+    });
+
+    $(function () {
+        $('#spinner').hide();
+    });
+</script>

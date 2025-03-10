@@ -1,0 +1,9 @@
+﻿
+Hi @Model.UserName,
+
+Revision Requested for @Model.PartNumber
+@Model.RevisingReason
+
+Please allow us 1 business day to check over the revision If everything looks good, you will get pricing right away. 
+Please login to Omnae.com to provide updated drawings.
+Purchase Order #: @Model.PONumber

@@ -1,0 +1,3 @@
+﻿Hi @Model.UserName,
+
+This is to notify you that Admin arbitrated the root cause of the NCR to the vendor regarding part # @Model.PartNumber of @Model.Description.

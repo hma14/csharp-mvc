@@ -1,0 +1,96 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+<style>
+    #product dt {
+        text-align: left !important;
+        padding: 0px !important;
+        width: 55% !important;
+    }
+
+    #product dd {
+        text-align: left !important;
+        width: 100% !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        font-size: 0.8em;
+    }
+</style>
+
+<div class="card puduct-detail-min-height">
+    <h5 class="card-header primary-background-color">Product Details</h5>
+
+    <!--Card image-->
+    
+    @if (@Model.Product.AvatarUri != null)
+    {
+
+        var ext = Path.GetExtension(@Model.Product.AvatarUri).ToUpper();
+        if ((ext == ".GIF" || ext == ".JPEG" || ext == ".JPG" || ext == ".PNG"))
+        {
+            <div class="view overlay hm-white-slight">
+                <img src=@Model.Product.AvatarUri class="img-fluid center-block" title="@Model.Product.Name">
+            </div>
+        }
+    }
+    else
+    {
+        <div class="view overlay hm-white-slight">
+            <h1 class="text-lg-center brown-text top-padding-80">@Model.Product.PartNumber.ToString().PadLeft(8, '0')</h1>            
+        </div>
+    }
+
+
+    <div id="product" class="card-block">
+        <!--Category & Title-->
+        <h4 class="card-title text-xs-center">@Model.Product.BuildType</h4>
+        <h2 class="card-title text-xs-center"><a href="">@Model.Product.Name</a></h2>
+
+
+
+        <!--Description-->
+        <p class="card-text text-xs-center">
+            @Model.Product.Description
+        </p>
+        <br />
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Product.PartNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Product.PartNumber)
+                    </dd>
+
+
+
+
+
+                </dl>
+            </div>
+
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Product.PartNumberRevision)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Product.PartNumberRevision)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-12">
+            @{
+                var controller = ViewContext.Controller as ProductsController;
+                TaskData td = controller.TaskDataService.FindById(Model.TaskId);
+                Html.RenderPartial("_PartDetails", controller.SetupProductDetailsVM(td));
+            }
+        </div>
+    </div>
+</div>

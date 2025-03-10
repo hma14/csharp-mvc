@@ -1,0 +1,88 @@
+﻿@model Omnae.ViewModels.ModifyUnitPricesViewModel
+@{
+    ViewBag.Title = "ModifyUnitPrices";
+}
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-edit"></i> Modify Unit Prices</h5>
+        <div class="card-block">
+            @if (Model != null)
+            {
+                <div class="top-margin-30 offset-md-1 col-md-10">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="red-text">@TempData["ErrorMessage"].ToString()</div>
+                    }
+                    @using (Html.BeginForm("ModifyUnitPrices", "Home", FormMethod.Post, new
+                    {
+                        id = "ModifyUnitPricesForm",
+                        enctype = "multipart/form-data",
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(model => model.CustomerId, Model.Customers, "-- Select Customer --", new { @id = "customerId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div id="products" class="col-md-6"></div>
+
+                            <div id="result" class="top-margin-30"></div>
+                        </div>
+                        <div class="text-md-center">
+                            <button type="submit" class="btn accent-background-color buttonWidth top-margin-50">Save</button>
+                        </div>
+
+                    }
+                    @if (TempData["Result"] != null)
+                    {
+                        <div class="green-text text-md-center top-margin-30">@TempData["Result"].ToString()</div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#DateToChange').datepicker();
+
+        $('#ModifyUnitPricesForm').submit(function () {
+            $('#spinner').show();
+        });
+    });
+
+    $("#customerId")
+        .change(function () {
+
+            $('#spinner').show();
+            var companyId = $("select option:selected").val();
+            var $url = '//' + window.location.host + '/Home/GetProductList';
+            
+
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: { 'companyId': companyId },
+                success: function (result) {
+                    $('#spinner').hide();
+                    $('#products').html(result);
+                },
+                error: function (error) {
+                    $('#spinner').hide();
+                    alertify.error(error.statusCode);
+                }
+            });
+        });
+
+</script>
+
+

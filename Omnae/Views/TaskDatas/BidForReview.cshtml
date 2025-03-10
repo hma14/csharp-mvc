@@ -1,0 +1,255 @@
+﻿@model Omnae.ViewModels.BidReviewViewModel
+@using Omnae.Util
+@{
+    ViewBag.Title = "BidForReview";
+}
+
+<style>
+    .chart {
+        display: none;
+    }
+</style>
+<div class="col-md-12 top-margin-30 small">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+    }
+    @if (TempData["Warning"] != null)
+    {
+        <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+    }
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center">Bid Review for: @Model.ProductName</h4>
+        <div class="card-block">
+
+            <div class="col-lg-12">Customer Priority: <span class="red-text bold">@Model.CustomerPriority</span></div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Hidden("ChosenVendorId")
+            @Html.HiddenFor(m => m.ChosenVendorId)
+            @Html.HiddenFor(m => m.ProductId)
+
+
+            @for (int i = 0; i < Model.Vendors.Count; i++)
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.VendorReason[Model.Vendors[i].Id])
+                @Html.HiddenFor(m => Model.VendorIds[i])
+                @Html.Hidden("SampleLeadTime" + Model.Vendors[i].Id, @Model.BidDic[Model.Vendors[i].Id].SampleLeadTime)
+                @Html.Hidden("ProductLeadTime" + Model.Vendors[i].Id, @Model.BidDic[Model.Vendors[i].Id].ProductLeadTime)
+
+
+                <div class="col-md-12 top-margin-20 ">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="col-md-6 no-padding">
+                                <div class="col-md-5 no-padding">
+                                    @if (Model.ToShowCheckbox == true)
+                                    {
+                                        <input class="chk" type="checkbox" id="@Model.Vendors[i].Id" name="@Model.Vendors[i].Id" value="true">
+                                    }
+                                    <label for="@Model.Vendors[i].Id">@Model.Vendors[i].Name</label>
+                                </div>
+                                <div class="col-md-7 green-text">
+
+                                    @if (Model.Vendors[i].Address != null)
+                                    {
+                                        <span>
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            @Model.Vendors[i].Address.AddressLine1, @Model.Vendors[i].Address.City, @Model.Vendors[i].Address.Country.CountryName
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-4 no-padding">
+                                <div class="reason" id="reason@(Model.Vendors[i].Id)">
+                                    @*<div class="md-form col-md-12 no-margin no-padding">@Html.DropDownListFor(m => Model.BidFailedReasonIndex[i], Model.ReasonsDic[Model.VendorIds[i]], new { @class = "form-control ddl" })</div>*@
+                                    <div class="md-form col-md-12 no-margin no-padding">@Html.DropDownList($"BidFailedReasonIndex{i}", Model.ReasonsDic[Model.VendorIds[i]], new { @class = "form-control" })</div>
+                                </div>
+                            </div>
+                            <div class="md-form col-md-2 no-margin no-padding">
+                                <a class="btn accent-background-color buttonWidth3  pull-right" onclick="TriggerFunc(@Model.Vendors[i].Id, @i);">Choose</a>
+                            </div>
+
+                            <h4 class="col-md-12 text-md-center">
+                                Quality Analytics
+                                <a class="minusplus green-text" href="#" data-id1="@(i)" style="text-decoration:none;"><i class="fas fa-plus-square"></i></a>
+                            </h4>
+                            <div id="charts@(i)" class="row chart no-padding">
+                                @Html.Partial("_Charts", Model.Charts[i])
+                            </div>
+
+                            @if (Model.isEnterprise == true)
+                            {
+                                <div class="col-md-12 card-header default-color white-text status-title text-md-center font-weight-bold">
+                                    <span class="col-md-1">Quantity</span>
+                                    <span class="col-md-1">Unit Price</span>
+                                    <span class="col-md-2">Ship Unit Price</span>
+                                    <span class="col-md-2">Lead Time (days)</span>
+                                    <span class="col-md-2">Samp. Lead Time (days)</span>
+                                    <span class="col-md-2">Tooling Charge</span>
+                                    <span class="col-md-2">Ship Days</span>
+                                </div>
+
+                                <div class="col-md-12">
+                                    @foreach (var pd in Model.BidIdPriceBreaksDic[Model.Vendors[i].Id])
+                                    {
+                                        if (pd.UnitPrice == 0)
+                                        {
+                                            continue;
+                                        }
+                                        <div class="row line text-md-center">
+                                            <span class="col-md-1">@pd.Quantity</span>
+                                            <span class="col-md-1">@string.Format("{0:f3}", pd.UnitPrice)</span>
+                                            <span class="col-md-2">@string.Format("{0:F2}", pd.ShippingUnitPrice)</span>
+                                            <span class="col-md-2">@Model.BidDic[Model.Vendors[i].Id].ProductLeadTime</span>
+                                            <span class="col-md-2">@Model.BidDic[Model.Vendors[i].Id].SampleLeadTime</span>
+                                            <span class="col-md-2">@string.Format("{0:C}", pd.ToolingSetupCharges)</span>
+                                            <span class="col-md-2">@pd.ShippingDays</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-12 card-header default-color white-text status-title text-md-center font-weight-bold">
+                                    <span class="col-md-1">Quantity</span>
+                                    <span class="col-md-1">Vend. Unit Price</span>
+                                    <span class="col-md-1">Cust. Unit Price</span>
+                                    <span class="col-md-1">Ship Unit Price</span>
+                                    <span class="col-md-4">
+                                        <span class="col-md-2">Markup</span>
+                                        <span class="col-md-5">Lead Time (days)</span>
+                                        <span class="col-md-5">Samp. Lead Time (days)</span>
+                                    </span>
+                                    <span class="col-md-4">
+                                        <span class="col-md-4">Vend. Tooling Charge</span>
+                                        <span class="col-md-5">Cust. Tooling Charge</span>
+                                        <span class="col-md-3">Ship Days</span>
+                                    </span>
+                                </div>
+
+                                <div class="col-md-12">
+                                    @foreach (var pd in Model.BidIdPriceBreaksDic[Model.Vendors[i].Id])
+                                    {
+                                        if (pd.VendorUnitPrice == 0)
+                                        {
+                                            continue;
+                                        }
+                                        <div class="row line text-md-center">
+                                            <span class="col-md-1">@pd.Quantity</span>
+                                            <span class="col-md-1">@string.Format("{0:F3}", pd.VendorUnitPrice)</span>
+                                            <span class="col-md-1">@string.Format("{0:f3}", pd.UnitPrice)</span>
+                                            <span class="col-md-1">@string.Format("{0:F2}", pd.ShippingUnitPrice)</span>
+                                            <span class="col-md-4">
+                                                <span class="col-md-2">@pd.Markup</span>
+                                                <span class="col-md-5">@Model.BidDic[Model.Vendors[i].Id].ProductLeadTime</span>
+                                                <span class="col-md-5">@Model.BidDic[Model.Vendors[i].Id].SampleLeadTime</span>
+                                            </span>
+                                            <span class="col-md-4">
+                                                <span class="col-md-4">@string.Format("{0:C}", pd.ToolingSetupCharges)</span>
+                                                <span class="col-md-5">@string.Format("{0:C}", pd.CustomerToolingSetupCharges)</span>
+                                                <span class="col-md-3">@pd.ShippingDays</span>
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $(".chk").change(function () {
+            var current = $(this);
+            var id = current.attr('id');
+            var c = current.is(":checked");
+            if (c) {
+                $('#ChosenVendorId').val(id);
+                $('.reason').show(2000);
+                $('#reason' + id).hide(2000);
+
+                $("input[type = 'checkbox']").each(function () {
+
+                    $(this).prop('checked', false);
+                });
+                current.prop('checked', true);
+                $('#vendorName' + id).show(2000);
+            }
+            else {
+                $('#reason' + id).show(2000);
+
+            }
+        });
+
+
+
+        $('.minusplus').click(function () {
+            var id = $(this).data('id1');
+            var $events = $('#charts' + id);
+            $events.animate({ opacity: 'toggle', height: 'toggle' }, 2000);
+
+            if ($(this).find($('.fa-minus-square')).hasClass('fa-minus-square')) {
+
+                $(this).find($('.fa-minus-square')).removeClass('fa-minus-square').addClass('fa-plus-square');
+            }
+            else if ($(this).find($('.fa-plus-square')).hasClass('fa-plus-square')) {
+
+                $(this).find($('.fa-plus-square')).removeClass('fa-plus-square').addClass('fa-minus-square');
+            }
+
+            return false;
+        });
+
+    });
+
+    function TriggerFunc(vendorId, i) {
+
+
+        $('#spinner').show();
+        var $url = '//' + window.location.host + '/TaskDatas/ReviewBid';
+
+        var productId = $('#ProductId').val();
+        var bidVendorId = $('#ChosenVendorId').val();
+        var mkup = $('#Markup').val();
+        var sampleLeadTime = $('#SampleLeadTime' + vendorId).val();
+        var productLeadTime = $('#ProductLeadTime' + vendorId).val();
+
+        var selectedReasonIndex = $('#BidFailedReasonIndex' + i + ' option:selected').val();
+
+        var chk = $('#' + vendorId).is(':checked');
+
+        if (chk == false && selectedReasonIndex == 0) {
+            alertify.error("You must select a failed reason.");
+            $('#spinner').hide();
+            return false;
+        }
+
+
+        $.ajax({
+            url: $url,
+            type: 'POST',
+            async: true,
+            data: { 'bidVendorId': bidVendorId, 'vendorId': vendorId, 'productId': productId, 'SampleLeadTime': sampleLeadTime, 'ProductLeadTime': productLeadTime, 'ReasonIndex': selectedReasonIndex },
+            success: function (data) {
+                window.location.reload(true);
+            },
+            error: function (e) {
+                alert(e.responseText);
+
+            }
+        });
+        return false;
+    }
+
+</script>
+

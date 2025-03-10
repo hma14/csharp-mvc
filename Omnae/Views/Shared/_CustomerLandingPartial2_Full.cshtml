@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using Omnae.Common
+@using System.Configuration
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+<style>
+    #list2, .gridview2 {
+        display: none;
+    }
+
+    .my-tag {
+        margin-right: 10px !important;
+        margin-top: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-11">Order Tracking</h4>
+        <span class="col-md-1 small-button pull-right">
+            <a href="#" class="switcher small-button listview2 green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="switcher active small-button gridview2 pink-text"><i class="fas fa-th fa-2x"></i></a>
+        </span>
+        <br />
+        <hr class="gradient" />
+    </div>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div id="grid2" class="card-block">
+            @{
+                DateTime currentDateTime = DateTime.UtcNow;
+            }
+            @foreach (var tdvm in @Model)
+            {
+                var td = tdvm.TaskData;
+                var order = tdvm.Order;
+
+                // Longer than DaysToExpire will be removed from Order Tracking
+                if (td.StateId == (int)States.ProductionComplete && tdvm.IsForSearch == false)
+                {
+                    int daysToExpire = Convert.ToInt32(ConfigurationManager.AppSettings["DaysToExpire"]);
+                    TimeSpan diff = td.ModifiedUtc.AddDays(daysToExpire) - currentDateTime;
+                    if (diff.Ticks < 0)
+                    {
+                        continue;
+                    }
+                }
+                <div class="col-md-4">
+                    <div class="card">
+
+                        <!--Card Header-->
+
+                        @Html.Partial("_CardHeader", td)
+
+                        <div class="wrapper">
+                            <div class="card-image card-image-min-height">
+
+                                <!--Card image-->
+
+                                @Html.Partial("_CardImage", td)
+
+                            </div>
+
+                            <div class="card-block my-card-text card-image-min-height">
+
+                                <!--Card text-->
+
+                                <dl class="productInfo dl-horizontal">
+
+                                    <dt>
+                                        State
+                                    </dt>
+                                    <dd class="green-text font-weight-bold">
+                                        @Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), @td.StateId))
+                                    </dd>
+
+                                    @if (order != null)
+                                    {
+                                        <dt>Order Date</dt>
+                                        <dd>@order.OrderDate.ToString("yyyy-MM-dd")</dd>
+                                        <dt>
+                                            Order Qty
+                                        </dt>
+                                        <dd>
+                                            @order.Quantity
+                                        </dd>
+                                        if (@order.DesireShippingDate != null)
+                                        {
+                                            <dt>Desired Delivery Date</dt>
+                                            <dd>@order.DesireShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                        }
+                                        if (@order.EarliestShippingDate != null)
+                                        {
+                                            <dt>Earliest Ship Date</dt>
+                                            <dd>@order.EarliestShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                        }
+                                        if (order.EstimateCompletionDate != null)
+                                        {
+                                            <dt>
+                                                Est. Completion Date
+                                            </dt>
+                                            <dd>
+                                                @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                                            </dd>
+                                        }
+                                        if (order.CustomerPONumber != null)
+                                        {
+                                            <dt>
+                                                PO #
+                                            </dt>
+                                            <dd class="green-text">
+                                                @order.CustomerPONumber
+                                            </dd>
+                                        }
+                                    }
+
+                                    @Html.Partial("_NextStates", @tdvm)
+
+                                </dl>
+                            </div>
+                        </div>
+
+
+                        <div class="card-data primary-background-color">
+                            <span class="col-md-10 padding-off">
+                                <a href="@Url.Action("OrderDetails", "Orders", new { @id = @td.TaskId })">ORDER DETAIL</a>
+                            </span>
+                            @Html.AntiForgeryToken()
+                            @if (@td.isTagged == true)
+                            {
+                                <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                            }
+                            else
+                            {
+                                <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div id="list2" class="card-block">
+            <div class="col-md-12">
+                @Html.Partial("_DashboardRowColumnNames")
+
+            </div>
+            @foreach (var td in @Model)
+            {
+                @Html.Partial("_CustomerLandingListView", @td)
+            }
+
+        </div>
+    }
+
+</div>

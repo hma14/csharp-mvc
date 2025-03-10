@@ -1,0 +1,5 @@
+﻿
+Hi @Model.UserName
+
+This is to notify that your quote for @Model.PartNumber is ready to be reviewed.
+Please be ready for placing order by customer soon.

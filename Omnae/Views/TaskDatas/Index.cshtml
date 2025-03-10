@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Omnae.Model.Models.TaskData>
+@using Omnae.Common
+@using System
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using GridMvc.Html
+
+<div class="col-lg-12 top grey-text small">
+    <div class="col-sm-12">
+        @if (Model != null && Model.Any())
+            {
+            @*@Html.Grid(Model).AutoGenerateColumns().WithPaging(10).Sortable(true)*@
+            @Html.Grid(Model).Columns(columns =>
+       {
+           columns.Add(c => c.TaskId).Titled("Task Id").Filterable(true);
+           columns.Add(c => c.StateId).Titled("Current State").Filterable(true).RenderValueAs(c => Enum.GetName(typeof(States), c.StateId));
+           columns.Add(c => c.Product.CustomerCompany.Name).Titled("Company").Filterable(true);
+           columns.Add(c => c.ProductId).Titled("Product Details").Encoded(false).Sanitized(false).RenderValueAs(o => Html.ActionLink(string.Format("{0}", o.ProductId), "Details", "Products", new { @id = o.ProductId }, null));
+           //columns.Add(c => c.OrderId).Titled("Order Details").Encoded(false).Sanitized(false).RenderValueAs(o => Html.ActionLink(string.Format("{0}", o.OrderId > 0 ? o.OrderId.ToString() : "No Order"), "Details", "Orders", new { @id = o.OrderId, @taskId = o.TaskId }, null));
+           columns.Add(c => c.RejectReason).Titled("Reject Reason").Filterable(true);
+           columns.Add(c => c.UpdatedBy).Titled("Updated By").Filterable(true);
+           columns.Add(c => c.CreatedUtc).Titled("Created At").Filterable(true);
+
+       }).Sortable(true)
+
+        }
+    </div>
+
+</div>
+<div class="row light-green-text pull-right small right-margin-10">Duration: @ViewBag.Duration ms</div>

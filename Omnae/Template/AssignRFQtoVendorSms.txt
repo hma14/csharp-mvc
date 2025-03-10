@@ -1,0 +1,5 @@
+﻿
+Hi @Model.UserName,
+
+This is to notify you that a bid for new RFQ has been started.
+

@@ -1,0 +1,17 @@
+﻿@model Omnae.Model.Models.TaskData
+
+<div class="card-data">
+    
+    @Html.AntiForgeryToken()
+
+    @if (@Model.isTagged == true)
+    {
+        <a class="pull-right my-tag green-text" data-id1="@Model.TaskId"><i class="fas fa-tag"></i></a>
+    }
+    else
+    {
+        <a class="pull-right my-tag" data-id1="@Model.TaskId"><i class="fas fa-tag"></i></a>
+    }
+
+</div>
+

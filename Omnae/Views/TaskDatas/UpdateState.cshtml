@@ -1,0 +1,36 @@
+﻿@model Omnae.ViewModels.TaskDataViewModel
+
+@{
+    ViewBag.Title = "Update RFQ State";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+        <div class="card-block">
+            <div class="text-xs-center">
+                <h3><i class="fa fa-pencil-square-o fa-2x"></i> Update RFQ State</h3>
+            </div>
+            <br />
+
+            @using (Html.BeginForm("UpdateState", "TaskDatas", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.TaskId)
+                @Html.HiddenFor(model => model.VendorId)
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.StateId, htmlAttributes: new { @class = "form-control  my-form-control" })
+                    @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="md-form">
+                    <div class="md-form text-xs-center top">
+                        <button type="submit" class="btn btn-cyan buttonWidth">Update</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TaskData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.CustomerCompany.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.CustomerCompany.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.State.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.Name)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.UserType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserType)
+        </dd>*@
+        
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RejectReason)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RejectReason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedUtc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedUtc)
+        </dd>
+
+    </dl>
+</div>

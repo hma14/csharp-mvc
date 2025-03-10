@@ -1,0 +1,65 @@
+﻿@model Omnae.ViewModels.AddApprovedCapabilityToVendorViewModel
+
+@if (Model != null && Model.ExistingApprovedCapabilities.Any())
+{
+    <div class="font-weight-bold grey-text">Existing Approved Capabilities</div>
+    <div class="col-md-12 card-header default-color pull-left white-text status-title">
+        <span class="col-md-1">#</span>
+        <span class="col-md-2">Build Type</span>
+        <span class="col-md-2">Material Type</span>
+        <span class="col-md-2">Metals Process</span>
+        <span class="col-md-2">Plastics Process</span>
+        <span class="col-md-2">Process Types</span>
+        <span class="col-md-1">Delete</span>
+    </div>
+
+    int i = 1;
+    foreach (var ac in Model.ExistingApprovedCapabilities)
+    {
+<div class="col-md-12 line">
+    <span class="col-md-1">@i</span>
+    <span class="col-md-2">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(BUILD_TYPE), @ac.BuildType))</span>
+    <span class="col-md-2">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(MATERIALS_TYPE), @ac.MaterialType))</span>
+    @if (ac.MaterialType == MATERIALS_TYPE.PrecisionMetals)
+    {
+        <span class="col-md-2">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(Metals_Processes), ac.MetalProcess))</span>
+    }
+    else
+    {
+        <span class="col-md-2 green-text small">N/A</span>
+    }
+    @if (ac.MaterialType == MATERIALS_TYPE.PrecisionPlastics)
+    {
+        <span class="col-md-2">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(Plastics_Processes), ac.PlasticsProcess))</span>
+    }
+    else
+    {
+        <span class="col-md-2 green-text small">N/A</span>
+    }
+    @if (ac.BuildType == BUILD_TYPE.Process && ac.ProcessType != null)
+    {
+        <span class="col-md-2">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(Process_Type), ac.ProcessType))</span>
+    }
+    else
+    {
+        <span class="col-md-2 green-text small">N/A</span>
+    }
+
+    <a onclick="DeleteCapabilities(@ac.Id);" class="delet col-md-1"><i class="fas fa-trash"></i></a>
+</div>
+        i++;
+    }
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="card-block top-margin-20">
+            <h5 class="red-text error">@TempData["ErrorMessage"].ToString()</h5>
+        </div>
+    }
+    if (TempData["Result"] != null)
+    {
+        <div class="card-block top-margin-20 text-md-center">
+            <h5 class="green-text">@TempData["Result"].ToString()</h5>
+        </div>
+    }
+}
+

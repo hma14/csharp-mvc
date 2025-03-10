@@ -1,0 +1,104 @@
+﻿@model Omnae.ViewModels.AdminOrderDetailsViewModel
+
+<style>
+    .dl-horizontal dt {
+        width: 50%;
+        padding-right: 15px;
+    }
+
+    .dl-horizontal dd {
+        width: 50%;
+        padding: 0px;
+    }
+</style>
+
+@if (Model.OrdorId > 0)
+{
+    <div class="col-md-12 top-margin-30">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    Part Number
+                </dt>
+                <dd>
+                    @Model.PartNumber
+                </dd>
+                <dt>
+                    Order Date
+                </dt>
+                <dd>
+                    @Model.OrderDate.ToString("yyyy/MM/dd")
+                </dd>
+                <dt>
+                    Sales Price
+                </dt>
+                <dd>
+                    @string.Format("{0:C}", Model.SalesPrice)
+                </dd>
+                <dt>
+                    Unit Price
+                </dt>
+                <dd>
+                    @string.Format("{0:C}", Model.UnitPrice)
+                </dd>
+                <dt>
+                    Quantity
+                </dt>
+                <dd>
+                    @Model.Quantity
+                </dd>
+                @if (@Model.EstimateCompletionDate != null)
+                {
+                    <dt>
+                        Est. Completion Date
+                    </dt>
+                    <dd>
+                        @Model.EstimateCompletionDate.Value.ToString("yyyy/MM/dd")
+                    </dd>
+                }
+                
+            </dl>
+        </div>
+
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    Shipped Date
+                </dt>
+                <dd>
+                    @Model.ShippedDate.ToString("yyyy/MM/dd")
+                </dd>
+                <dt>
+                    Carrier Name
+                </dt>
+                <dd>
+                    @Model.CarrierName
+                </dd>
+                <dt>
+                    Tracking Number
+                </dt>
+                <dd>
+                    @Model.TrackingNumber
+                </dd>
+                <dt>
+                    Ship Lead Time
+                </dt>
+                <dd>
+                    @Model.ShipLeadingTime
+                </dd>
+                <dt>
+                    Customer PO Number
+                </dt>
+                <dd>
+                    @Model.CustomerPONumber
+                </dd>
+                <dt>
+                    Is Tooling Only
+                </dt>
+                <dd>
+                    @Model.IsForToolingOnly
+                </dd>
+            </dl>
+        </div>
+    </div>
+}

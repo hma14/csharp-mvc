@@ -1,0 +1,40 @@
+﻿@model Omnae.ViewModels.TaskDataViewModel
+
+@{
+    ViewBag.Title = "AssignRFQ";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h4 class="card-header text-md-center warning-color white-text"><i class="fa fa-hand-o-right fa-x"></i> Assign RFQ to a Vendor</h4>
+            <div class="card-block">
+                
+                @using (Html.BeginForm("AssignRFQ", "TaskDatas", FormMethod.Post, new { id = "assignRFQ", enctype="multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.TaskId)
+
+                    <div class="md-form top-margin-50">
+                        @Html.DropDownListFor(model => model.VendorId, Model.Vendors,  htmlAttributes: new { @class = "btn offset-md-1 col-md-10 grey-background-color dropdown-toggle",  multiple = "multiple" })
+                        @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                    </div>
+
+                    @*<div class="md-form">
+                            @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label" })
+                            @Html.EnumDropDownListFor(model => model.StateId, htmlAttributes: new { @class = "form-control  my-form-control" })
+                            @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                        </div>*@
+
+
+                    <div class="md-form text-xs-center">
+                        <button type="submit" class="btn accent-background-color buttonWidth top-margin-50">Assign</button>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

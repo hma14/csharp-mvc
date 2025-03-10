@@ -1,0 +1,39 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+
+@using Omnae.ViewModels
+
+<!-- Modal -->
+
+<div class="modal-dialog modal-lg" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+        <!--Header-->
+
+        @{ Html.RenderPartial("_ModalHeader", Model.TaskData); }
+
+        <!--Body-->
+
+        @{ Html.RenderPartial("_ModalBody", new TaskDataModalViewModel { TaskVM = Model }); }
+
+        <!-- Footer -->
+
+        @{ Html.RenderPartial("_ModalFooter", Model.TaskData); }
+
+    </div>
+    <!--Footer-->
+    @*<div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>*@
+</div>
+<!--/.Content-->
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#EstimateCompletionDate').datepicker();      
+        
+    });
+
+</script>

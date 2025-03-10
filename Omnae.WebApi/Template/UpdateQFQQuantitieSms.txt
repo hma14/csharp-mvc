@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+Customer has udpated quantities for @Model.ProductName, @Model.PartNumber

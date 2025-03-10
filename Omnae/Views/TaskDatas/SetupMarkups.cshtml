@@ -1,0 +1,158 @@
+﻿@model Omnae.ViewModels.SetupMarkupsViewModel
+@using Omnae.Controllers
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center">
+            <i class="fas fa-wrench"></i> Admin Setup Markups Per Quantity
+        </h5>
+
+        <div class="card-block">
+            <div class="col-md-12 top-margin-10">
+
+
+                @{
+                    TempData["StateTransitionViewModel"] = Model;
+                    TempData.Keep();
+                    var controller = ViewContext.Controller as BaseController;
+                }
+                @using (Html.BeginForm("SetupMarkups", "TaskDatas", FormMethod.Post, new { id = "SetupMarkups", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.TaskId)
+                    @Html.HiddenFor(model => model.ProductId)
+                    @Html.HiddenFor(model => model.RfqBidId)
+                    @Html.HiddenFor(model => model.isAddQty)
+
+                    <h3 class="col-md-12">Vendor: <span class="red-text">@controller.GetVendorName(Model.TaskId)</span></h3>
+                    <div class="small">
+                        <h5 class="col-md-2 top-margin-20">Vend Tooling Charge</h5>
+                        <h5 class="col-md-2 top-margin-20">Cust Tooling Charge </h5>
+                        <h5 class="col-md-2 top-margin-20 green-text">Markup</h5>
+                        <h5 class="col-md-6 top-margin-20">&nbsp;</h5>
+                        <div class="md-form col-md-2">
+                            @Html.HiddenFor(model => Model.VendorToolingCharges)
+                            @Html.EditorFor(model => Model.VendorToolingCharges, new { htmlAttributes = new { name = "toolingcharges", @id = "toolingcharges", @class = "form-control no-margin", @readonly = true } })
+                        </div>
+                        <div class="md-form col-md-2">
+                            @Html.EditorFor(model => Model.CustomerToolingCharges, new { htmlAttributes = new { name = "customerToolingCharge", @id = "customerToolingCharge", @class = "form-control no-margin unitprices", @readonly = true } })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.EditorFor(model => Model.ToolingMarkup, new { htmlAttributes = new { name = "ToolingMarkup", @id = "ToolingMarkup", @class = "form-control no-margin pricebreaks green-text markups" } })
+                            @Html.ValidationMessageFor(model => Model.ToolingMarkup, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="md-form col-md-6">
+                            <a onclick="return calcToolingCharge();" class="btn grey-background-color">Set Tooling Charges</a>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="markup" class="top-margin-30 small">
+                        <h5 class="col-md-2 top-margin-20">Quantity</h5>
+                        <h5 class="col-md-2 top-margin-20">Vendor Unit Price</h5>
+                        <h5 class="col-md-2 top-margin-20">Ship Unit Price</h5>
+                        <h5 class="col-md-2 top-margin-20">Customer Unit Price</h5>
+                        <h5 class="col-md-2 top-margin-20 green-text">Markup</h5>
+                        <h5 class="col-md-2 top-margin-20">&nbsp;</h5>
+
+                        @for (int i = 0; i < Model.QtyMarks.Count; i++)
+                        {
+                            <div class="md-form col-md-2">
+                                @Html.HiddenFor(model => Model.QtyMarks[i].Quantity)
+                                @Html.EditorFor(model => Model.QtyMarks[i].Quantity, new { htmlAttributes = new { @id = string.Format("qty{0}", i), @class = "form-control no-margin", @readonly = true } })
+                            </div>
+                            <div class="md-form col-md-2">
+                                @Html.HiddenFor(model => Model.QtyMarks[i].VendorUnitPrice)
+                                @Html.EditorFor(model => Model.QtyMarks[i].VendorUnitPrice, new { htmlAttributes = new { @id = string.Format("vup{0}", i), @class = "form-control no-margin", @readonly = true } })
+                            </div>
+                            <div class="md-form col-md-2">
+                                @Html.HiddenFor(model => Model.QtyMarks[i].ShipUnitPrice)
+                                @Html.EditorFor(model => Model.QtyMarks[i].ShipUnitPrice, new { htmlAttributes = new { @id = string.Format("sup{0}", i), @class = "form-control no-margin", @readonly = true } })
+                            </div>
+                            <div class="md-form col-md-2">
+                                @Html.EditorFor(model => Model.QtyMarks[i].UnitPrice, new { htmlAttributes = new { @id = string.Format("cup{0}", i), @class = "form-control no-margin unitprices", @readonly = true } })
+                            </div>
+                            <div class="md-form col-md-2">
+                                @Html.EditorFor(model => Model.QtyMarks[i].Markup, new { htmlAttributes = new { name = "Markup", @id = string.Format("markup{0}", i), @class = "form-control no-margin pricebreaks green-text markups" } })
+                                @Html.ValidationMessageFor(model => Model.QtyMarks[i].Markup, "", new { @id = string.Format("markup{0}", i), @class = "text-danger" })
+                            </div>
+                            <div class="md-form col-md-2">
+                                <a onclick="return calc(@i);" class="btn grey-background-color">Set Unit Price</a>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-12 text-xs-center">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-30">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function calc(i) {
+
+        var sup = $('#sup' + i).val();
+        var vup = $('#vup' + i).val();
+        var cup = $('#cup' + i);
+        var markup = $('#markup' + i).val();
+        var sum = parseFloat(sup) + parseFloat(vup);
+        var unitprice = sum * markup;
+
+        cup.val(unitprice.toFixed(3));
+    };
+    function calcToolingCharge() {
+
+        var toolingcharge = $('#toolingcharges').val();
+        var markup = $('#ToolingMarkup').val();
+        var newtoolingcharge = parseFloat(toolingcharge) * parseFloat(markup);
+
+        $('#customerToolingCharge').val(newtoolingcharge.toFixed(3));
+    };
+
+    $(function () {
+
+        var allSet = false;
+        $('#SetupMarkups').submit(function (event) {
+            event.preventDefault();
+
+            var toolingMarkup = $('#ToolingMarkup').val();
+            if (toolingMarkup === '') {
+                alertify.error("Markup for Customer ToolingCharges is empty");
+                return false;
+            }
+            else {
+                allSet = true;
+            }
+
+            $('.markups').each(function () {
+                if (!$(this).val()) {
+                    alertify.error("Markups are empty");
+                    allSet = false;
+                }
+            });
+
+            $('.unitprices').each(function () {
+                if (!$(this).val()) {
+                    alertify.error("unitprices are not set");
+                    allSet = false;
+                }
+            });
+            if (allSet === true) {
+                $('#spinner').show();
+                this.submitButton.disabled = true;
+                $('#SetupMarkups').unbind('submit').submit();               
+            }
+            
+        });
+
+
+        
+    });
+
+
+
+</script>

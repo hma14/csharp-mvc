@@ -1,0 +1,22 @@
+﻿@model Omnae.BusinessLayer.Models.ProductViewModel
+
+@*@Html.HiddenFor(x => x.ProductId)
+    @Html.HiddenFor(x => x.TaskId)
+
+    @if (Model != null && Model.Documents != null && Model.Documents.Any())
+    {
+        foreach (var doc in Model.Documents)
+        {
+            <div class="md-form">
+                <a href="@doc.DocUri">@doc.Name</a>
+                <a class="del pull-xs-right" href="@Url.Action("Delete", "Documents", new { @id = @doc.Id })"><i class="fa fa-trash"></i></a>
+            </div>
+        }
+    }
+*@
+
+<span class="col-md-12 grey-text small"><span class="red-text">Note: </span>If selected material type is <span class="green-text">metal</span> or <span class="green-text">plastics</span> you must upload at least one 2D (.PDF, .AI, .EPS) and one 3D (.STEP,.DXF) files, for other material type, one 2D file is must. Can select multiple files at once.</span>
+
+<div class="no-padding col-md-12 top-margin-30">
+    @Html.TextBoxFor(model => model.ProductDoc, new { type = "file", multiple = true, name = "productDoc", @id = "productDoc", @class = "no-padding" })
+</div>

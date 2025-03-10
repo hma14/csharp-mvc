@@ -1,0 +1,33 @@
+﻿@model Omnae.BusinessLayer.Models.StateLastUpdatedViewModel
+@using Omnae.Common
+
+@{
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+    var stateExplanationMapping = Utils.ConstructStateExplanationMapping();
+}
+<div class="card card-cascade col-md-12 detail-min-height">
+    <div class="card-block">
+        <div class="col-md-6">
+            <h4>Current State</h4>
+            <p class="font-weight-bold">@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(States), @Model.StateId))</p>
+        </div>
+        <div class="col-md-6">
+            <span class="small grey-text">Last updated @Model.LastUpdated</span>
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="col-md-2 green-text">
+            @Html.Raw(@Utils.GetStateIconUrl(stateIconMapping, (States)Model.StateId))
+        </div>
+        <div class="col-md-10">
+            <p>
+                @Html.Raw(@Utils.GetStateIconUrl(stateExplanationMapping, (States)Model.StateId))
+            </p>
+        </div>
+    </div>
+    <div class="card-block">
+        <a href="@Url.Action("Contact", "Home")" class="btn accent-background-color pull-right">Contact</a>
+    </div>
+
+</div>
+

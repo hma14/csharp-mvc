@@ -1,0 +1,91 @@
+﻿@model Omnae.ViewModels.DateRangeViewModel
+
+<style>
+    #exportbtn {
+        display: none;
+    }
+
+    .cmdbak {
+        background: content-box;
+        background-color: aliceblue;
+    }
+</style>
+
+<div class="col-md-12 small top-margin-20">
+
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-file-alt"></i> Margin Report</h4>
+        <div class="card-block">
+            
+
+
+            @using (Html.BeginForm("ExportFileExcel", "Home", FormMethod.Get, new
+            {
+                id = "ExportMarginReportToExcelForm",
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="offset-md-6 col-md-6 no-padding cmdbak">
+                    <div class="col-md-4">
+                        <span class="green-text font-weight-bold">Start Date</span>
+                        @Html.EditorFor(m => m.MarginReportStartDate, new { htmlAttributes = new { name = "MarginReportStartDate", @id = "MarginReportStartDate", @class = "form-control" } })
+                    </div>
+                    <div class="col-md-4">
+                        <span class="green-text font-weight-bold">End Date</span>
+                        @Html.EditorFor(m => m.MarginReportEndDate, new { htmlAttributes = new { name = "MarginReportEndDate", @id = "MarginReportEndDate", @class = "form-control" } })
+                    </div>
+                    <div class="col-md-4 top-margin-15">
+                        <a class="btn grey-background-color right no-margin col-md-12" onclick="GetMarginReportOnDateRange();">Get Margin Report</a>
+                    </div>
+                </div>
+                <div>
+                    <button id="exportbtn" type="submit" class="btn accent-background-color buttonWidth no-margin">Export Margin Report</button>
+                </div>
+            }
+
+            <div id="Result"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#MarginReportStartDate').datepicker();
+        $('#MarginReportEndDate').datepicker();
+    });
+
+
+    function GetMarginReportOnDateRange() {
+        var $url = '//' + window.location.host + '/Home/ChooseMarginReportDateRange';
+        var start = $('#MarginReportStartDate').val();
+        var end = $('#MarginReportEndDate').val();
+        if (start > end) {
+            $('#exportbtn').css({ 'display': 'None' });
+            alertify.error("Start date must be earlier than or equal to end date!");
+            return false;
+        }
+        if (start === '' || end === '')
+        {
+            $('#exportbtn').css({ 'display': 'None' });
+            alertify.error("You must choose a Start date and an End date!");
+            return false;
+        }
+        $('#spinner').show();
+        $.ajax({
+            type: 'POST',
+            url: $url,
+            data: { 'start': start, 'end': end },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#Result').html(result);
+                $('#exportbtn').css({ 'display': 'inline-block' });
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+
+</script>

@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "AssignVendor";
+}
+
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-right"></i> Assign Vendor to A Company</h5>
+        <div class="card-block">
+            <div class="top-margin-30 offset-md-1 col-md-10">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="red-text">@ViewBag.ErrorMessage</div>
+                }
+
+                @using (Html.BeginForm("AssignVendor", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="md-form">
+
+                        @Html.DropDownList("Id", ViewBag.Companies as SelectList, "-- Select Company --", new { @class = "form-control" })
+                        @Html.ValidationMessage("Id", "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="md-form text-xs-center  top-margin-100">
+                        <button type="submit" class="btn accent-background-color buttonWidth">Assign To Vendor</button>
+                    </div>
+                }
+                @if (TempData["Message"]  != null)
+                {
+            <div class="green-text text-md-center">@TempData["Message"].ToString()</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

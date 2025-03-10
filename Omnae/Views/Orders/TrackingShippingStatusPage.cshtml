@@ -1,0 +1,18 @@
+﻿@model Omnae.ShippingAPI.DHL.Models.DHLResponse
+@{
+    ViewBag.Title = "TrackingShippingStatus";
+}
+
+
+<div id="trackingWrapper" class="col-lg-12 top-margin-30">
+    <div class="card">
+        <h4 class="card-header warning-color white-text text-md-center">Tracking Shipment Status</h4>
+        <div class="card-block">
+            <div id="shippingStatus">
+
+                @Html.Partial("_TrackingShippingStatus", @Model)
+            </div>
+        </div>
+    </div>
+</div>
+

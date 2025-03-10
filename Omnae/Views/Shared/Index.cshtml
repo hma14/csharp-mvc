@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using Omnae.Common
+
+
+@if (!Request.IsAuthenticated)
+{
+    @*@Html.Partial("~/Views/Account/Login.cshtml")*@
+    @Html.Partial("_Index")
+}
+else
+{
+    if (TempData["UserType"] != null && (int)TempData["UserType"] == (int)USER_TYPE.Customer)
+    {
+        @Html.Partial("_CustomerLanding")
+    }
+    else if (TempData["UserType"] != null && (int)TempData["UserType"] == (int)USER_TYPE.Vendor)
+    {
+        @Html.Partial("_VendorLanding")
+    }
+    else
+    {
+        @Html.Partial("_AdminLanding")
+    }
+
+    TempData.Keep();
+}
+
+

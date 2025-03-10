@@ -1,0 +1,87 @@
+﻿@model Omnae.BusinessLayer.Models.PlaceOrderViewModel
+
+<style>
+    .dl-horizontal dd {
+        color: forestgreen;
+        font-size: 1em;
+    }
+</style>
+
+@{
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+    var stateExplanationMapping = Utils.ConstructStateExplanationMapping();
+}
+
+<div class="col-md-12">
+
+    <div class="card card-cascade">
+        <h5 class="card-header primary-background-color">Place Order</h5>
+        <div class="card-block">
+
+            <div class="col-md-10">
+                <h4>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), Model.StateId))</h4>
+            </div>
+            <div class="col-md-2 green-text" style="text-align:right;">
+                @Html.Raw(@Utils.GetStateIconUrl(stateIconMapping, (States)Model.StateId))
+            </div>
+
+            <div class="col-md-12 top-margin-5">
+                <p>
+                    @Html.Raw(@Utils.GetStateIconUrl(stateExplanationMapping, (States)Model.StateId))
+                </p>
+            </div>
+        </div>
+        <div class="card-block">
+            @if (Model.IsReorder == false)
+            {
+                <div class="col-md-12">
+                    <input type="checkbox" id="IsForOrderTooling" name="IsForOrderTooling" value="true">
+                    <label class="cyan-text small font-weight-bold" for="IsForOrderTooling">check this checkbox, if you want to order tooling only.</label>
+                </div>
+                <dl class="dl-horizontal col-md-12 top-margin-20">
+                    <dt>Tooling Charge</dt>
+                    <dd>@string.Format("{0:C}", Model.PriceBreaks != null && Model.PriceBreaks.Count > 0 ? Model.PriceBreaks.First().ToolingSetupCharges : 0m)</dd>
+                </dl>
+            }
+            else
+            {
+                <dl class="dl-horizontal col-md-12 top-margin-20">
+                    <dt>Tooling Charge</dt>
+                    <dd>@string.Format("{0:C}", 0m)</dd>
+                </dl>
+            }
+        </div>
+        <div id="partial">
+            @Html.Partial("_PlaceOrder", @Model)
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#IsForOrderTooling').change(function () {
+            $('#spinner').show();
+            var $chbox = $(this)
+            var $chx = $chbox.is(':checked');
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CheckPlaceOrderType", "Products")',
+                data: { 'chx': $chx},
+                success: function (result) {
+                    $('#partial').html(result);
+                    $('#spinner').hide();
+                },
+                error: function (e) {
+                    $('#spinner').hide();
+                    alertify.alert(e.responseText);
+                }
+            })
+        });
+    });
+
+</script>

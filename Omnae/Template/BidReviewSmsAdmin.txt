@@ -1,0 +1,4 @@
+﻿
+Hi Administrator (@Model.UserName)
+
+This is to notify that your quote for @Model.PartNumber is ready to be reviewed. 

@@ -1,0 +1,43 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@{
+    ViewBag.Title = "Revising RFQ";
+}
+
+
+<div class="container-fluid grey-text small">
+    <div class="card-block">
+        <h4 class="text-xs-center"><i class="fa fa-check-square fa-2x"></i> Vendor Reacts on Revising RFQ required or not</h4>
+
+        <br />
+        @using (Html.BeginForm("RevisingRFQHandler", "Home", FormMethod.Post))
+            {
+            @Html.AntiForgeryToken()
+            TempData["TaskData"] = Model;
+
+            <div class="md-form">
+                <fieldset class="form-group">
+                    <input name="group" type="radio" class="with-gap" id="forward" value="forward">
+                    <label for="forward">Quote Accepted</label>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <input name="group" type="radio" class="with-gap" id="back" value="back">
+                    <label for="back">Revising RFQ Required</label>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <input name="group" type="radio" class="with-gap" id="back" value="cancelled">
+                    <label for="back">RFQ Cancelled</label>
+                </fieldset>
+
+            </div>
+
+            <div class="md-form text-xs-center top-margin-50">
+                <button type="submit" class="btn btn-cyan buttonWidth">Submit</button>
+            </div>
+
+        }
+
+    </div>
+</div>

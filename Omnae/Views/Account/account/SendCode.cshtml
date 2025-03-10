@@ -1,0 +1,41 @@
+﻿@model Omnae.Models.SendCodeViewModel
+@{
+    ViewBag.Title = "Send";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-share-square"></i> Send verification code</h4>
+        <div class="card-block">
+            @using (Html.BeginForm("SendCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("rememberMe", @Model.RememberMe)
+
+                
+                <div class="offset-md-2 col-md-8">
+                    
+                    @Html.DropDownListFor(model => model.SelectedProvider,
+                                          Model.Providers, " -- Select Two-Factor Authentication Provider --", new
+                                          {
+                                              @class = "btn grey-background-color dropdown-toggle col-md-12 text-xs-center",
+
+                                              auto_post_back = ""
+                                          })
+
+
+                </div>
+
+                @*<div class="md-form text-xs-center">
+                        <input type="submit" value="Send" class="btn btn-primary my-botton-pos" />
+                    </div>*@
+                <div class="md-form text-xs-center">
+                    <button type="submit" class="btn accent-background-color buttonWidth top-margin-50">Send</button>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>

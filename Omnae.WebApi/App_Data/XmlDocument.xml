@@ -1,0 +1,2575 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Omnae.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Omnae.WebApi.UnityConfig.RegisterTypes(Unity.IUnityContainer)">
+            <summary>Registers the type mappings with the Unity container.</summary>
+            <param name="container">The unity container to configure.</param>
+            <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
+            change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:Omnae.WebApi.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:Omnae.WebApi.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,Omnae.WebApi.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,Omnae.WebApi.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:Omnae.WebApi.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},Omnae.WebApi.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.#ctor(Omnae.WebApi.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,Omnae.WebApi.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:Omnae.WebApi.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Omnae.WebApi.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Omnae.WebApi.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="T:Omnae.WebApi.DTO.CompanyBankInfoDTO">
+            <summary>
+            CompanyBankInfo DTO
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.BankName">
+            <summary>
+            Bank Name
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.AddressLine1">
+            <summary>
+            Bank address - AddressLine1
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.AddressLine2">
+            <summary>
+            Bank address - AddressLine2
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.ZipCode">
+            <summary>
+            Bank address - ZipCode
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.PostalCode">
+            <summary>
+            Bank address - PostalCode
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.City">
+            <summary>
+            Bank address - City
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.StateProvince">
+            <summary>
+            Bank address - State Or Province
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.Country">
+            <summary>
+            Bank address - Country
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.TransitNumber">
+            <summary>
+            Bank Transit #
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.InstitutionNumber">
+            <summary>
+            Bank Institution #
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.AccountNumber">
+            <summary>
+            Bank Account #
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.BeneficiaryBankSwiftNumber">
+            <summary>
+            Beneficiary Bank Swift # 
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.IntermediaryBank">
+            <summary>
+            Intermediary Bank
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.CompanyBankInfoDTO.IntermediaryBankSwiftNumber">
+            <summary>
+            Intermediary Bank Swift #
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.Id">
+            <summary>
+            Doc Id
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.ProductId">
+            <summary>
+            Product Id
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.OrderId">
+            <summary>
+            Order Id
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.TaskId">
+            <summary>
+            Task Id
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.Name">
+            <summary>
+            Document Name
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.Version">
+            <summary>
+            Document Version
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.DocUri">
+            <summary>
+            Document Uri (Azure Blob URL)
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.DocType">
+            <summary>
+            Document Type
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.IsLocked">
+            <summary>
+            Is Doc is locked
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.CreatedUtc">
+            <summary>
+            Doc created Utc datetime
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.UpdatedBy">
+            <summary>
+            Doc updated by user name
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.DocumentDTO.ModifiedUtc">
+            <summary>
+            Doc modified Utc datetime
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.OrderDTO.CarrierName">
+            <summary>
+            ShippingAccount CarrierName to be used in the part Shipment
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.OrderDTO.CarrierType">
+            <summary>
+            ShippingAccount CarrierType to be used in the part Shipment
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.OrderDTO.ShippingAccountNumber">
+            <summary>
+            ShippingAccount ShippingAccountNumber to be used in the part Shipment
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.ProductDTO.PreferredCurrency">
+            <summary>
+            The CurrencyCodes ISO Number
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.ProductDTO.PreferredCurrencyText">
+            <summary>
+            The CurrencyCodes ISO 3 letter Code
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.VendorSubmittedRFQ.PreferredCurrency">
+            <summary>
+            The CurrencyCodes ISO Number
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.DTO.VendorSubmittedRFQ.PreferredCurrencyText">
+            <summary>
+            The CurrencyCodes ISO 3 letter Code
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.BaseApiController">
+            <summary>
+            Base Api Controller
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Controllers.BaseApiController.Log">
+            <summary>
+            Logger
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.#ctor(Serilog.ILogger)">
+            <summary>
+            API controller constructor
+            </summary>
+            <param name="log"></param>
+        </member>
+        <member name="F:Omnae.WebApi.Controllers.BaseApiController.PageSize">
+            <summary>
+            Page Size
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.PageOfResultsSetAsync``2(System.Linq.IQueryable{``0},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Template function to display page meta info and retrieved result
+            </summary>
+            <typeparam name="T">Input Type</typeparam>
+            <typeparam name="TReturn">Returned ProjectTo target type such a DTO</typeparam>
+            <param name="queryable">Query result from database</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <param name="routeName">API Function Name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.PageOfResultsSetAsync``1(System.Linq.IQueryable{``0},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Template function to display page meta info and retrieved result
+            </summary>
+            <typeparam name="T">Input Type</typeparam>
+            <param name="queryable">Query result from database</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <param name="routeName">API Function Name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.PageOfResultsSet``1(System.Collections.Generic.List{``0},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Template function to display page meta info and retrieved result
+            </summary>
+            <typeparam name="T">Input Type</typeparam>
+            <param name="queryable">List of T</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <param name="routeName">API Function Name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.SetProductDTO(System.Linq.IQueryable{Omnae.Model.Models.TaskData})">
+            <summary>
+            Set IQueryable of ProductDTO from a given IQueryable of TaskData
+            </summary>
+            <param name="tasks">IQueryable of TaskData</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.SetProductDTO(System.Linq.IQueryable{Omnae.Model.Models.TaskData},System.Linq.IQueryable{System.Int32})">
+            <summary>
+            Set IQueryable of ProductDTO from a given IQueryable of TaskData
+            </summary>
+            <param name="tasks">IQueryable of TaskData</param>
+            <param name="requiredActionStates">List of TaskData States values on which customer or vendor required to action</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.GetPostedFiles(Omnae.BusinessLayer.Interface.IHomeBL,System.Boolean,System.Boolean)">
+            <summary>
+            Get uploaded file from Request.Files
+            </summary>
+            <param name="homeBL">HomeBL Instance</param>
+            <param name="filesAreRequired">If have no Files</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.BaseApiController.DeleteUploadFiles(System.Collections.Generic.List{System.Web.HttpPostedFileBase})">
+            <summary>
+            Delete uploaded files which otherwise will stay on server
+            </summary>
+            <param name="files">List of HttpPostedFileBase</param>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.CompaniesController">
+            <summary>
+            Core Api for Company 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.#ctor(Serilog.ILogger,Omnae.Service.Service.Interfaces.ICompanyService,Omnae.Service.Service.Interfaces.ICompaniesCreditRelationshipService,Omnae.Service.Service.Interfaces.IAddressService,Omnae.Service.Service.Interfaces.IShippingProfileService,Omnae.Service.Service.Interfaces.IShippingAccountService,Omnae.BusinessLayer.CompanyBL,Omnae.BusinessLayer.CompanyAccountsBL,Omnae.Model.Context.ILogedUserContext,Omnae.BusinessLayer.Interface.IHomeBL,Omnae.Service.Service.Interfaces.ICountryService,Omnae.Service.Service.Interfaces.ITaskDataService,Omnae.BusinessLayer.OnBoardingApiBL,Omnae.Libs.Notification.NotificationService,AutoMapper.IMapper,Omnae.Service.Service.Interfaces.IStateProvinceService,Omnae.Service.Service.Interfaces.IProductSharingService,Omnae.Service.Service.Interfaces.IOrderService,Omnae.BusinessLayer.ChartBL,Omnae.Service.Service.Interfaces.INCReportService,Omnae.BusinessLayer.ProductBL,Omnae.Service.Service.Interfaces.IProductService,Omnae.BlobStorage.IImageStorageService,Omnae.Service.Service.Interfaces.IProductStateTrackingService)">
+            <summary>
+            Company controller constructor
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanies(System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get all companies
+            </summary>
+            <param name="filter">Filtered by company Name or Email</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns>A page of Companies</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompany(System.Int32)">
+            <summary>
+            Get company details which id = {id}
+            </summary>
+            <param name="id">The ID of the company.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PutCompany(System.Int32)">
+            <summary>
+            Modify company which id = {id}
+            </summary>
+            <param name="id">The id of the company.</param>
+            <param name="company">The entity of the company to be modified.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PostCompany">
+            <summary>
+            Create a new company
+            </summary>
+            <returns>The Company</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetStripeCompanyInfo(System.Int32)">
+            <summary>
+            Get company Stripe id
+            </summary>
+            <param name="id">The ID of the company.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.UpdateStripeCompanyInfo(System.Int32,System.String)">
+            <summary>
+            Modify company which id = {id}
+            </summary>
+            <param name="id">The id of the company.</param>
+            <param name="company">The entity of the company to be modified.</param>
+            <param name="stripeCustomerId">The strip ID</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyLogo(System.Int32)">
+            <summary>
+            Get company Logo
+            </summary>
+            <param name="id">The ID of the company.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.UpdateCompanyLogo(System.Int32)">
+            <summary>
+            Modify company logo id = {id}
+            </summary>
+            <param name="id">The id of the company.</param>
+            <param name="company">The entity of the company to be modified.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompaniesCreditRelationshipsOnVendor(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get all CompaniesCreditRelationships on Vendor ID
+            </summary>
+            <param name="vendorId">Vendor Id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc - True will order 'orderBy' ascending</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCreditRelationships(System.Int32,System.Int32)">
+            <summary>
+            Get all CompaniesCreditRelationships on Customer ID
+            </summary>
+            <param name="vendorId">Vendor Id</param>
+            <param name="customerId">Customer Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.AssignTermCreditToCustomer(System.Int32,System.Int32)">
+            <summary>
+            Assign Term days and Credit Limit to a customer by vendor
+            </summary>
+            <param name="vendorId">Vendor Id</param>
+            <param name="customerId">Customer Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.DeleteTermCreditFromCustomer(System.Int32)">
+            <summary>
+            Delete term and credit limits from a customer
+            </summary>
+            <param name="customerId">Customer ID</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyAddresses(System.Int32,Omnae.Data.Query.AddressesQuery.AddressFilter,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get company addresses
+            </summary>
+            <param name="id">The ID of the company.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingProfiles(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List Company Shipping Profiles
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns>A page of Shipping Profiles</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingProfilesDefault(System.Int32)">
+            <summary>
+            Get the Company Default Shipping Profiles
+            </summary>
+            <param name="companyId">The company ID</param>
+            <returns>The Default Shipping Profiles</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingProfile(System.Int32,System.Int32)">
+            <summary>
+            Get a Company Shipping Profile 
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingProfileId">The Shipping Profile ID</param>
+            <returns>The Shipping Profile data</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.SetShippingProfileDefault(System.Int32,System.Int32)">
+            <summary>
+            Set a default Company Shipping Profile 
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingProfileId">The Shipping Profile ID</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PutShippingProfile(System.Int32,System.Int32,Omnae.BusinessLayer.Models.ShippingProfileDTO,System.String)">
+            <summary>
+            Update a Company Shipping Profile 
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingProfileId">The Shipping Profile ID</param>
+            <param name="shippingProfileModel">The Shipping Profile Data</param>
+            <param name="userId">Optional - The user id that is Changing the data</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PostShippingProfile(System.Int32,Omnae.BusinessLayer.Models.ShippingProfileDTO,System.String)">
+            <summary>
+            Add a Company Shipping Profile
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingProfileModel">Shipping Profile Model</param>
+            <param name="userId">Optional - The user id that is Changing the data</param>
+            <returns>The Shipping Profile Data</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.DeleteShippingProfile(System.Int32,System.Int32)">
+            <summary>
+            Delete a company Shipping Profiles which id = {id}
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingProfileId">The Shipping Profile ID</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingAccounts(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List the Shipping Accounts for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns>A page of Shipping Accounts</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingAccount(System.Int32,System.Int32)">
+            <summary>
+            Get the Shipping Account for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="shippingAccountId">The ID Shipping Account</param>
+            <returns>The Shipping Account data</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetShippingAccountDefault(System.Int32,System.Int32)">
+            <summary>
+            Get the Default Shipping Account for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="shippingAccountId">The ID Shipping Account</param>
+            <returns>The Default Shipping Account data</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PutShippingAccount(System.Int32,System.Int32,Omnae.BusinessLayer.Models.ShippingAccountDTO,System.String)">
+            <summary>
+            Update the Shipping Account for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="shippingAccountId">The ID Shipping Account</param>
+            <param name="shippingAccountModel">The Shipping Account</param>
+            <param name="userId">The user ID that is doing the change</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.SetShippingAccountDefault(System.Int32,System.Int32)">
+            <summary>
+            Update the Shipping Account for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="shippingAccountId">The ID Shipping Account</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.PostShippingAccount(System.Int32,Omnae.BusinessLayer.Models.ShippingAccountDTO,System.String)">
+            <summary>
+            Create the Shipping Account for a Company
+            </summary>
+            <param name="companyId">The ID of the company</param>
+            <param name="shippingAccountModel">The Shipping Account</param>
+            <param name="userId">The user ID that is doing the change</param>
+            <returns>The new Shipping Account data with new ID</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.DeleteShippingAccount(System.Int32,System.Int32)">
+            <summary>
+            Delete a company ShippingAccount which id = {id}
+            </summary>
+            <param name="companyId">The company ID</param>
+            <param name="shippingAccountId">The Shipping Account ID.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.DeleteCompany(System.Int32)">
+            <summary>
+            Delete a company which id = {id}
+            </summary>
+            <param name="id">The id of the company.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCustomerVendors(System.Int32,Omnae.Data.Query.TaskDataQuery.ProductFilter,Omnae.Data.Query.TaskDataQuery.UserType,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a customer's vendors
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetVendorCustomers(System.Int32,Omnae.Data.Query.TaskDataQuery.ProductFilter,Omnae.Data.Query.TaskDataQuery.UserType,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a vendor's customer
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyQA(System.Int32,System.Nullable{System.Int32},Omnae.Data.Query.OrderQuery.UserMode,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a company's Quality Analytics performance
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="productId">Product ID.</param>
+            <param name="mode">Company is a Customer or Vendor or Sharer</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetQualityAnalytics(System.Int32,System.Boolean,System.Nullable{System.Int32},System.Nullable{System.Int32},Omnae.Data.Query.OrderQuery.UserMode,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a company's Quality Analytics performance
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="productId">Product ID.</param>
+            <param name="vendorId">Vendor ID.</param>
+            <param name="isSummarize">Is for Summarize only?</param>
+            <param name="mode">Company is a Customer or Vendor or Sharer</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyQAStatistics(System.Int32,System.DateTime,System.Nullable{System.DateTime},Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Get a company's Quality Analytics Statistics
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="StartDate">Start Date.</param>
+            <param name="EndDate">End Date</param>
+            <param name="mode">Company is a Customer or Vendor or Sharer</param>    
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompletionStatistics(System.Int32,System.DateTime,System.Nullable{System.DateTime},Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Get a company's Completion Statistics
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="StartDate">Start Date.</param>
+            <param name="EndDate">End Date</param>
+            <param name="mode">Company is a Customer or Vendor or Sharer</param>    
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.CreateCompanyBankInfo">
+            <summary>
+            Create/Update bank info for a company
+            </summary>
+            <returns>The new/updated bank info regarding current user</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyBankInfo(System.Int32)">
+            <summary>
+            Get bank info for a company
+            </summary>
+            <param name="companyId">Company ID which owns this Bank Info</param>
+            <returns>CompanyBankInfoDTO</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCountryList(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get Country List
+            </summary>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns>CountryDTO</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetStateProvinceList(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get State or Province List
+            </summary>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns>CountryDTO</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyPartners(System.Int32,Omnae.Data.Query.CompanyQuery.PARTNER_TYPE,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a list of partners for a company
+            </summary>
+            <param name="companyId">Company id.</param>
+            <param name="page">Page number</param>
+            <param name="type">Partner type</param>
+            <param name="search">Search for company by name/email</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyPartnersWithQAStats(System.Int32,Omnae.Data.Query.CompanyQuery.PARTNER_TYPE,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a list of partners for a company along with their QA Stats info
+            </summary>
+            <param name="companyId">Company id.</param>
+            <param name="page">Page number</param>
+            <param name="type">Partner type</param>
+            <param name="search">Search for company by name/email</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.AddCompanyToQBO(Omnae.QuickBooks.ViewModels.CustomerInfoViewModel)">
+            <summary>
+            Add company as customer to QBO of Omnae account
+            </summary>
+            <param name="vm">Type of CustomerInfoViewModel</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCustomerInfo(System.Int32)">
+            <summary>
+            Get customer info for which to be added into QBO
+            </summary>
+            <param name="companyId">Company ID</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCompanyInfo(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Get customer/vendor info for which to be added into QBO
+            </summary>
+            <param name="customerId">Customer ID</param>
+            <param name="vendorId">Vendor ID</param>
+            <param name="isVendor">is for creating a vendor in QBO?</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.GetCustomerCurrencies(System.Int32)">
+            <summary>
+            Get credit relationship records by customerId
+            </summary>
+            <param name="customerId">Customer ID</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.CompaniesController.UpdateCreditRelationshipCurrency(Omnae.WebApi.DTO.RelationshipCurrencyDto)">
+            <summary>
+            Update credit relationship currency between customer and vendor
+            </summary>
+            <param name="dto">RelationshipCurrencyDto</param>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.DocumentsController">
+            <summary>
+            Core Api for Docudment 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.#ctor(Serilog.ILogger,Omnae.BusinessLayer.DocumentBL,Omnae.Service.Service.Interfaces.IDocumentService,Omnae.BusinessLayer.CompanyAccountsBL,Omnae.BusinessLayer.Interface.IHomeBL,Omnae.Service.Service.Interfaces.IOrderService,AutoMapper.IMapper)">
+            <summary>
+            Documents controller constructor
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.Get(System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get all documents
+            </summary>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.Get(System.Int32)">
+            <summary>
+            Get document details which id = {id}
+            </summary>
+            <param name="id">The ID of the document.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.GetCompanyDocuments(System.Int32,System.Nullable{Omnae.Common.DOCUMENT_TYPE},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get company's document which companyId = {companyId}
+            </summary>
+            <param name="companyId">Company Id.</param>
+            <param name="docType">Document Type.</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.GetUserDocuments(System.String,System.Nullable{Omnae.Common.DOCUMENT_TYPE},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get user's documents which user id = {userId}
+            </summary>
+            <param name="userId">User Id</param>
+            <param name="docType">Document Type.</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.Put(System.Int32,Omnae.Model.Models.Document)">
+            <summary>
+            Modify document which id = {id}
+            </summary>
+            <param name="id">The id of the document.</param>
+            <param name="document">The entity of the document to be modified.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.Post(Omnae.WebApi.DTO.DocumentDTO)">
+            <summary>
+            Create a new document 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.UploadProductDocs(System.Int32)">
+            <summary>
+            Upload drawing document(s) for a RFQ 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.UploadProofingDoc">
+            <summary>
+            Upload proofing document(s) for a RFQ 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.DocumentsController.Delete(System.Int32)">
+            <summary>
+            Delete a document which id = {id}
+            </summary>
+            <param name="id">The id of the document.</param>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.FileUploadController">
+            <summary>
+            Web Api for File Upload
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.FileUploadController.Post">
+            <summary>
+            Post File
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.FileUploadController.PostFormData">
+            <summary>
+            Retrieve Post Form Data 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.HomeController.CreateController``1(System.Web.Routing.RouteData)">
+            <summary>
+            Creates an instance of an MVC controller from scratch 
+            when no existing ControllerContext is present       
+            </summary>
+            <typeparam name="T">Type of the controller to create</typeparam>
+            <returns>Controller Context for T</returns>
+            <exception cref="T:System.InvalidOperationException">thrown if HttpContext not available</exception>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.LookupsController">
+            <summary>
+            Core Api for looking up Enums 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetStates">
+            <summary>
+            Get all States Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetBuildType">
+            <summary>
+            Get all BuildType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMaterialsType">
+            <summary>
+            Get all MaterialsType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetPrecisionMetal">
+            <summary>
+            Get all PrecisionMetal Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMetalsProcesses">
+            <summary>
+            Get all MetalsProcesses Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMetalType">
+            <summary>
+            Get all MetalType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMetalsSurfaceFinish">
+            <summary>
+            Get all MetalsSurfaceFinish Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetPrecisionPlastics">
+            <summary>
+            Get all PrecisionPlastics Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetPlasticsProcesses">
+            <summary>
+            Get all PlasticsProcesses Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetSwitchesType">
+            <summary>
+            Get all SwitchesType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetPrintType">
+            <summary>
+            Get all PrintType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMembraneSwitchesAttributesWaterproof">
+            <summary>
+            Get all MembraneSwitchesAttributesWaterproof Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMembraneSwitchesAttributesEmbossing">
+            <summary>
+            Get all MembraneSwitchesAttributesEmbossing Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMembraneSwitchesAttributesLedlighting">
+            <summary>
+            Get all MembraneSwitchesAttributesLedlighting Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMembraneSwitchesAttributesLedElBacklighting">
+            <summary>
+            Get all MembraneSwitchesAttributesLedElBacklighting Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetGraphicOverlaysAttributesEmbossing">
+            <summary>
+            Get all GraphicOverlaysAttributesEmbossing Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetGraphicOverlaysAttributesSelectivetexture">
+            <summary>
+            Get all GraphicOverlaysAttributesSelectivetexture Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetTriggers">
+            <summary>
+            Get all Triggers Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCountry">
+            <summary>
+            Get all Country Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCanadaProvinces">
+            <summary>
+            Get all CanadaProvinces Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetDistanceUnit">
+            <summary>
+            Get all DistanceUnit Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetMassUnit">
+            <summary>
+            Get all MassUnit Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetPaymentMethods">
+            <summary>
+            Get all PaymentMethods Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetDocumentType">
+            <summary>
+            Get all DocumentType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetFilters">
+            <summary>
+            Get all Filters Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetNcrFilters">
+            <summary>
+            Get all NcrFilters Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetInvoiceFilters">
+            <summary>
+            Get all InvoiceFilters Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetNcDetectedBy">
+            <summary>
+            Get all NcDetectedBy Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetNcRootCause">
+            <summary>
+            Get all NcRootCause Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetNcDisposition">
+            <summary>
+            Get all NcDisposition Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCountryId">
+            <summary>
+            Get all CountryId Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetStateProvinceCode">
+            <summary>
+            Get all StateProvinceCode Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCustomerPriority">
+            <summary>
+            Get all CustomerPriority Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetNcrImageType">
+            <summary>
+            Get all NcrImageType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetShippingCarrierType">
+            <summary>
+            Get all ShippingCarrierType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetShippingCarrier">
+            <summary>
+            Get all ShippingCarrier Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCustomerType">
+            <summary>
+            Get all CustomerType Lookup
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.LookupsController.GetCurrencyCodes">
+            <summary>
+            Get all CurrencyCodes Lookup
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.NcrController">
+            <summary>
+            Core Api for NCR 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.#ctor(Serilog.ILogger,Omnae.BusinessLayer.CompanyAccountsBL,Omnae.Service.Service.Interfaces.IOrderService,Omnae.BusinessLayer.OrdersBL,Omnae.BusinessLayer.Interface.IHomeBL,Omnae.Service.Service.Interfaces.INCReportService,Omnae.Service.Service.Interfaces.ICompanyService,AutoMapper.IMapper,Omnae.Service.Service.Interfaces.IOrderStateTrackingService,Omnae.Service.Service.Interfaces.ITaskDataService,Omnae.Service.Service.Interfaces.IProductStateTrackingService,Omnae.Service.Service.Interfaces.INCRImagesService,Omnae.Model.Context.ILogedUserContext,Omnae.Service.Service.Interfaces.IProductService,Omnae.BusinessLayer.ProductBL,Omnae.BusinessLayer.NcrBL,Omnae.Service.Service.Interfaces.IPriceBreakService)">
+            <summary>
+            NCR controller constructor
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ListNCRs(System.Nullable{System.Int32},Omnae.Data.Query.NcrQuery.NcrType,Omnae.Data.Query.NcrQuery.NcrFilter,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List NCRs
+            </summary>
+            <param name="companyId">Company Id to filter results by</param>
+            <param name="mode">User mode (customer or vendor)</param>
+            <param name="type">Product filter type</param>
+            <param name="filter">filtered by string</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ShowNCR(System.Int32)">
+            <summary>
+            Get a NCR
+            </summary>
+            <param name="ncrId"></param>
+            <returns>A NCR</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.Approve(System.String)">
+            <summary>
+            A endpoint to a Vendor Approve a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.AnalysisRootCause(System.String)">
+            <summary>
+            A endpoint to a Customer AnalysisRootCause a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.Decline(System.String)">
+            <summary>
+            A endpoint to a Vendor Decline a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CorrectiveReceivedApproved(System.String)">
+            <summary>
+            A endpoint to a Customer CorrectiveReceivedApproved a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.RejectCorrectiveAction(System.String)">
+            <summary>
+            A endpoint to a Customer RejectCorrectiveAction a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.RejectRootCause(System.String)">
+            <summary>
+            A endpoint to a Customer RejectRootCause a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CorrectivePartsComplete(System.String)">
+            <summary>
+            A endpoint to a Vendor CorrectivePartsComplete a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CorrectivePartsReceival(System.String)">
+            <summary>
+            A endpoint to a Customer CorrectivePartsReceival a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CorrectiveAccepted(System.String)">
+            <summary>
+            A endpoint to a Customer CorrectiveAccepted a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CorrectiveReceivedRejected(System.String)">
+            <summary>
+            A endpoint to a Customer CorrectiveReceivedRejected a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ArbitrateVendorCause(System.String)">
+            <summary>
+            A endpoint to a Customer ArbitrateVendorCause a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ArbitrateCustomerCause(System.String)">
+            <summary>
+            A endpoint to a Customer ArbitrateCustomerCause a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ArbitrateDispute(System.String)">
+            <summary>
+            A endpoint to a Customer ArbitrateDispute a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.ArbitrateCustomerCauseDamage(System.String)">
+            <summary>
+            A endpoint to a Customer ArbitrateCustomerCauseDamage a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.Close(System.String)">
+            <summary>
+            A endpoint to a Customer Close a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.CustomerRevision(System.String)">
+            <summary>
+            A endpoint to a Customer CustomerRevision a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.RejectWithRootCase(System.String)">
+            <summary>
+            A endpoint to a Customer Reject with RootCase a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.RejectWithCorrectiveAction(System.String)">
+            <summary>
+            A endpoint to a Customer Reject with Corrective a NCR
+            </summary>
+            <param name="ncrId">The NCR ID</param>
+            <param name="userId">The logged user id, will be considered a customer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.NcrController.GetNCRStatistics(System.Int32,Omnae.Data.Query.TaskDataQuery.UserType)">
+            <summary>
+            Get a customer's/vendor's NCR Statitics
+            </summary>
+            <param name="companyId">vendor ID.</param>
+            <param name="mode">User type</param>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.OrdersController">
+            <summary>
+            Core Api for Orders 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.#ctor(Serilog.ILogger,Omnae.BusinessLayer.CompanyAccountsBL,Omnae.Service.Service.Interfaces.IOrderService,Omnae.BusinessLayer.OrdersBL,Omnae.BusinessLayer.Interface.IHomeBL,Omnae.Service.Service.Interfaces.ITaskDataService,Omnae.Service.Service.Interfaces.IDocumentService,Omnae.Service.Service.Interfaces.IPriceBreakService,Omnae.Service.Service.Interfaces.IOrderStateTrackingService,Omnae.BusinessLayer.ProductBL,Omnae.Model.Context.ILogedUserContext,Omnae.BusinessLayer.TaskSetup,Omnae.BusinessLayer.DocumentBL,Omnae.Service.Service.Interfaces.IProductService,Omnae.Service.Service.Interfaces.INCReportService,Omnae.Service.Service.Interfaces.ICompanyService,AutoMapper.IMapper,Omnae.Service.Service.Interfaces.ICompaniesCreditRelationshipService,Omnae.Service.Service.Interfaces.IOmnaeInvoiceService,Omnae.Service.Service.UserContactService,Omnae.BusinessLayer.NotificationBL,Omnae.Service.Service.Interfaces.IProductSharingService,Omnae.Service.Service.Interfaces.IExpeditedShipmentRequestService)">
+            <summary>
+            Constructor for Orders controller 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.Get(System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get all orders 
+            </summary>
+            <param name="search">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ListOrders(System.Nullable{System.Int32},Omnae.Data.Query.OrderQuery.UserMode,Omnae.Data.Query.OrderQuery.OrderFilter,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List all orders 
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="mode">User mode: Customer/Vendor</param>
+            <param name="type">Order filter</param>
+            <param name="filter">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.Get(System.Int32,Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Get order which id = {id}
+            </summary>
+            <param name="id">The id of the order.</param>
+            <param name="mode">Customer or Vendor</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.Get(System.String,System.Int32,Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Get order which id = {id}
+            </summary>
+            <param name="userId">User Id</param>
+            <param name="id">The id of the order.</param>
+            <param name="mode">Customer or Vendor</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetCustomerAllPaymentPendingOrders(System.String,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get customer's all orders with payment pending 
+            </summary>
+            <param name="userId">User Id</param>
+            <param name="search">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetVendorAllPaymentUnConfirmedOrders(System.String,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get vendor's all orders with payment need to be confirmed 
+            </summary>
+            <param name="userId">User Id</param>
+            <param name="search">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetCompanyOrders(System.Int32,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get company's orders which companyId = {companyId}
+            </summary>
+            <param name="companyId">Company Id.</param>
+            <param name="search">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetUserOrders(System.String,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get user's orders which user id = {userId}
+            </summary>
+            <param name="userId">User ID.</param>
+            <param name="search">key word for searching</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetCustomerOrders(System.Int32,System.String,Omnae.Data.Query.OrderQuery.OrderFilter,Omnae.Data.Query.OrderQuery.UserMode,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a customer's orders
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetVendorOrders(System.Int32,System.String,Omnae.Data.Query.OrderQuery.OrderFilter,Omnae.Data.Query.OrderQuery.UserMode,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a vendor's orders
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CalculateTotalOnGivenQuantity(System.Int32,System.Int32,System.Nullable{System.Boolean},System.Nullable{System.Double})">
+            <summary>
+            Calculate tax, subtotal, total on given quantity
+            </summary>
+            <param name="pid">Product ID.</param>
+            <param name="quantity">Quantity</param>
+            <param name="isReorder">isReorder</param>
+            <param name="taxRate">Tax rate</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.PlaceOrder(System.Int32)">
+            <summary>
+            Place a new order
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.DoProductionRun(System.Int32)">
+            <summary>
+            Start to do Product Run by vendor
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.PendingPaymentMade(System.Int32)">
+            <summary>
+            Made pending payment
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.RejectPayment(System.Int32,System.String)">
+            <summary>
+            Vendor rejected payment
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="rejectReason">Reject payment reason</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.OrderPaid(System.Int32)">
+            <summary>
+            Order Paid
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetUnitPriceOnQty(System.Int32,System.Int32)">
+            <summary>
+            Get price break on given quantity
+            </summary>
+            <param name="pid">Product Id</param>
+            <param name="quantity">Quantity</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetOrderDetails(System.Int32)">
+            <summary>
+            Get Order Details.
+            </summary>
+            <param name="id">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.Delete(System.Int32)">
+            <summary>
+            Delete an existing order which id = {id}
+            </summary>
+            <param name="id">The id of the order.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetNcrHistory(System.Int32)">
+            <summary>
+            Get All NCR History from a order which id = {id}
+            </summary>
+            <param name="id">The id of the order.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ProofApproval(System.Int32)">
+            <summary>
+            Vendor trigger ProofApproval.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ApprovedProof(System.Int32)">
+            <summary>
+            Customer trigger ApprovedProof.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ProofRejected(System.Int32)">
+            <summary>
+            Customer trigger ProofRejected.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CorrectingProof(System.Int32)">
+            <summary>
+            Vendor trigger CorrectingProof.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ToolingComplete(System.Int32)">
+            <summary>
+            Vendor trigger ToolingComplete.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.GetTrackingSlip(System.Int32)">
+            <summary>
+            Get Generated TrackingSlip Doc.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CompleteSample(System.Int32)">
+            <summary>
+            Vendor trigger CompleteSample.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ApproveSample(System.Int32)">
+            <summary>
+            Customer trigger ApproveSample.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.SampleApproved(System.Int32)">
+            <summary>
+            Customer trigger ApproveSample to approve sample
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.RejectedSample(System.Int32)">
+            <summary>
+            Customer trigger RejectedSample.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CorrectingSample(System.Int32)">
+            <summary>
+            Customer trigger CorrectingSample.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.InProduction(System.Int32)">
+            <summary>
+            Vendor trigger InProduction.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CompleteProduction(System.Int32)">
+            <summary>
+            Vendor trigger CompleteProduction.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CompleteProductionV2(System.Int32)">
+            <summary>
+            Vendor trigger CompleteProduction without need for shipping info.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CompleteInvoiceForVendor(System.Int32)">
+            <summary>
+            Vendor trigger CompleteInvoiceForVendor.
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.SendExpeditedShipmentRequest(System.Int32,System.DateTime,Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Send request for expedited shipment to vendor or customer by customer or vendor
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="newShippingDate">New desired shipping date</param>
+            <param name="mode">Customer or Vendor</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.SendExpeditedShipmentResponse(System.Int32,Omnae.Common.EXPEDITED_SHIPMENT_RESPONSE,Omnae.Data.Query.OrderQuery.UserMode)">
+            <summary>
+            Send response for expedited shipment to vendor or customer by customer or vendor
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="isAccepted">Accept request or not</param>
+            <param name="mode">Customer or Vendor</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.CustomerCancelOrderRequest(System.Int32,System.String)">
+            <summary>
+            Customer sending cancel order request to vendor
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="cancelOrderReason">Cancel order reason</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.VendorCancelOrderResponse(System.Int32,System.Boolean,System.String)">
+            <summary>
+            Vendor sending cancel order reponse to customer
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="agreeToCancel">Vendor agrees to cancel or not</param>
+            <param name="denyCancelReason">Vendor deny cancel reason</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.VendorRejectOrder(System.Int32,System.String)">
+            <summary>
+            Vendor rejects an order
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="rejectlReason">Vendor deny cancel reason</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.ChangeOrderQuantity(System.Int32,System.Int32)">
+            <summary>
+            Customer/Vendor wants to change the quantity of the order before task state reaches to ProductionComplete 
+            and after order placed
+            </summary>
+            <param name="orderId">Order Id</param>
+            <param name="newQty">New quantity to be changed to</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.OrdersController.RemoveOrder(System.Int32)">
+            <summary>
+            Remove a not started order in order to redefine a new Production Run
+            </summary>
+            <param name="orderId">Order Id</param>
+        </member>
+        <member name="T:Omnae.WebApi.Controllers.ProductsController">
+            <summary>
+            Core Api for Products 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.#ctor(Serilog.ILogger,Omnae.BusinessLayer.CompanyAccountsBL,Omnae.Service.Service.Interfaces.IProductService,Omnae.BusinessLayer.ProductBL,Omnae.BusinessLayer.Interface.IHomeBL,Omnae.BusinessLayer.ChartBL,Omnae.BusinessLayer.DocumentBL,Omnae.Service.Service.Interfaces.ITaskDataService,Omnae.Service.Service.Interfaces.IRFQBidService,Omnae.BusinessLayer.TaskDatasBL,Omnae.BusinessLayer.DashboardBL,Omnae.Service.Service.Interfaces.IBidRequestRevisionService,Omnae.Service.Service.Interfaces.IDocumentService,Omnae.Service.Service.Interfaces.IPriceBreakService,Omnae.Model.Context.ILogedUserContext,Omnae.Service.Service.Interfaces.ICompanyService,Omnae.Service.Service.Interfaces.IProductStateTrackingService,Omnae.Service.Service.Interfaces.IPartRevisionService,AutoMapper.IMapper,Omnae.Service.Service.Interfaces.IProductSharingService,Omnae.BusinessLayer.NotificationBL,Omnae.Service.Service.UserContactService,Omnae.BlobStorage.IImageStorageService,Omnae.BusinessLayer.OnBoardingBL,Omnae.Service.Service.Interfaces.IApprovedCapabilityService,Omnae.Service.Service.Interfaces.ITimerSetupService,Omnae.Service.Service.Interfaces.IBidRFQStatusService,Omnae.Service.Service.Interfaces.IVendorBidRFQStatusService,Omnae.BusinessLayer.DashboardBL,Omnae.Service.Service.Interfaces.IProductPriceQuoteService,Omnae.Service.Service.Interfaces.ICompaniesCreditRelationshipService)">
+            <summary>
+            Product controller constructor
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.ListProducts(System.Nullable{System.Int32},Omnae.Data.Query.TaskDataQuery.UserType,Omnae.Data.Query.TaskDataQuery.ProductFilter,System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List products
+            </summary>
+            <param name="companyId">Company Id to filter results by</param>
+            <param name="mode">User mode (customer or vendor)</param>
+            <param name="type">Product filter type</param>
+            <param name="filter">filtered by string</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetProductsByParts(System.Int32,Omnae.Data.Query.TaskDataQuery.PartInfoDto[],System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get products of a customer by array of part# and part rev
+            </summary>
+            <param name="customerId">Customer Id to filter results by</param>
+            <param name="parts">array of PartInfoDto (part# and part rev)</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.Get(System.Int32)">
+            <summary>
+            Show product details 
+            </summary>
+            <param name="id">The ID of the product.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.Get(System.Int32,System.Int32,Omnae.Data.Query.TaskDataQuery.UserType)">
+            <summary>
+            Get product detail 
+            </summary>
+            <param name="productId">The ID of the product.</param>
+            <param name="companyId">Company ID</param>
+            <param name="type">Company type: Customer or Vendor</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRFQDetails(System.Int32,System.Int32,Omnae.Data.Query.TaskDataQuery.UserType)">
+            <summary>
+            Get RFQ details by id = {id} 
+            </summary>
+            <param name="id">The ID of the product.</param>
+            <param name="companyId">Company Id.</param>
+            <param name="type">Company type is customer or vendor.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetCustomerRFQs(System.Int32,System.String,Omnae.Data.Query.TaskDataQuery.RFQFilter,Omnae.Data.Query.TaskDataQuery.UserType,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a customer's RFQs
+            </summary>
+            <param name="companyId">Customer ID.</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param> 
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetVendorRFQs(System.Int32,System.String,Omnae.Data.Query.TaskDataQuery.RFQFilter,Omnae.Data.Query.TaskDataQuery.UserType,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a vendor's RFQs
+            </summary>
+            <param name="companyId">vendor ID.</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="type">User type</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetActiveRFQs(System.Int32,Omnae.Data.Query.TaskDataQuery.UserType,System.String,Omnae.Data.Query.TaskDataQuery.RFQFilter,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a customer's/vendor's Active RFQs
+            </summary>
+            <param name="companyId">vendor ID.</param>
+            <param name="type">User type</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetBiddingRFQs(System.Int32,Omnae.Data.Query.TaskDataQuery.UserType,System.String,Omnae.Data.Query.TaskDataQuery.RFQFilter,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a customer's/vendor's RFQs in Bidding stage
+            </summary>
+            <param name="companyId">vendor ID.</param>
+            <param name="type">User type</param>
+            <param name="search">key word for searching</param>
+            <param name="filter">Filter products into first-time order or reorder or non-filter</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRFQStatistics(System.Int32,Omnae.Data.Query.TaskDataQuery.UserType)">
+            <summary>
+            Get a customer's/vendor's RFQ Statitics
+            </summary>
+            <param name="companyId">Company ID.</param>
+            <param name="mode">User type</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.AssignRFQToVendors(System.Int32,System.Int32[])">
+            <summary>
+            Assign RFQ to vendors
+            </summary>
+            <param name="pid">Product ID.</param>
+            <param name="vendors">List of vendors chosen to bid this RFQ</param>     
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.SetupTimers(System.Int32,System.String,System.String,Omnae.Common.TypeOfTimers)">
+            <summary>
+            Setup Bid Timer or Revision Request Timer, also change existing timer
+            </summary>
+            <param name="pid">Product ID.</param>
+            <param name="timerType">Type of the timer</param>
+            <param name="revisionRequestInterval">Revision Request Interval</param>
+            <param name="bidInterval">Bid Interval</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.SetupTimers(System.Int32,System.String,Omnae.Common.TypeOfTimers,System.Nullable{Omnae.Common.ActionFlag})">
+            <summary>
+            Setup Bid Timer or Revision Request Timer, also change existing timer
+            </summary>
+            <param name="pid">Product ID.</param>
+            <param name="interval">Timer interval in days</param>
+            <param name="timerType">Type of the timer</param>
+            <param name="flag">Action of either Extend time limit or Asisgn new vendors</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetTimerIntervals(System.Int32)">
+            <summary>
+            Get Bid and RFQ Revision Timer Intervals
+            </summary>
+            <param name="pid">Product ID.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CreateRFQ">
+            <summary>
+            Create a RFQ (new product) 
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetQualifiedVendors(System.Int32,System.String,Omnae.Data.Query.CompanyQuery.VENDOR_TYPE,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a list of qualified vendors by product id 
+            </summary>
+            <param name="productId">The ID of the product.</param>
+            <param name="search">search string to be matched or contained</param>
+            <param name="vendorType">Vendor type: Myself, My Vendors or Network Vendors</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetQualifiedVendorsByParam(Omnae.Common.BUILD_TYPE,Omnae.Data.Query.CompanyQuery.VENDOR_TYPE,System.Nullable{Omnae.Common.MATERIALS_TYPE},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get a list of qualified vendors by build type, material type, process type(optional) 
+            </summary>
+            <param name="processType">Process Type</param>
+            <param name="buildType">RFQ build type</param>
+            <param name="materialType">RFQ material type</param>
+            <param name="vendorType">Vendor type: Myself, My Vendors or Network Vendors</param>
+            <param name="search">search string to be matched or contained</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetChartData(System.Int32,System.Boolean,System.Nullable{Omnae.Data.Query.NcrQuery.NCR_CHART_FILTERS},System.Nullable{System.Int32},System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Get Chart Data by company id
+            </summary>
+            <param name="id">Company id</param>
+            <param name="isVendorMode">Is in Vendor/Customer mode</param>
+            <param name="filter">NCR Chart Filter</param>
+            <param name="filterValue">Filter value</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.IsUniqueRFQ(System.Int32,System.String,System.String)">
+            <summary>
+            Validate if RFQ aleady exists, if it is unique return true else false.
+            </summary>
+            <param name="customerId">Customer Id</param>
+            <param name="partNumber">Part Number</param>
+            <param name="partNumberRevision">Part Number Revision</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.IsUniqueRFQOn3Factors(System.Int32,System.String,System.String)">
+            <summary>
+            Check if the RFQ is unique in combination of 3 factors of customerId, part Number and revision number, 
+            among all RFQs during RFQ stage
+            if it has unique combination return true else false.
+            </summary>
+            <param name="customerId">Customer Id</param>
+            <param name="partNumber">Part Number</param>
+            <param name="partNumberRevision">Part Number Revision</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.IsUniqueProductOn3Factors(System.Int32,System.String,System.String)">
+            <summary>
+             Check if the product is unique in combination of 3 factors of customerId, part Number and revision number
+             among all products, 
+            </summary>
+            <param name="customerId">Customer Id</param>
+            <param name="partNumber">Part Number</param>
+            <param name="partNumberRevision">Part Number Revision</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.IsUniqueProductOn4Factors(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+             Check if the product is unique in combination of 4 factors of customerId, vendorid, part Number and revision number 
+             among all products, 
+            </summary>
+            <param name="customerId">Customer Id</param>
+            <param name="vendorId">Vendor Id</param>
+            <param name="partNumber">Part Number</param>
+            <param name="partNumberRevision">Part Number Revision</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.VendorBidForRFQ(System.Int32)">
+            <summary>
+            Vendor Bid for RFQ.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetBidRFQSummary(System.Int32)">
+            <summary>
+            Get Vendor Bid RFQ Submission Summary.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetVendorBidDetails(System.Int32,System.Int32)">
+            <summary>
+            Get Vendor Bid RFQ Submission Summary.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+            <param name="vid">Vendor Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetBidRFQSummaryList(System.Int32)">
+            <summary>
+            Customer Get Bid Summary List from Vendors.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRFQVendors(System.Int32)">
+            <summary>
+            List all vendors who are participating the bid.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.RevisingRFQ(System.Int32)">
+            <summary>
+            Vendor Revising RFQ.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.VendorRequestRFQRevision(System.Int32)">
+            <summary>
+            Vendor Request RFQ Revision
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.VendorAcceptedRFQ(System.Int32)">
+            <summary>
+            Vendor Accepted RFQ
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.SendCustomerRevisionRFQ(System.Int32)">
+            <summary>
+            Send a revision to vendors assigned to RFQ by customer
+            </summary>
+            <param name="pid">ProductID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRevisions(System.Int32)">
+            <summary>
+            Vendor Bid for RFQ.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRevisionRequests(System.Int32)">
+            <summary>
+            Customer gets Revision .
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetAllFiles(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get documents related this product.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetVendorAllFiles(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get vendor's documents related this product.
+            </summary>
+            <param name="pid">Product/RFQ Id</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CustomerReviewBid(System.Int32)">
+            <summary>
+            Send a revision to vendors assigned to RFQ for a customer
+            </summary>
+            <param name="pid">Product ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CreatePartRevision(System.Int32)">
+            <summary>
+            Create a new revision for a product by customer
+            </summary>
+            <param name="pid">Product ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetPartRevisionList(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get part revison list by product ID from which these revisions created
+            </summary>
+            <param name="pid">Original Product ID</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CancelRFQ(System.Int32)">
+            <summary>
+            Cancel a RFQ bid by vendor
+            </summary>
+            <param name="pid">Product ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CancelRFQByCustomer(System.Int32)">
+            <summary>
+            Customer cancels a RFQ during Bid process
+            </summary>
+            <param name="productId">Product ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetPartStateTracking(System.Int32)">
+            <summary>
+            Get Product state history
+            </summary>
+            <param name="pid">Product ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CreateProductShare(System.Int32,Omnae.WebApi.ViewModels.CreateProductShareViewModel)">
+            <summary>
+            Shares a product with a company
+            </summary>
+            <param name="productId">Product ID to be shared by the company</param>
+            <param name="vm">Type of CreateProductShareViewModel</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.ListProductShares(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List product shares
+            </summary>
+            <param name="productId">product ID.</param>
+            <param name="sharerCompanyId">Sharer company ID.</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.RemoveProductShare(System.Int32,System.Int32,System.String)">
+            <summary>
+            Revoke a part sharing relationship between sharee company and a product
+            </summary>
+            <param name="productId">shared part ID.</param>
+            <param name="shareId">Product sharing ID.</param>
+            <param name="userId">User ID.</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.ListCompaniesCanOrder(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            List sharing companies who can make order of the shared product
+            </summary>
+            <param name="productId">Product ID</param>
+            <param name="page">Page number</param>
+            <param name="pageSize">Numbe of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.AddProductFiles(System.Int32)">
+            <summary>
+            Add product draw documents or add/update a product avatar to an exisint product which was uploaded by onboarding process
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.AddExistingProduct">
+            <summary>
+            Add an existing product to my products
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CheckVendorCapability(Omnae.Common.BUILD_TYPE,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Check if vendors available to match the selected capabilities when creating a new RFQ
+            </summary>
+            <param name="buildType">RFQ Build type</param>
+            <param name="materialType">RFQ Material type</param>
+            <param name="process"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.ResetRFQ(System.Int32)">
+            <summary>
+            Reset a RFQ
+            </summary>
+            <param name="productId">Product Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.VendorRejectRFQ(System.Int32)">
+            <summary>
+            Vendor rejects a RFQ (new product) 
+            </summary>
+            <param name="productId">Product Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetRemainingBidTime(System.Int32)">
+            <summary>
+            Get remaining BID time. (In Days)
+            </summary>
+            <param name="productId">Product Id</param>      
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetReviewRFQStatus(System.Int32,Omnae.Data.Query.TaskDataQuery.UserType,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get Review RFQ Status by RFQ ID
+            </summary>
+            <param name="productId">Product Id</param>      
+            <param name="type">Product Id</param>   
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CustomerKeepCurrentRevision(System.Int32)">
+            <summary>
+            Customer wants to keep current revision
+            </summary>
+            <param name="productId">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetTimerSetupHistory(System.Int32,System.Nullable{Omnae.Common.TypeOfTimers},System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Get TimerSetup histoy by product Id
+            </summary>
+            <param name="productId">Product Id</param>      
+            <param name="type">Type of Timers</param>   
+            <param name="page">Page number</param>
+            <param name="pageSize">Number of records a page can hold</param>
+            <param name="orderBy">Order By</param>
+            <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.UpdateRFQQuantities(System.Int32,System.Int32[])">
+            <summary>
+            Customer updates RFQ quantities during RFQ bid
+            </summary>
+            <param name="productId">Product/RFQ Id</param>
+            <param name="qtys">Array of quantities</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.CustomerAddExtraQuantities(System.Int32)">
+            <summary>
+            Customer adds extra quantities after state of QuoteAccepted
+            </summary>
+            <param name="productId">Product/RFQ Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetVendorStatsByCompanyId(System.Int32)">
+            <summary>
+            Get vendor stats by company ID 
+            </summary>
+            <param name="companyId">Company Id</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetCustomerVendorProducts(System.Int32,System.Int32[],System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+             Get a customer's vendor's all products
+             </summary>
+             <param name="vendorId">vendor ID.</param>
+             <param name="exclude">exclude vendor ids</param>
+             <param name="filter">filtered by string</param>
+             <param name="page">Page number</param>
+             <param name="pageSize">Numbe of records a page can hold</param>
+             <param name="orderBy">Order By</param>
+             <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetVendorCustomerProducts(System.Int32,System.Int32[],System.String,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+             Get a vendor's customer's all products
+             </summary>
+             <param name="customerId">customer ID.</param>
+             <param name="exclude">exclude vendor ids</param>
+             <param name="filter">filtered by string</param>
+             <param name="page">Page number</param>
+             <param name="pageSize">Numbe of records a page can hold</param>
+             <param name="orderBy">Order By</param>
+             <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetProductPriceQuotes(System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+             Get product price quotes by product ID
+             </summary>
+             <param name="id">Product ID.</param>
+             <param name="page">Page number</param>
+             <param name="pageSize">Numbe of records a page can hold</param>
+             <param name="orderBy">Order By</param>
+             <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="M:Omnae.WebApi.Controllers.ProductsController.GetProductPriceQuotesByVendor(System.Int32,System.Int32,System.Nullable{System.Int32},System.Int32,System.String,System.Boolean)">
+            <summary>
+             Get latest product price quote by product ID and vendor ID
+             </summary>
+             <param name="id">Product ID.</param>
+             <param name="vendorId">Vendor ID.</param>
+             <param name="page">Page number</param>
+             <param name="pageSize">Numbe of records a page can hold</param>
+             <param name="orderBy">Order By</param>
+             <param name="ascending">Asc/Desc</param>
+        </member>
+        <member name="T:Omnae.WebApi.Models.PagedResultSet`1">
+            <summary>
+            Represent a Page of Results
+            </summary>
+            <typeparam name="T">Type of the Result</typeparam>
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.Metadata">
+            <summary>
+            Metadata for this Page of Results
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.Results">
+            <summary> 
+            The records this page represents. 
+            </summary> 
+        </member>
+        <member name="T:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata">
+            <summary>
+            Page Metadata Information
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata.PageNumber">
+            <summary>
+            The page number this page represents. 
+            </summary>
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata.PageSize">
+            <summary> 
+            The size of this page. 
+            </summary> 
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata.TotalNumberOfPages">
+            <summary> 
+            The total number of pages available. 
+            </summary> 
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata.TotalNumberOfRecords">
+            <summary> 
+            The total number of records available. 
+            </summary> 
+        </member>
+        <member name="P:Omnae.WebApi.Models.PagedResultSet`1.PageMetadata.NextPageUrl">
+            <summary> 
+            The URL to the Next pages
+            </summary> 
+        </member>
+        <member name="T:Omnae.WebApi.Util.EnumExtentions">
+            <summary>
+            Class for manipulation of Enum type
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Util.EnumExtentions.ToDictionary``1">
+            <summary>
+            Convert a Enum to a dictionary of int and string type
+            </summary>
+        </member>
+        <member name="T:Omnae.WebApi.Util.Pagging">
+            <summary>
+            Pagging class
+            </summary>
+        </member>
+        <member name="M:Omnae.WebApi.Util.Pagging.ToPagedResultSetAsync``2(System.Linq.IQueryable{``0},System.Web.Http.Controllers.HttpRequestContext,System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Creates a paged set of results.
+            </summary>
+            <typeparam name="T">The type of the source IQueryable.</typeparam>
+            <typeparam name="TReturn">The type of the returned paged results.</typeparam>
+            <param name="queryable">The source IQueryable.</param>
+            <param name="requestContext">The context associated with request.</param>
+            <param name="page">The page number you want to retrieve.</param>
+            <param name="pageSize">The size of the page.</param>
+            <param name="orderBy">The field or property to order by.</param>
+            <param name="ascending">Indicates whether or not the order should be ascending (true) or descending (false.)</param>
+            <param name="routeName">Route name</param>
+            <returns>Returns a paged set of results.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Util.Pagging.ToPagedResultSetAsync``1(System.Linq.IQueryable{``0},System.Web.Http.Controllers.HttpRequestContext,System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Creates a paged set of results.
+            </summary>
+            <typeparam name="T">The type of the IQueryable.</typeparam>
+            <param name="queryable">The input IQueryable.</param>
+            <param name="requestContext">The context associated with request.</param>
+            <param name="page">The page number you want to retrieve.</param>
+            <param name="pageSize">The size of the page.</param>
+            <param name="orderBy">The field or property to order by.</param>
+            <param name="ascending">Indicates whether or not the order should be ascending (true) or descending (false.)</param>
+            <param name="routeName">Route name</param>
+            <returns>Returns a paged set of results.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Util.Pagging.ToPagedResultSet``1(System.Collections.Generic.List{``0},System.Web.Http.Controllers.HttpRequestContext,System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Overload method for creating a paged set of results.
+            </summary>
+            <typeparam name="T">The type of the List.</typeparam>
+            <param name="queryable">The input IQueryable.</param>
+            <param name="requestContext">The context associated with request.</param>
+            <param name="page">The page number you want to retrieve.</param>
+            <param name="pageSize">The size of the page.</param>
+            <param name="orderBy">The field or property to order by.</param>
+            <param name="ascending">Indicates whether or not the order should be ascending (true) or descending (false.)</param>
+            <param name="routeName">Route name</param>
+            <returns>Returns a paged set of results.</returns>
+        </member>
+        <member name="M:Omnae.WebApi.Util.QueryableExtentions.OrderByPropertyOrField``1(System.Linq.IQueryable{``0},System.String,System.Boolean)">
+            <summary>
+            Order the IQueryable by the given property or field.
+            </summary>
+            <typeparam name="T">The type of the IQueryable being ordered.</typeparam>
+            <param name="queryable">The IQueryable being ordered.</param>
+            <param name="propertyOrFieldName">The name of the property or field to order by.</param>
+            <param name="ascending">Indicates whether or not the order should be ascending (true) or descending (false.)</param>
+            <returns>Returns an IQueryable ordered by the specified field.</returns>
+        </member>
+    </members>
+</doc>

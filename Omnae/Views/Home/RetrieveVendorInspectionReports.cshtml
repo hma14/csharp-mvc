@@ -1,0 +1,73 @@
+﻿@model Omnae.ViewModels.InspectionReportViewModel
+@{
+    ViewBag.Title = "RetrieveVendorInspectionReports";
+}
+
+<div class="col-md-12 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-file-alt"></i> Retrieve Vendor Inspection Reports</h5>
+        <div class="card-block">
+            <div class="top-margin-30">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="red-text">@TempData["ErrorMessage"].ToString()</div>
+                }
+                @using (Html.BeginForm("RetrieveVendorInspectionReports", "Home", FormMethod.Post, new
+                {
+                    id = "RetrieveVendorInspectionReportsForm",
+                    enctype = "multipart/form-data",
+                }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.VendorId, Model.Vendors, "-- Select Vendor --", new { @id = "vendorId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                            @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div id="docs" class="col-md-12"></div>
+
+
+                    </div>
+                }
+                @if (TempData["Result"] != null)
+                {
+                    <div class="green-text text-md-center">@TempData["Result"].ToString()</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#RetrieveVendorInspectionReportsForm').submit(function () {
+            $('#spinner').show();
+        });
+    });
+
+    $("#vendorId")
+        .change(function () {
+
+            $('#spinner').show();
+            var vendorId = $("#vendorId option:selected").val();
+            var $url = '//' + window.location.host + '/Home/GetInspectionReports';            
+
+            $.ajax({
+                type: 'GET',
+                url: $url,
+                data: { 'vendorId': vendorId },
+                success: function (result) {
+                    $('#spinner').hide();
+                    $('#docs').html(result);
+                },
+                error: function (error) {
+                    $('#spinner').hide();
+                    alertify.error(error.statusCode);
+                }
+            });
+        });
+
+</script>

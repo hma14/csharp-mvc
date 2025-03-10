@@ -1,0 +1,39 @@
+﻿@model Omnae.Model.Models.TaskData
+
+@{
+    ViewBag.Title = "Tooling";
+}
+
+
+<div class="row">
+
+    <div class="card-block">
+        <h4 class=" text-center"><i class="fa fa-check-square fa-2x"></i> Vendor Reacts on Tooling</h4>
+
+        <br />
+        @using (Html.BeginForm("ToolingHandler", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            TempData["TaskData"] = Model;
+
+            <div class="md-form">
+                <fieldset class="form-group">
+                    <input name="group" type="radio" class="with-gap" id="forward" value="forward">
+                    <label for="forward">Sample is complete</label>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <input name="group" type="radio" class="with-gap" id="back" value="back">
+                    <label for="back">Tooling is started</label>
+                </fieldset>
+
+            </div>
+
+            <div class="md-form text-xs-center top-margin-50">
+                <button type="submit" class="btn btn-cyan buttonWidth">Submit</button>
+            </div>
+        }
+
+    </div>
+</div>
+

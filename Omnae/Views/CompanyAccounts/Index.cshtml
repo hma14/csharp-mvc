@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Omnae.Model.Models.Aspnet.SimplifiedUser>
+
+@{
+    ViewBag.Title = "Company Users";
+}
+
+
+@if (ViewBag.Message != null)
+{
+    <h2>@ViewBag.Message</h2>
+}
+@if (ViewBag.Error != null)
+{
+    <h3>@ViewBag.Error</h3>
+}
+
+<style>
+    .actions a {
+        margin-left: .25rem;
+        margin-right: .25rem;
+    }
+</style>
+
+<main class="col-md-12 small top-margin-20">
+
+    <div class="card">
+        <h4 class="card-header">
+            @ViewBag.Title
+            <small class="float-sm-right">@Html.ActionLink("Create New", "Create", new { @class = "btn btn-light" })</small>
+        </h4>
+
+        <div class="card-block">
+
+            <table id="companyUsersTable" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="header">@Html.DisplayNameFor(model => model.Email)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.FirstName)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.MiddleName)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.LastName)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.UserType)</th>
+                        <th class="header">@Html.DisplayNameFor(model => model.Active)</th>
+                        <th class="header">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.UserType)</td>
+                        <td><span>@item.Active.ToString()</span></td>
+                        <td class="actions">
+                            @Html.ActionLink("Edit", "Edit", new {id = item.Id}, new {@class = "btn btn-light accent-background-color" })
+                            @Html.ActionLink("Details", "Details", new {id = item.Id}, new {@class = "btn btn-light accent-background-color " })
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript">
+    $(function () {
+        $('#companyUsersTable').tablesorter({ widthFixed: false });
+    });
+</script>

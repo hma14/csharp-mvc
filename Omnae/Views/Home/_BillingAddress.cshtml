@@ -1,0 +1,66 @@
+﻿@model Omnae.ViewModels.ContinueRegistrationViewModel
+
+<fieldset id="billAddrId" class="scheduler-border top-margin-20">
+    <legend class="scheduler-border">Billing Address</legend>
+
+
+    <div class="md-form col-md-6 top-margin-20">
+        @Html.LabelFor(model => model.Bill_AddressLine1, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Bill_AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Bill_AddressLine1, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="md-form col-md-6 top-margin-20">
+        @Html.LabelFor(model => model.Bill_AddressLine2, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Bill_AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Bill_AddressLine2, "", new { @class = "text-danger" })
+    </div>
+
+    <div>
+        <div class="md-form col-md-4">
+            @Html.LabelFor(model => model.Bill_City, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bill_City, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill_City, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-8">
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.Bill_CountryId, ViewBag.CountryList as SelectList, new { @id = "country", @class = "btn grey-background-color dropdown-toggle ddl col-md-12" })
+                @Html.ValidationMessageFor(model => model.Bill_CountryId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="dynamic usa ddl col-md-6">
+                @Html.DropDownListFor(model => model.Bill_StateId, ViewBag.States as SelectList, new { @class = "btn grey-background-color dropdown-toggle" })
+                @Html.ValidationMessageFor(model => model.Bill_StateId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="canada ddl col-md-6">
+                @Html.DropDownListFor(model => model.Bill_ProvinceId, ViewBag.Provinces as SelectList, new { @class = "btn grey-background-color dropdown-toggle" })
+                @Html.ValidationMessageFor(model => model.Bill_ProvinceId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 no-padding">
+        <div class="md-form dynamic usa col-md-6">
+            @Html.LabelFor(model => model.Bill_ZipCode, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bill_ZipCode, new { htmlAttributes = new { @id = "zipcode", @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill_ZipCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="md-form canada col-md-6">
+            @Html.LabelFor(model => model.Bill_PostalCode, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bill_PostalCode, new { htmlAttributes = new { @id = "postalcode", @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill_PostalCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="md-form others col-md-6">
+            @Html.LabelFor(model => model.Bill_AreaCode, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bill_AreaCode, new { htmlAttributes = new { @id = "postalcode", @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill_AreaCode, "", new { @class = "text-danger" })
+        </div>
+        <div class="md-form col-md-6">
+            @Html.LabelFor(model => model.Bill_Attention, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bill_Attention, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bill_Attention, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</fieldset>

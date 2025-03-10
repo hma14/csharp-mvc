@@ -1,0 +1,406 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+
+<style type="text/css">
+    span i {
+        margin-right: 5px;
+    }
+</style>
+
+@{
+    var td = Model.TaskData;
+    var controller = ViewContext.Controller as BaseController;
+    Order order = Model.Order;
+
+}
+
+<dt>Next State</dt>
+@if (td.StateId == (int)States.PendingRFQ)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.OutForRFQ)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.BackFromRFQ)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.RFQRevision)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.BidForRFQ)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Pending RFQ Revision</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Accepted</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.BidReview)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Accepted</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+
+else if (td.StateId == (int)States.PendingRFQRevision)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Bid For RFQ</span>
+    </dd>
+}
+else if (td.StateId == (int)States.AddExtraQuantities)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Product Created</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.QuoteAccepted)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Ready for RFQ</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Revision Requested</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Quote Accepted</span>
+    </dd>
+}
+@*else if (td.StateId == (int)States.QuoteAccepted)
+    {
+        <dd class="next-states">
+            <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Part Created, Pending for RFQ</span>
+            <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Product Created</span>
+            <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Design Review</span>
+            <span class="col-md-12"><i class="far fa-square fa-1x"></i> Quote Complete</span>
+        </dd>
+    }*@
+else if (td.StateId == (int)States.OrderInitiated)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Made Payment</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ReOrderInitiated)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Made Payment</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Re-Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.PaymentMade)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Made Payment</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ReOrderPaymentMade)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Made Payment</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Re-Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.OrderPaid || td.StateId == (int)States.ProofingStarted || td.StateId == (int)States.ProofRejected || td.StateId == (int)States.ProofingComplete)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ProofApproved)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ToolingStarted)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.SampleStarted || td.StateId == (int)States.SampleComplete || td.StateId == (int)States.SampleRejected)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.SampleApproved)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Proof Approved</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Tooling Complete</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Sample Approved</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ReOrderInitiated)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ReOrderPaid)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ProductionStarted)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.ProductionComplete)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerStarted)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> NCR Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRVendorRootCauseAnalysis)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerApproval)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRVendorCorrectivePartsInProduction)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRVendorCorrectivePartsComplete)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerCorrectivePartsReceived)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRClosed)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Approval</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts in Production</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Vendor Corrective Parts Complete</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Corrective Parts Received/Approved</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRRootCauseDisputes)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Dispute Resolution</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Root Cause Analysis</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRAdminDisputesIntervention)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Dispute Resolution</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Root Cause Analysis</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerRejectCorrective)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Admin Intervention</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Root Cause Analysis</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerRevisionNeeded)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Admin Intervention</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRClosed)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Admin Intervention</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Closed</span>
+    </dd>
+}
+else if (td.StateId == (int)States.NCRCustomerRejectRootCause)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i>NCR Started</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Admin Intervention</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Customer Revision Needed</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i>NCR Vendor Root Cause Analysis</span>
+    </dd>
+}
+else if (td.StateId == (int)States.VendorPendingInvoice)
+{
+    <dd class="next-states">
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Order Paid</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Production Started</span>
+        <span class="col-md-12"><i class="far fa-check-square fa-1x"></i> Production Complete</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Vendor Pending Invoice</span>
+        <span class="col-md-12"><i class="far fa-square fa-1x"></i> Production Complete</span>
+    </dd>
+}
+
+
+
+
+@if (@order != null && @td.StateId < (int)States.NCRCustomerStarted)
+{
+    if (order != null && order.TrackingNumber != null)
+    {
+        <dt>Tracking #</dt>
+        <dd><span class="col-md-4"><a href="~/Orders/TrackingShippingStatusPage/@order.TrackingNumber" target="_blank" title="Click to go to Tracking Shipment Status">@order.TrackingNumber</a></span></dd>
+        <dt>Carrier Name</dt>
+        <dd><span class="col-md-4">@order.CarrierName</span></dd>
+        <dt>Shipping Date</dt>
+        <dd><span class="col-md-4">@(order.ShippedDate?.ToString("yyyy/MM/dd"))</span></dd>
+    }
+}
+
+@if (@td.StateId == (int)States.NCRVendorCorrectivePartsComplete)
+{
+    NCReport ncr = Model.NCReport;
+    if (ncr != null)
+    {
+        <dt>Tracking #</dt>
+        <dd><span class="col-md-4"><a href="~/Orders/TrackingShippingStatusPage/@ncr.TrackingNumber" title="Click to go to Tracking Shipment Status">@ncr.TrackingNumber</a></span></dd>
+        <dt>Carrier Name</dt>
+        <dd><span class="col-md-4">@ncr.CarrierName</span></dd>
+    }
+}
+
+

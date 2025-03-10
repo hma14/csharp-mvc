@@ -1,0 +1,40 @@
+﻿@model List<Omnae.ViewModels.GetInspectionReportsViewModel>
+@using Omnae.Common
+
+@if (Model != null && Model.Any())
+{
+    var type = Enum.GetName(typeof(DOCUMENT_TYPE), Model.First().Doc.DocType);
+
+    <div class="top-margin-30">
+        Document Type: <span class="green-text">@type</span>
+        <div class="col-md-12 card-header default-color pull-left white-text status-title">
+            <span class="col-md-5 no-padding">
+                <span class="col-md-2 no-padding">Doc Date</span>
+                <span class="col-md-6 no-padding">Doc Name</span>
+            </span>
+            <span class="col-md-5">
+                <span class="col-md-4 no-padding">Product</span>
+                <span class="col-md-4 no-padding">Part #</span>
+                <span class="col-md-4 no-padding">Part Rev</span>
+            </span>
+            <span class="col-md-2 no-padding">Product Desc.</span>
+        </div>
+        <div class="col-md-12 line">
+            @foreach (var item in Model)
+            {
+                <span class="col-md-5 no-padding">
+                    <span class="col-md-2 no-padding">@item.Doc.CreatedUtc.ToString("MM/dd/yyyy")</span>
+                    <span class="col-md-10 no-padding"><a href="@item.Doc.DocUri" target="_blank">@item.Doc.Name</a></span>
+                </span>
+                <span class="col-md-5">
+                    <span class="col-md-4 no-padding">@item.ProductName</span>
+                    <span class="col-md-4 no-padding">@item.PartNumber</span>
+                    <span class="col-md-4 no-padding">@item.PartNumberRev</span>
+                </span>
+                <span class="col-md-2 no-padding">@item.ProductDescription</span>
+            }
+        </div>
+    </div>
+}
+
+

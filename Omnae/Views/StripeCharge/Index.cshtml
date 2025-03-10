@@ -1,0 +1,205 @@
+﻿@model Omnae.ViewModels.StripeChargeViewModel
+
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .dynamic {
+        display: none;
+    }
+
+    #cardform {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+</style>
+
+<div class="col-md-12 top">
+    <div class="offset-md-3 col-md-6">
+        <div class="card">
+            <h5 class="card-header  default-color white-text text-md-center"><i class="fas fa-pencil-alt"></i> Payment Form</h5>
+
+            <div id="cardform">
+                <div class="card-block">
+
+                    <h4 class="grey-text"><i class="fa fa-credit-card fa-2x"></i> Credit Card Info</h4>
+                    <br />
+                    @if (TempData["StripeException"] != null)
+                    {
+                        <p class="red-text">
+                            @TempData["StripeException"]
+                        </p>
+                    }
+                    <div>
+                        <div class="md-form col-md-6">
+                            <label for="txtCardNumber">Card Number *</label>
+                            <input type="text" id="txtCardNumber" class="form-control">
+                        </div>
+
+                        <div class="md-form col-md-6">
+                            <label for="txtCvc">Cvc *</label>
+                            <input type="text" id="txtCvc" class="form-control">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="md-form col-md-6">
+                            <label for="txtExpiryMonth">Expiry Month (MM) *</label>
+                            <input type="text" id="txtExpiryMonth" class="form-control">
+                        </div>
+
+                        <div class="md-form col-md-6">
+                            <label for="txtExpiryYear">Expiry Year (YYYY) *</label>
+                            <input type="text" id="txtExpiryYear" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="md-form col-md-12">
+                        @Html.LabelFor(m => m.Amount, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Amount, new { @readonly = "readonly", @class = "form-control green-text" })
+                        @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                @using (Html.BeginForm("Charge", "StripeCharge", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { autocomplete = "off", id = "frmCharge" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.TaskId)
+                    @Html.HiddenFor(x => x.Amount)
+                    @Html.HiddenFor(x => x.Currency)
+                    @Html.HiddenFor(x => x.OrderId)
+                    @Html.HiddenFor(x => x.IsReorder)
+
+                    <div class="card-block">
+
+
+                        <h4 class=" grey-text"><i class="fas fa-map-marker-alt fa-2x"></i> Billing Address</h4>
+                        <br />
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                        <div class="md-form">
+                            @Html.LabelFor(m => m.CardHolderName, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CardHolderName, "", new { @class = "text-danger" })
+                        </div>
+
+
+                        <div id="toHide">
+                            <div class="md-form">
+                                @Html.LabelFor(model => model.address.AddressLine1, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.address.AddressLine1, new { htmlAttributes = new { @id = "address", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.address.AddressLine1, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="md-form">
+                                @Html.LabelFor(model => model.address.AddressLine2, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.address.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.address.AddressLine2, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="md-form">
+                                @Html.LabelFor(model => model.address.City, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.address.City, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.address.City, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="row md-form">
+                                <div>
+                                    @Html.DropDownListFor(model => model.address.CountryId, @ViewBag.Country as SelectList, new { @id = "country", @class = "btn grey-background-color dropdown-toggle col-md-6 ddl" })
+                                    @Html.ValidationMessageFor(model => model.address.CountryId, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="md-form usa">
+                                    @Html.DropDownListFor(model => model.address.StateProvinceId, @ViewBag.USA as SelectList, new { @class = "btn grey-background-color dropdown-toggle col-md-5" })
+                                    @Html.ValidationMessageFor(model => model.address.StateProvinceId, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="md-form dynamic canada">
+                                    @Html.DropDownListFor(model => model.address.StateProvinceId, @ViewBag.Canada as SelectList, new { @class = "btn grey-background-color dropdown-toggle col-md-5" })
+                                    @Html.ValidationMessageFor(model => model.address.StateProvinceId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="usa">
+                                @Html.LabelFor(model => model.address.ZipCode, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.address.ZipCode, new { @id = "zipcode", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.address.ZipCode, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="dynamic canada">
+                                @Html.LabelFor(model => model.address.PostalCode, htmlAttributes: new { @class = "control-label" })
+                                @*@Html.EditorFor(model => model.address.PostalCode, new { htmlAttributes = new { @id="postalcode", @class = "form-control" } })*@
+                                @Html.EditorFor(model => model.address.PostalCode, new { @id = "postalcode", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.address.PostalCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <p class="text-xl-center">
+                            @Html.HiddenFor(model => model.Token, new { id = "hdnToken" })
+                            <div class="md-form text-xs-center top-margin-50">
+                                <button id="btnCharge" type="submit" class="btn accent-background-color buttonWidth">Process Payment</button>
+                            </div>
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function () {
+        if ($("#address").val() == null) {
+            $("#toHide").hide();
+        }
+        else {
+            $("#toHide").show();
+        }
+    });
+</script>
+
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        Stripe.setPublishableKey('@System.Configuration.ConfigurationManager.AppSettings["stripe_public_key"]');
+
+        $('#btnCharge').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            Stripe.card.createToken({
+                number: $('#txtCardNumber').val(),
+                cvc: $('#txtCvc').val(),
+                exp_month: $('#txtExpiryMonth').val(),
+                exp_year: $('#txtExpiryYear').val()
+            }, stripeResponseHandler);
+        });
+
+        function stripeResponseHandler(status, response) {
+            var $form = $('#frmCharge');
+
+            if (response.error) {
+                // Show the errors on the form
+                alert(response.error.message);
+            } else {
+                // response contains id and card, which contains additional card details
+                var token = response.id;
+                // Insert the token into the form so it gets submitted to the server
+                $('#hdnToken').val(token);
+                // and submit
+                $form.get(0).submit();
+            }
+        }
+    });
+
+</script>
+

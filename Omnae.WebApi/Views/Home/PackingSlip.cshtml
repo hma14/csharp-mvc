@@ -1,0 +1,255 @@
+﻿@model Omnae.BusinessLayer.Models.PackingSlipViewModel
+
+<link href="~/Content/mdb.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+
+<style>
+    th {
+        text-align: center;
+        color: black;
+        font-size: 1.2em;
+        font-weight: bold;
+        vertical-align: middle;
+    }
+
+    td {
+        text-align: center;
+        color: black;
+        font-size: 1em;
+        vertical-align: middle;
+    }
+
+
+
+    .col1 {
+        width: 20%;
+    }
+
+    .col2, .col4 {
+        width: 10%;
+    }
+
+    .col3 {
+        width: 60%;
+    }
+
+    .claim {
+        text-align: left;
+    }
+
+    .row-min-height {
+        height: 400px;
+    }
+
+    #inner table, th, td {
+        border: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    #inner {
+        width: 100%;
+    }
+</style>
+
+
+<div class="col-xs-12 top-margin-30">
+    @if (Model.isEnterprise == true)
+    {
+        @Html.Partial("_PackingSlipVendorHeader", Model)
+    }
+    else
+    {
+        @Html.Partial("_PackingSlipCustomerHeader", Model)
+    }
+    @if (Model != null)
+    {
+        <div class="col-xs-12 top-margin-20">
+            <h1 class="offset-xs-4 col-xs-4">Packing Slip</h1>
+            <div class="col-xs-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Order Date</th>
+                            @if (!Model.isEnterprise)
+                            {
+                                <th>Sales Order #</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.OrderDate.ToString("MM/dd/yyyy")</td>
+                            @if (!Model.isEnterprise)
+                            {
+                                <td>@Model.EstimateNumber</td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="top-margin-30">
+            <div class="col-xs-6 top-margin-20">
+                <h3>Bill To</h3>
+                <span>
+                    @Model.CustomerName<br />
+                    <span class="font-weight-bold">Attn:</span> @Model.Attention
+                    <br />
+                    @if (Model.CustomerAddress_AddressLine2 != null)
+                    {
+                        @Model.CustomerAddress_AddressLine2
+                    }
+                    @Model.CustomerAddress_AddressLine1,
+                    @Model.CustomerAddress_City,
+                    @if (Model.CustomerAddress_State != null)
+                    {
+                        @Model.CustomerAddress_State
+                        @Html.Raw(", ")
+                    }
+
+                    @Model.CustomerAddress_CountryName,
+                    @if (Model.CustomerAddress_PostalCode != null)
+                    {
+                        @Model.CustomerAddress_PostalCode
+                    }
+                    else if (Model.CustomerAddress_ZipCode != null)
+                    {
+                        @Model.CustomerAddress_ZipCode
+                    }
+                    <br />
+                    <span class="font-weight-bold">
+                        Ph. No:
+                    </span> @Model.CustomerPhoneNumber
+
+                </span>
+
+            </div>
+            <div class="col-xs-6 top-margin-20">
+                <h3>Ship To</h3>
+                <span>
+                    @Model.CustomerName<br />
+                    <span class="font-weight-bold">Attn:</span> @Model.Attention
+                    <br />
+                    @if (Model.CustomerShippingAddress_AddressLine2 != null)
+                    {
+                        @Model.CustomerShippingAddress_AddressLine2
+                    }
+                    @Model.CustomerShippingAddress_AddressLine1,
+                    @Model.CustomerShippingAddress_City,
+                    @if (Model.CustomerShippingAddress_State != null)
+                    {
+                        @Model.CustomerShippingAddress_State
+                        @Html.Raw(", ")
+                    }
+                    @Model.CustomerShippingAddress_CountryName,
+                    @if (Model.CustomerShippingAddress_PostalCode != null)
+                    {
+                        @Model.CustomerShippingAddress_PostalCode
+                    }
+                    else if (Model.CustomerShippingAddress_ZipCode != null)
+                    {
+                        @Model.CustomerShippingAddress_ZipCode
+                    }
+
+                    <br />
+                    <span class="font-weight-bold">
+                        Ph. No:
+                    </span> @Model.CustomerPhoneNumber
+                </span>
+            </div>
+
+        </div>
+        <div class="col-xs-12 top-margin-20">
+
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td colspan="4">
+
+                            <table id="inner">
+                                <thead>
+                                    <tr>
+                                        <th>P.O. No.</th>
+                                        <th>Terms (days)</th>
+                                        <th>Ship Date</th>
+                                        <th>Ship Via</th>
+                                        <th>Shipping Type</th>
+                                        <th>Shipping Account #</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.CustomerPONumber</td>
+                                        <td>@Model.Term</td>
+                                        <td>@Model.ShippingDate.ToString("MM/dd/yyyy")</td>
+                                        <td>@Model.CarrierName</td>
+                                        <td>@Model.CarrierType</td>
+                                        <td>@Model.ShippingAccount</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col1">Item</th>
+                        <th class="col2">Quantity</th>
+                        <th class="col3">Description</th>
+                        <th class="col4">Buyer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row-min-height">
+                        <td>
+                            @Model.PartNumber Rev @Model.PartRevision
+                        </td>
+                        <td rowspan="2">@Model.Quantity</td>
+                        @if (!Model.isEnterprise)
+                        {
+                            <td>P/N: @Model.PartNumber Rev @Model.PartRevision; @Model.PartDescription</td>
+                        }
+                        else
+                        {
+                            <td rowspan="2">P/N: @Model.PartNumber Rev @Model.PartRevision; @Model.PartDescription</td>
+                        }
+                        <td rowspan="2">@Model.Buyer</td>
+                    </tr>
+                    <tr>
+                        <td class="col1 text-left">NOTES:</td>
+                        @if (!Model.isEnterprise)
+                        {
+                            <td class="col3">
+                                <h5 class="claim">CERTIFICATE OF COMPLIANCE</h5>
+                                <p class="small grey-text claim">
+                                    Omnae certifies that the goods delivered have been inspected against all
+                                    supplied drawings and/or Omnae-generated customer-approved proofs. All resuting
+                                    products referenced on said drawings and Purchase Orders
+                                    have been determined to be free from defects, are uniform n quality, and do not
+                                    contain any hazardous or restricted substances as per current RoHS directives.
+                                </p>
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+            @if (Model.isEnterprise)
+            {
+                <div class="top-margin-5">Shipped by: <span class="bold">@Model.CarrierName</span></div>
+            }
+            else
+            {
+                <div class="top-margin-10">Shipped by: <span class="bold">TPA</span></div>
+            }
+        </div>
+
+    }
+    else
+    {
+        <div class="col-xs-12 top-margin-30 red-text">
+            <h4 class="text-xs-center">Whoops!</h4>
+        </div>
+    }
+</div>

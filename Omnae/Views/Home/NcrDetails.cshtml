@@ -1,0 +1,156 @@
+﻿@model Omnae.BusinessLayer.Models.NcrDescriptionViewModel
+
+@using Omnae.Common
+@using Omnae.Controllers
+
+@{
+    ViewBag.Title = "NcrDetails";
+}
+<style>
+    #ncr dt {
+        padding: 0px !important;
+        margin-right: 10px;
+        /*width:250px;*/
+        width: 25%;
+    }
+
+    #ncr dd {
+        padding: 0px !important;
+        /*margin-left:260px;*/
+        margin-left: 26%;
+    }
+</style>
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center">Non-Conformance Report</h4>
+        <div class="card-block">
+
+            <dl class="dl-horizontal col-md-4">
+                <dt>Customer</dt>
+                <dd>@Model.Customer</dd>
+                <dt>Part No</dt>
+                <dd>@Model.ProductPartNo</dd>
+                <dt>Vendor/Supplier</dt>
+                <dd>@Model.Vendor</dd>
+            </dl>
+            <dl class="dl-horizontal  col-md-4">
+
+                <dt>Rev.No</dt>
+                <dd>@Model.PartRevisionNo</dd>
+
+                <dt>PO No</dt>
+                @if (Model.PONumber != null)
+                {
+                    <dd>@Model.PONumber</dd>
+                }
+                else
+                {
+                    <dd>N/A</dd>
+                }
+                @if (Model.NCDetectedDate != null)
+                {
+                    <dt>Initiate Date</dt>
+                    <dd class="pink-text">@Model.NCDetectedDate.Value.ToString("MM/dd/yyyy")</dd>
+                }
+                @if (Model.DateNcrClosed != null)
+                {
+                    <dt>Close Date</dt>
+                    <dd class="green-text">@Model.DateNcrClosed.Value.ToString("MM/dd/yyyy")</dd>
+                }
+
+            </dl>
+            <dl class="dl-horizontal  col-md-4">
+                <dt>Affected Quantity</dt>
+                <dd><span class="green-text">@Model.Quantity</span>  (out of <span class="green-text">@Model.TotalProductQuantity</span> )</dd>
+
+                <dt>Originator</dt>
+                <dd>@Model.NCOriginator</dd>
+                <dt>Detected By</dt>
+                <dd>@Model.NCDetectedby</dd>
+
+                <dt>Product Description</dt>
+                <dd>@Model.ProductDescription</dd>
+            </dl>
+
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border pink-text">NCR Details</legend>
+                <div id="ncr" class="col-md-12 top-margin-20">
+                    <dl class="dl-horizontal">
+                        <dt>NC Description</dt>
+                        <dd>@Model.NCDescription</dd>
+                        <dt>Expectation</dt>
+                        <dd>@Model.Expectation</dd>
+
+
+                        @if (Model.RootCause != null)
+                        {
+                            <dt>Root Cause</dt>
+                            <dd>@Enum.GetName(typeof(NC_ROOT_CAUSE), Model.RootCause)</dd>
+                            if (Model.RootCauseFurtherDetails != null)
+                            {
+                                <dt>Root Cause Details</dt>
+                                <dd>@Model.RootCauseFurtherDetails</dd>
+                            }
+                            <dt>Disposition</dt>
+                            <dd>@Enum.GetName(typeof(NC_DISPOSITION), @Model.Disposition != null ? @Model.Disposition : NC_DISPOSITION.NO_ACTION_OR_SCRAP)</dd>
+
+                            if (Model.ActionTakenDetails != null)
+                            {
+                                <dt>Action Taken Details</dt>
+                                <dd>@Model.ActionTakenDetails</dd>
+                            }
+                            if (Model.CorrectiveAction != null)
+                            {
+                                <dt>Corrective Action</dt>
+                                <dd>@Model.CorrectiveAction</dd>
+                            }
+                            if (Model.ActionTakenVerifiedBy != null)
+                            {
+                                <dt>Action Taken By</dt>
+                                <dd>@Model.ActionTakenVerifiedBy</dd>
+                            }
+                            if (Model.ActionTakenVerifiedDate != null)
+                            {
+                                <dt>Action Date</dt>
+                                <dd>@Model.ActionTakenVerifiedDate</dd>
+                            }
+
+                        }
+
+                        @if (Model.RejectRootCauseReason != null)
+                        {
+                            <dt>Reject Root Cause Reason</dt>
+                            <dd>@Model.RejectRootCauseReason</dd>
+                        }
+                        @if (Model.RejectCorrectiveActionReason != null)
+                        {
+                            <dt>Reject Corrective Action Reason</dt>
+                            <dd>@Model.RejectCorrectiveActionReason</dd>
+                        }
+                        @if (Model.RejectCorrectivePartsReason != null)
+                        {
+                            <dt>Reject Corrective Parts Reason</dt>
+                            <dd>@Model.RejectCorrectivePartsReason</dd>
+                        }
+                        @if (Model.ArbitrateCustomerCauseReason != null)
+                        {
+                            <dt>Arbitrate Customer Cause Reason</dt>
+                            <dd>@Model.ArbitrateCustomerCauseReason</dd>
+                        }
+                        @if (Model.RootCauseOnCustomerReason != null)
+                        {
+                            <dt>Root Cause On Customer Reason</dt>
+                            <dd>@Model.RootCauseOnCustomerReason</dd>
+                        }
+                    </dl>
+                    <hr />
+                    @Html.Partial("_NcrImages", Model)
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+</div>
+

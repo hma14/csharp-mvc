@@ -1,0 +1,403 @@
+﻿@using Omnae.Common
+@using Omnae.Controllers
+@using Omnae.Model.Models
+@using StringExtensions = Omnae.Common.Extensions.StringExtensions
+
+@model Omnae.BusinessLayer.Models.ProductDetailsViewModel
+
+<style>
+    .dl-horizontal dt {
+        width: 50%;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .dl-horizontal dd {
+        width: 100%;
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+        font-size: 0.8em;
+    }
+</style>
+
+@if (Model != null)
+{
+    var entity = Model.ExtraQtyPartDetailsVM;
+    var sampleLeadTime = Model.SampleLeadTime;
+    var prodLeadTime = Model.ProdLeadTime;
+    int? numberSampleIncluded = Model.NumberSampleIncluded;
+    Order order = Model.Order;
+
+    <div id="col-md-12">
+        <dl class="dl-horizontal col-md-6">
+            <dt>
+                @Html.DisplayNameFor(model => model.Product.BuildType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Product.BuildType)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Product.Material)
+            </dt>
+            <dd>
+                @StringExtensions.SplitCamelCase(Enum.GetName(typeof(MATERIALS_TYPE), Model.Product.Material))
+            </dd>
+
+            @if (Model.Product.PrecisionMetal != null && Model.Product.PrecisionMetal != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.PrecisionMetal)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.PrecisionMetal)
+                </dd>
+            }
+            @if (Model.Product.MetalsProcesses != null && Model.Product.MetalsProcesses != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MetalsProcesses)
+                </dt>
+                <dd>
+                    @StringExtensions.SplitCamelCase(Enum.GetName(typeof(Metals_Processes), Model.Product.MetalsProcesses))
+                </dd>
+            }
+            @if (Model.Product.MetalType != null && Model.Product.MetalType != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MetalType)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MetalType)
+                </dd>
+            }
+            @if (Model.Product.MetalsSurfaceFinish != null && Model.Product.MetalsSurfaceFinish != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MetalsSurfaceFinish)
+                </dt>
+                <dd>
+                    @StringExtensions.SplitCamelCase(Enum.GetName(typeof(Metals_Surface_Finish), Model.Product.MetalsSurfaceFinish))
+                </dd>
+            }
+            @if (Model.Product.PrecisionPlastics != null && Model.Product.PrecisionPlastics != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.PrecisionPlastics)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.PrecisionPlastics)
+                </dd>
+            }
+            @if (Model.Product.PlasticsProcesses != null && Model.Product.PlasticsProcesses != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.PlasticsProcesses)
+                </dt>
+                <dd>
+                    @StringExtensions.SplitCamelCase(Enum.GetName(typeof(Plastics_Processes), Model.Product.PlasticsProcesses))
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitches != null && Model.Product.MembraneSwitches != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitches)
+                </dt>
+                <dd>
+                    @StringExtensions.SplitCamelCase(Enum.GetName(typeof(Switches_Type), Model.Product.MembraneSwitches))
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitchesAttributes != null && Model.Product.MembraneSwitchesAttributes != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitchesAttributes)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MembraneSwitchesAttributes)
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitchesAttributesWaterproof != null && Model.Product.MembraneSwitchesAttributesWaterproof != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitchesAttributesWaterproof)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MembraneSwitchesAttributesWaterproof)
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitchesAttributesEmbossing != null && Model.Product.MembraneSwitchesAttributesEmbossing != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitchesAttributesEmbossing)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MembraneSwitchesAttributesEmbossing)
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitchesAttributesLEDLighting != null && Model.Product.MembraneSwitchesAttributesLEDLighting != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitchesAttributesLEDLighting)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MembraneSwitchesAttributesLEDLighting)
+                </dd>
+            }
+            @if (Model.Product.MembraneSwitchesAttributesLED_EL_Backlighting != null && Model.Product.MembraneSwitchesAttributesLED_EL_Backlighting != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MembraneSwitchesAttributesLED_EL_Backlighting)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MembraneSwitchesAttributesLED_EL_Backlighting)
+                </dd>
+            }
+            @if (Model.Product.GraphicOverlaysAttributes != null && Model.Product.GraphicOverlaysAttributes != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.GraphicOverlaysAttributes)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.GraphicOverlaysAttributes)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.Elastomers))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Elastomers)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Elastomers)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.Labels))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Labels)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Labels)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.MilledStone))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MilledStone)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MilledStone)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.FlexCircuits))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.FlexCircuits)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.FlexCircuits)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.MilledWood))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MilledWood)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MilledWood)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.CableAssemblies))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.CableAssemblies)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.CableAssemblies)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.Others))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.Others)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.Others)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.MetalType_FreeText))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.MetalType_FreeText)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.MetalType_FreeText)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.SurfaceFinish_FreeText))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.SurfaceFinish_FreeText)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.SurfaceFinish_FreeText)
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.PlasticType_FreeText))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.PlasticType_FreeText)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.PlasticType_FreeText)
+                </dd>
+            }
+        </dl>
+        <dl class="dl-horizontal col-md-6">
+
+            @if (Model.Product.ToolingLeadTime != null && Model.Product.ToolingLeadTime != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.ToolingLeadTime)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.ToolingLeadTime) @Html.Raw(" Business Days")
+                </dd>
+            }
+
+            @if (sampleLeadTime > 0 || entity?.SampleLeadTime != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.SampleLeadTime)
+                </dt>
+                <dd>
+                    @if (entity?.SampleLeadTime != null && entity.SampleLeadTime != sampleLeadTime)
+                    {
+                        <span>@($"{sampleLeadTime} ({entity.SampleLeadTime})")</span><span class="red-text">*</span><span class="grey-text"> bus. days</span>
+                    }
+                    else
+                    {
+                        <span>@($"{sampleLeadTime} ")</span><span class="grey-text">bus. days</span>
+                    }
+                </dd>
+            }
+
+
+            @if (prodLeadTime > 0 || entity?.ProductionLeadTime != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.ProductionLeadTime)
+                </dt>
+                <dd>
+                    @if (entity?.ProductionLeadTime != null && entity.ProductionLeadTime != prodLeadTime)
+                    {
+                        <span>@($"{prodLeadTime} ({entity.ProductionLeadTime})")</span><span class="red-text">*</span><span class="grey-text"> bus. days</span>
+                    }
+                    else
+                    {
+                        <span>@($"{prodLeadTime} ")</span><span class="grey-text">bus. days</span>
+                    }
+                </dd>
+            }
+
+            @if (numberSampleIncluded != null)
+            {
+                <dt>
+                    No. Sample Included
+                </dt>
+                <dd>
+                    @if (entity?.NumberSampleIncluded != null)
+                    {
+                        <span>@($"{numberSampleIncluded} ({entity.NumberSampleIncluded})")</span><span class="red-text">*</span>
+                    }
+                    else
+                    {
+                        <span>@numberSampleIncluded</span>
+                    }
+                </dd>
+            }
+            @if (!string.IsNullOrEmpty(Model.Product.HarmonizedCode))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.HarmonizedCode)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.HarmonizedCode)
+                </dd>
+            }
+            @if (order != null)
+            {
+                <dt>
+                    Order Date
+                </dt>
+                <dd>
+                    @order.OrderDate.ToString("yyyy-MM-dd")
+                </dd>
+                <dt>
+                    Order Quantity
+                </dt>
+                <dd>
+                    @order.Quantity
+                </dd>
+                <dt>
+                    Purchase Order #
+                </dt>
+                <dd>
+                    @order.CustomerPONumber
+                </dd>
+                if (order.EstimateCompletionDate != null)
+                {
+                    <dt>
+                        Est. Completion Date
+                    </dt>
+                    <dd>
+                        @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                    </dd>
+                }
+                if (order.CarrierName != null)
+                {
+                    <dt>
+                        Carrier Name
+                    </dt>
+                    <dd>
+                        @order.CarrierName
+                    </dd>
+                }
+                if (order.TrackingNumber != null)
+                {
+                    <dt>
+                        Tracking Number
+                    </dt>
+                    <dd>
+                        @order.TrackingNumber
+                    </dd>
+                }
+            }
+        </dl>
+        <dl class="dl-horizontal col-md-12">
+            @if (Model.Product.GraphicOverlaysAttributesEmbossing != null && Model.Product.GraphicOverlaysAttributesEmbossing != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.GraphicOverlaysAttributesEmbossing)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.GraphicOverlaysAttributesEmbossing)
+                </dd>
+            }
+            @if (Model.Product.GraphicOverlaysAttributesSelectiveTexture != null && Model.Product.GraphicOverlaysAttributesSelectiveTexture != 0)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Product.GraphicOverlaysAttributesSelectiveTexture)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Product.GraphicOverlaysAttributesSelectiveTexture)
+                </dd>
+            }
+        </dl>
+
+        @if (entity?.SampleLeadTime != null && entity.ProductionLeadTime != null && entity.ToolingSetupCharges != null)
+        {
+            <p class="col-md-12 grey-text small top-margin-30"><span class="red-text">*</span> For newly added Quantities or newly created Revision</p>
+        }
+
+    </div>
+}

@@ -1,0 +1,108 @@
+﻿@model Omnae.Models.ManageLoginsViewModel
+@using Microsoft.Owin.Security
+@{
+    ViewBag.Title = "Manage your external logins";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+
+        <div class="card-block">
+            <h3><i class="fa fa-external-link-square fa-2x"></i> @ViewBag.Title</h3>
+            <br />
+
+            <p class="card-text text-justify">@ViewBag.StatusMessage</p>
+            @{
+                var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+                if (loginProviders.Count() == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=313242">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    if (Model.CurrentLogins.Count > 0)
+                    {
+                        <h4><i class="fa fa-list fa-1x"></i> Registered Logins</h4>
+                        <table class="table">
+                            <tbody>
+                                @foreach (var account in Model.CurrentLogins)
+                                {
+                                    <tr>
+                                        <td>
+
+                                            @if (account.LoginProvider.ToLower() == "facebook")
+                                            {
+                                                <button type="submit" class="btn-floating btn-large btn-gplus"><i class="fa fa-facebook"></i></button>
+                                            }
+                                            else if (account.LoginProvider.ToLower() == "google")
+                                            {
+                                                <button type="submit" class="btn-floating btn-large btn-gplus"><i class="fa fa-google-plus"></i></button>
+                                            }
+                                            else if (account.LoginProvider.ToLower() == "twitter")
+                                            {
+                                                <button type="submit" class="btn-floating btn-large btn-gplus"><i class="fa fa-twitter"></i></button>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (ViewBag.ShowRemoveButton)
+                                            {
+                                                using (Html.BeginForm("RemoveLogin", "Manage"))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    <div>
+                                                        @Html.Hidden("loginProvider", account.LoginProvider)
+                                                        @Html.Hidden("providerKey", account.ProviderKey)
+                                                        <button type="submit" class="btn btn-cyan btn-md" title="Remove this @account.LoginProvider login from your account">Remove</button>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @: &nbsp;
+                                }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    if (Model.OtherLogins.Count > 0)
+                    {
+                        using (Html.BeginForm("LinkLogin", "Manage"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div id="socialLoginList">
+                                <p>
+                                    @foreach (AuthenticationDescription p in Model.OtherLogins)
+                                    {
+                                        @*<button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>*@
+
+                                    if (p.Caption.ToLower() == "facebook")
+                                    {
+                                        <button type="submit" class="btn-floating btn-large btn-fb" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-facebook"></i></button>
+                                    }
+                                    else if (p.Caption.ToLower() == "google")
+                                    {
+
+                                        <button type="submit" class="btn-floating btn-large btn-gplus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-google-plus"></i></button>
+
+                                    }
+                                    else if (p.Caption.ToLower() == "twitter")
+                                    {
+                                        <button type="submit" class="btn-floating btn-large btn-tw" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-twitter"></i></button>
+                                        }
+                                    }
+                                </p>
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,224 @@
+﻿@model IEnumerable<Omnae.Model.Models.ProductStateTracking>
+
+@using Omnae.Common
+@using Omnae.Model.Models
+
+<style>
+    .parthistory.dl-horizontal dt {
+        text-align: left;
+        width: 70% !important;
+    }
+
+    .parthistory.dl-horizontal dd {
+        margin-left: 0px;
+        text-align: right;
+    }
+</style>
+
+
+<div class="card card-cascade col-md-12 detail-min-height">
+    <div class="card-block">
+        <div class="col-md-6">
+            <h4>Part History</h4>
+        </div>
+        <div class="col-md-6">
+            ETA for next update: NA
+        </div>
+    </div>
+    <div class="card-block">
+        <div class="col-md-12">
+            <dl class="dl-horizontal parthistory">
+
+                @if (Model != null && Model.Any())
+                {
+                    var stateIconMapping = Utils.ConstructStateIconMapping();
+                    foreach (var sttrack in Model)
+                    {
+                        <dt>
+                            <span class="col-md-2 green-text">
+                                @Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@sttrack.StateId))
+                            </span>
+                            <span class="col-md-10">
+                                @if (sttrack.StateId == (int)States.PendingRFQ)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" New Part Created, Pending for RFQ")
+                                }
+                                else if (sttrack.StateId == (int)States.OutForRFQ)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Part Ready For RFQ")
+                                }
+                                else if (sttrack.StateId == (int)States.BidForRFQ)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Bid for RFQ")
+                                }
+                                else if (sttrack.StateId == (int)States.BidReview)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Bid Review")
+                                }
+                                else if (sttrack.StateId == (int)States.BidTimeout)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Bid Timeout")
+                                }
+                                else if (sttrack.StateId == (int)States.PendingRFQRevision)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Pending RFQ Revision")
+                                }
+                                else if (sttrack.StateId == (int)States.AddExtraQuantities)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw(" Add Extra Quantities")
+                                }
+                                else if (sttrack.StateId == (int)States.BackFromRFQ)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Back From RFQ")
+                                }
+                                else if (sttrack.StateId == (int)States.RFQRevision)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  RFQ Revision")
+                                }
+                                else if (sttrack.StateId == (int)States.AddExtraQuantities)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Add Extra Quantities")
+                                }
+                                else if (sttrack.StateId == (int)States.QuoteAccepted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Quote Accepted")
+                                }
+                                else if (sttrack.StateId == (int)States.OrderInitiated)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Order Initiated")
+                                }
+                                else if (sttrack.StateId == (int)States.PaymentMade)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Made Order Payment in Term")
+                                }
+                                else if (sttrack.StateId == (int)States.OrderPaid)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Order Paid")
+                                }
+                                else if (sttrack.StateId == (int)States.ReOrderInitiated)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Re-Order Initiated")
+                                }
+                                else if (sttrack.StateId == (int)States.ReOrderPaymentMade)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Made Re-Order Payment in Term")
+                                }
+                                else if (sttrack.StateId == (int)States.ReOrderPaid)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Re-Order Paid")
+                                }
+                                else if (sttrack.StateId == (int)States.ProofingStarted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Proof Started")
+                                }
+                                else if (sttrack.StateId == (int)States.ProofingComplete)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Proof Completed")
+                                }
+                                else if (sttrack.StateId == (int)States.ProofRejected)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Proof Rejected")
+                                }
+                                else if (sttrack.StateId == (int)States.ProofApproved)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Proof Approved")
+                                }
+                                else if (sttrack.StateId == (int)States.ToolingStarted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Started Tooling")
+                                }
+                                else if (sttrack.StateId == (int)States.SampleStarted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Sample Started")
+                                }
+                                else if (sttrack.StateId == (int)States.SampleComplete)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Sample Completed")
+                                }
+                                else if (sttrack.StateId == (int)States.SampleRejected)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Sample Rejected")
+                                }
+                                else if (sttrack.StateId == (int)States.SampleApproved)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Sample Approved")
+                                }
+                                else if (sttrack.StateId == (int)States.ProductionStarted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Production Started")
+                                }
+                                else if (sttrack.StateId == (int)States.ProductionComplete)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Production Completed")
+                                }
+                                // NCR
+                                else if (sttrack.StateId == (int)States.NCRCustomerStarted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Started")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRVendorRootCauseAnalysis)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Vendor Root Cause Analysis")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerApproval)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Customer pproval")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRVendorCorrectivePartsInProduction)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Vendor CorrectiveParts In Production")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRVendorCorrectivePartsComplete)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Vendor Corrective Parts Complete")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerCorrectivePartsReceived)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Customer Corrective Parts Received")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRClosed)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Closed")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRRootCauseDisputes)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Vendor RootCause Disputes")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerRejectCorrective)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Customer Reject Corrective")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerRejectRootCause)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Customer Reject RootCause")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRAdminDisputesIntervention)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Admin Disputes Intervention")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRDamagedByCustomer)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  NCR Damaged by Customer")
+                                }
+                                else if (sttrack.StateId == (int)States.VendorPendingInvoice)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Create Invoice (Bill) for the Vendor")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerCorrectivePartsReceived)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Customer Received Corrective Parts")
+                                }
+                                else if (sttrack.StateId == (int)States.NCRCustomerCorrectivePartsAccepted)
+                                {
+                                    <i class="far fa-check-square fa-1x"></i> @Html.Raw("  Customer Accepted Received Corrective Parts")
+                                }
+
+                            </span>
+                        </dt>
+                        <dd>@sttrack.ModifiedUtc</dd>
+                    }
+                }
+            </dl>
+        </div>
+    </div>
+</div>

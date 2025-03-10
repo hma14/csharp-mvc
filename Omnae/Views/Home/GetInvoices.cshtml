@@ -1,0 +1,21 @@
+﻿@model Omnae.ViewModels.GetInvoicesViewModel
+
+@if (Model != null)
+{
+    <div class="col-md-12 top-margin-30">
+        <div class="card">
+            <h5 class="card-header primary-background-color white-text text-md-center">
+                <i class="fab fa-monero"></i> Payment Status and Open Invoices
+            </h5>
+
+            @Html.Partial("_GetInvoices", Model)
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="red-text top-margin-30">
+        <h3 class="red-text text-md-center">There are no invoices for you</h3>
+    </div>
+}

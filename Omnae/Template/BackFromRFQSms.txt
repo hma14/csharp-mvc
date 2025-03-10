@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+The revision request for @Model.PartNumber from Omnae.com is needed.

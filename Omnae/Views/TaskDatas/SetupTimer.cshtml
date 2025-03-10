@@ -1,0 +1,100 @@
+﻿@using Omnae.Model.Models
+
+@model Omnae.BusinessLayer.Models.SetupTimerViewModel
+
+@{
+    ViewBag.Title = "SetupTimer";
+}
+
+<div class="col-md-12 top">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h4 class="card-header text-md-center primary-background-color white-text"><i class="fas fa-stopwatch"></i> Setup Timers</h4>
+            <div class="card-block">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+                }
+                @if (TempData["Warning"] != null)
+                {
+                    <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+                }
+
+                <h5 class="col-md-12 pink-text bold">Product Details</h5>
+                <div>
+                    @{Html.RenderPartial("_PartDetails", @Model.ProductDetails);}
+                </div>
+                <br />
+                @using (Html.BeginForm("SetupTimer", "TaskDatas", FormMethod.Post, new { id = "SetupTimer", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(m => m.ProductId)
+                    @Html.HiddenFor(m => m.TaskId)
+                    @Html.HiddenFor(m => m.isEnterprise)
+                    <div class="offset-md-1 col-md-10">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border pink-text">Stup Timers</legend>
+                            <div class="md-form top-margin-20 col-md-6">
+                                <div class="top-margin-20">
+                                    @Html.LabelFor(model => model.RevisionRequestTimerInterval, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.RevisionRequestTimerInterval, new { htmlAttributes = new { @id = "RevisionRequestTimerInterval", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.RevisionRequestTimerInterval, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="md-form top-margin-20 col-md-6">
+                                <div class="top-margin-20">
+                                    @Html.LabelFor(model => model.BidTimerInterval, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.BidTimerInterval, new { htmlAttributes = new { @id = "BidTimerInterval", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.BidTimerInterval, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-12 grey-text small">
+                        <p class="green-text">Notes:</p>
+                        <p>
+                            Set for <span class="pink-text">Revision Request Timer</span>: the time period (usually days) in which you want your vendors to complete revision request if appliable.
+                            This timer will only be started when Revision Reqeust occurs. Once this timer times out, you won't wait for vendors who haven't
+                            complete their revisions and go ahead to response to those who already finished revisions.
+                        </p>
+                        <p>
+                            Set for <span class="pink-text">Bid Timer</span>: the time period (usually days) in which you want your vendors to complete their quotes. Once this timer times out
+                            you won't wait for vendors who haven't complete their quotes yet and they will be automatically out of the bidding process.
+                        </p>
+
+                    </div>
+                    <div class="md-form text-xs-center col-md-12 top-margin-40">
+                        <button id="submitButton" type="submit" class="btn accent-background-color buttonWidth">Submit</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $('#SetupTimer').submit(function () {
+        var revisionRequestTimerInterval = $('#RevisionRequestTimerInterval').val();
+        var bidTimerInterval = $('#BidTimerInterval').val();
+
+        if (revisionRequestTimerInterval == '') {
+            alertify.error("Revision Request Timer Interval is required");
+            $('#spinner').hide();
+            this.submitButton.disabled = false;
+            return false;
+        }
+        else if (bidTimerInterval == '') {
+            alertify.error("Bid Timer Interval is required");
+            $('#spinner').hide();
+            this.submitButton.disabled = false;
+            return false;
+        }
+        else {
+            this.submitButton.disabled = true;
+            return true;
+        }
+    });
+</script>

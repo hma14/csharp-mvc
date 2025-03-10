@@ -1,0 +1,25 @@
+﻿@model Omnae.Model.Models.TaskData
+
+<div class="col-md-12" id="@($"NonModal{Model.TaskId}")" >
+    <div class="card">
+        <!--Content-->
+        <div class="card-block">
+            <!--Header-->
+            @Html.Partial("_ModalHeader", Model)
+
+            <!--Body-->
+            @Html.Partial("_ModalBody", Model)
+
+            <!-- Footer -->
+            @Html.Partial("_ModalFooter", Model)
+
+        </div>
+        <!--Footer-->
+        @*<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>*@
+    </div>
+    <!--/.Content-->
+</div>
+<!-- /.Live preview-->
+

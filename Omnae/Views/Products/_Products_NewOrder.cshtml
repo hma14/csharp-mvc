@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Omnae.Model.ViewModels.ProductListViewModel>
+
+@section head
+{
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.3/css/bootstrap-dialog.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap-submenu-2.0.4/dist/css/bootstrap-submenu.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+}
+
+@section footerInlineScripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.35.3/js/bootstrap-dialog.js"></script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/bootstrap-submenu-2.0.4/js/bootstrap-submenu.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>*@
+
+}
+
+<div class="col-lg-12 top small deep-orange-text">
+    @using GridMvc.Html
+
+    @if (Model != null && Model.Any())
+    {
+        @Html.Grid(Model).Columns(columns =>
+        {
+            columns.Add(c => c.AvatarUri).Titled("Product Avatar").Encoded(false).Sanitized(false).RenderValueAs(x => String.Format(@"<a href='/Products/PlaceOrder/{0}'><img class='thumb' src='{1}' height='60' /></a>", x.TaskId, x.AvatarUri));
+            columns.Add(c => c.Id).Titled("Id").Filterable(true);
+            columns.Add(c => c.PartNumber).Titled("Part No.").Filterable(true).RenderValueAs(x => String.Format("{0}", x.PartNumber.ToString().PadLeft(8, '0')));
+            columns.Add(c => c.PartNumberRevision).Titled("PN Revision").Filterable(true);
+            columns.Add(c => c.Name).Titled("Name").RenderValueAs(x => x.Name).Filterable(true);
+            columns.Add(c => c.Description).Titled("Product Desc").SetWidth(500);
+            columns.Add(c => c.BuildType).Titled("Build Type").Filterable(true);
+            columns.Add(c => c.Material).Titled("Material").Filterable(true).RenderValueAs(x => @Omnae.Common.Extensions.StringExtensions.SplitCamelCase(x.Material.ToString()));
+            columns.Add().Titled("Documents").Encoded(false).Sanitized(false).RenderValueAs(c => Html.ActionLink("Docs", "FindDocuments", "Products", new { @id = c.Id }, null));
+            columns.Add(c => c.UnitPrice).Titled("Unit Price").Format("{0:C}").Filterable(true);
+            columns.Add(c => c.OrderId).Titled("Order").Filterable(true).Encoded(false).Sanitized(false).RenderValueAs(c => Html.ActionLink("Place Order", string.Format("{0}", c.OrderId == null ? "PlaceNewOrder" : "Reorder"), "Products", new { @id = c.TaskId }, null));
+            columns.Add(c => c.IsRiskBuild).Titled("Risk Build").Filterable(true).RenderValueAs(x => x.IsRiskBuild == null || x.IsRiskBuild == false ? "No" : "Yes");
+        }).Sortable(true).Filterable().WithMultipleFilters();
+    }
+</div>

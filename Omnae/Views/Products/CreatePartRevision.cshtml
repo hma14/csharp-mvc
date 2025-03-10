@@ -1,0 +1,150 @@
+﻿@model Omnae.BusinessLayer.Models.CreatePartRevisionViewModel
+
+@{
+    ViewBag.Title = "CreatePartRevision";
+}
+
+@section head{
+
+    <!--required for fileinput uploader -->
+    <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+}
+
+@section footerInlineScripts{
+    <!--required for fileinput uploader -->
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script>$("#file").fileinput({ browseClass: "btn btn-success" });</script>
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function ConfirmDelete() {
+            alertify.confirm("Do you really want to delete this document?", function (e) {
+                if (e) {
+                    alertify.success("Document is deleted.");
+                    location.reload();
+                }
+                else {
+                    alertify.error("You've clicked cancel");
+                    return false;
+                }
+            });
+            // no return here
+        }
+
+        function showMessage() {
+            var message = "Documents are uploaded successfully!";
+            alertify.log(message, "info", 0);
+            return true;
+        };
+
+
+    </script>
+}
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="fa fa-plus fa-1x"></i> Create a New Part Revision</h4>
+        <div class="card-block">
+            <div class="offset-md-1 col-md-10">
+
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="row red-text small">
+                        @TempData["ErrorMessage"].ToString()
+                    </div>
+                }
+                @if (TempData["AzureException"] != null)
+                {
+                    <p class="red-text small text-xs-center"> @TempData["AzureException"]</p>
+                }
+                @using (Html.BeginForm("CreatePartRevision", "Products", FormMethod.Post, new
+                {
+                    id = "CreatePartRevisionForm",
+                    enctype = "multipart/form-data"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(x => x.ProductId)
+
+                    if (Model != null && Model.Documents != null && Model.Documents.Any())
+                    {
+                        foreach (var doc in Model.Documents)
+                        {
+                            <div class="md-form">
+                                <a href="@doc.DocUri">@doc.Name</a>
+                                <a class="del pull-xs-right" href="@Url.Action("Delete", "Documents", new { @id = @doc.Id, @actionName = "Create", @controllerName = "Documents" })"><i class="fa fa-trash"></i></a>
+                            </div>
+                        }
+                    }
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.PartRevision, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.PartRevision, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PartRevision, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="md-form">
+                        @Html.LabelFor(model => model.PartRevisionDesc, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.PartRevisionDesc, new { @class = "md-textarea" })
+                        @Html.ValidationMessageFor(model => model.PartRevisionDesc, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-12 top-margin-30 no-padding">
+                        <span class="col-md-4 font-weight-bold">Upload New Avatar (<span class="grey-text">Optional</span>)</span>
+                        @Html.TextBoxFor(model => model.NewAvatar, new { type = "file", multiple = true, name = "", @id = "NewAvatar", @class = "fileupload no-padding col-md-8 file-path validate small grey-text" })
+                        @Html.ValidationMessageFor(model => model.NewAvatar, "", new { @class = "text-danger" })
+                    </div>
+                    <fieldset class="scheduler-border top-margin-30">
+                        <legend class="scheduler-border  top-margin-30">Document Upload Instruction</legend>
+                        <p class="small grey-text">
+                            Please provide your revised production files here. Please be sure to call out your changes in your drawing.
+                            Once submitted, your factory may come back with clarifying questions.
+                            Changes in design may result in changes in part pricing (up or down depending on the change).
+                            There may also be new tooling charges as needed.<br />
+                            Once you order your new revision, you will be sent a new proof and sample for approval.<br />
+                            All old revisions will remain available for purchase at the original pricing without proof or sample delays.
+                            Just select them from the revision drop down before ordering.
+
+                        </p>
+                        <div class="md-form">
+                            <div class="file-field">
+                                <div class="btn grey-background-color">
+                                    <span class="fileupload">Browse</span>
+                                    <input type="file" name="uploadedFile" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload multiple 2D files (.PDF) or along with 3D files (.STEP,.DXF) with multiple file selection" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        @*<div class="md-form">
+
+                                <div class="file-field">
+                                    <div class="btn grey-background-color">
+                                        <span class="fileupload">Browse</span>
+                                        <input type="file" name="uploadedFile" multiple>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text" placeholder="Upload a 3D file (.STEP)" disabled>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </fieldset>
+                    <div class="md-form">
+
+                        <div class="md-form text-xs-center">
+                            <button type="submit" class="btn accent-background-color buttonWidth top-margin-50" onclick="showMessage();">Submit</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

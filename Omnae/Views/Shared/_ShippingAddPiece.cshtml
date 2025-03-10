@@ -1,0 +1,45 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<div class="col-md-3 top-margin-20">
+    @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Height, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Height, new { htmlAttributes = new { @id = "height", @class = "form-control shipping" } })
+    @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Height, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Height)
+</div>
+
+<div class="col-md-3  top-margin-20">
+    @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Depth, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Depth, new { htmlAttributes = new { @id = "depth", @class = "form-control shipping" } })
+    @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Depth, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Depth)
+</div>
+
+<div class="col-md-3  top-margin-20">
+    @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Width, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Width, new { htmlAttributes = new { @id = "width", @class = "form-control shipping" } })
+    @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Width, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Width)
+</div>
+
+<div class="col-md-3  top-margin-20">
+    @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Weight, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Weight, new { htmlAttributes = new { @id = "weight", @class = "form-control shipping" } })
+    @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Weight, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.Pieces[0].Weight)
+</div>
+
+<div class="col-md-8  top-margin-50">
+
+    @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.NumberPartsPerPiece, htmlAttributes: new { @class = "control-label" })
+    @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.NumberPartsPerPiece, new { htmlAttributes = new { @class = "form-control shipping" } })
+    @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.NumberPartsPerPiece, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.NumberPartsPerPiece)
+    <p class="grey-text small"><span class="red-text">*</span> Please predict how many parts per carton, based on above dimentions, will be packed.</p>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@* TODO: Remove this Script from this PAGE *@
+
+
+
+

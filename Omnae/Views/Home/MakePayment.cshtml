@@ -1,0 +1,31 @@
+﻿@model Omnae.ViewModels.ReceivePaymentViewModel
+
+<style>
+    .dl-horizontal dt {
+        width: 40%;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .dl-horizontal dd {
+        width: 60%;
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+        color: green;
+    }
+</style>
+
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+
+        @Html.AntiForgeryToken()
+        @if (Model != null && Model.OpenInvoices != null)
+        {
+            
+            @Html.Partial("_MakePayment", @Model)
+        }
+        
+    </div>
+</div>

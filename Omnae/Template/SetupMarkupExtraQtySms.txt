@@ -1,0 +1,4 @@
+﻿Hi @Model.UserName,
+
+This is to notify that new quantities have been added successfully. 
+You may start to Order/Re-Order now with the price breaks upon the newly added quantities.

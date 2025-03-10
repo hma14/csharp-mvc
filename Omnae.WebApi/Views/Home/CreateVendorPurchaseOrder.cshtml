@@ -1,0 +1,354 @@
+﻿@model Omnae.QuickBooks.ViewModels.PurchaseOrderViewModel
+
+<link href="~/Content/mdb.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="col-xs-12 top-margin-30">
+
+    <div class="col-xs-12 top-margin-20">
+        <div class="col-xs-6">
+            @if (@Model.CompanyLogoUri != null)
+            {
+                <img src="@Model.CompanyLogoUri" height="200" style="margin-top:-30px" />
+            }
+            else
+            {
+                <h2 class="green-text">@Model.CustomerName</h2>
+            }
+
+        </div>
+
+        <div class="col-xs-6">
+            <h2 class="col-xs-12">@Model.CompanyName</h2>
+            <span class="col-xs-12">
+                @Model.AdminAddress_AddressLine1<br />
+                @if (Model.AdminAddress_AddressLine2 != null)
+                {
+                    @Model.AdminAddress_AddressLine2<br />
+                }
+                @Model.AdminAddress_City,
+                @if (Model.AdminAddress_State != null)
+                {
+                    @Model.AdminAddress_State<br />
+                }
+                @Model.AdminAddress_CountryName,
+                @Model.AdminAddress_PostalCode
+
+            </span>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+
+        <h2 class="col-xs-12 green-text top-margin-20">Purchase Order #: @Model.PONumber</h2>
+        <div class="col-xs-12">
+            <div class="col-xs-2 top-margin-20">
+                <h5>VENDOR ADDR.</h5>
+                <span>
+                    @Model.VendorName<br />
+
+                    @if (Model.VendorAddress_AddressLine2 != null)
+                    {
+                        @Model.VendorAddress_AddressLine2<span>-</span>
+                    }
+                    @Model.VendorAddress_AddressLine1<br />
+                    @Model.VendorAddress_City,
+                    @if (Model.VendorAddress_State != null)
+                    {
+                        @Model.VendorAddress_State
+                    }
+                    @Model.VendorAddress_CountryName,
+                    @Model.VendorAddress_PostalCode<br />
+                </span>
+
+            </div>
+            <div class="col-xs-2 top-margin-20">
+                <h5>SHIP ADDR.</h5>
+                @if (Model.isShipping)
+                {
+                    <span>
+                        @Model.CustomerName<br />
+
+                        @if (Model.AddressLine2 != null)
+                        {
+                            @Model.AddressLine2<span>-</span>
+                        }
+                        @Model.AddressLine1<br />
+                        @Model.City,
+                        @if (Model.State != null)
+                        {
+                            @Model.State<br />
+                        }
+
+                        @Model.CountryName,
+                        @if (Model.ZipCode != null)
+                        {
+                            @Model.ZipCode<br />
+                        }
+                        else if (Model.PostalCode != null)
+                        {
+                            @Model.PostalCode<br />
+                        }
+                        <span class="font-weight-bold">Attention</span>: @Model.Attention<br />
+                        <span class="font-weight-bold">
+                            Phone No:
+                        </span> @Model.PhoneNumber
+                    </span>
+                }
+                else if (Model.ShipAddress_AddressLine1 != null)
+                {
+                    <span>
+                        @Model.CustomerName<br />
+
+                        @if (Model.ShipAddress_AddressLine2 != null)
+                        {
+                            @Model.ShipAddress_AddressLine2<span>-</span>
+                        }
+                        @Model.ShipAddress_AddressLine1<br />
+                        @Model.ShipAddress_City,
+                        @if (Model.ShipAddress_State != null)
+                        {
+                            @Model.ShipAddress_State<br />
+                        }
+
+                        @Model.ShipAddress_CountryName,
+                        @if (Model.ShipAddress_ZipCode != null)
+                        {
+                            @Model.ShipAddress_ZipCode<br />
+                        }
+                        else if (Model.ShipAddress_PostalCode != null)
+                        {
+                            @Model.ShipAddress_PostalCode<br />
+                        }
+                        <span class="font-weight-bold">Attention</span>: @Model.Attention<br />
+                        <span class="font-weight-bold">
+                            Phone No:
+                        </span> @Model.PhoneNumber
+                    </span>
+                }
+            </div>
+            <div class="col-xs-2 top-margin-20">
+                <h5>BILL ADDR.</h5>
+                @if (Model.isBilling)
+                {
+                    <span>
+                        @Model.CustomerName<br />
+
+                        @if (Model.AddressLine2 != null)
+                        {
+                            @Model.AddressLine2<span>-</span>
+                        }
+                        @Model.AddressLine1<br />
+                        @Model.City,
+                        @if (Model.State != null)
+                        {
+                            @Model.State<br />
+                        }
+
+                        @Model.CountryName,
+                        @if (Model.ZipCode != null)
+                        {
+                            @Model.ZipCode<br />
+                        }
+                        else if (Model.PostalCode != null)
+                        {
+                            @Model.PostalCode<br />
+                        }
+                        <span class="font-weight-bold">Attention</span>: @Model.Attention<br />
+                        <span class="font-weight-bold">
+                            Phone No:
+                        </span> @Model.PhoneNumber
+                    </span>
+                }
+                else if (Model.BillAddress_AddressLine1 != null)
+                {
+                    <span>
+                        @Model.CustomerName<br />
+
+                        @if (Model.BillAddress_AddressLine2 != null)
+                        {
+                            @Model.BillAddress_AddressLine2<span>-</span>
+                        }
+                        @Model.BillAddress_AddressLine1<br />
+                        @Model.BillAddress_City,
+                        @if (Model.BillAddress_State != null)
+                        {
+                            @Model.BillAddress_State<br />
+                        }
+
+                        @Model.BillAddress_CountryName,
+                        @if (Model.BillAddress_ZipCode != null)
+                        {
+                            @Model.BillAddress_ZipCode<br />
+                        }
+                        else if (Model.BillAddress_PostalCode != null)
+                        {
+                            @Model.BillAddress_PostalCode<br />
+                        }
+                        <span class="font-weight-bold">Attention</span>: @Model.Attention<br />
+                        <span class="font-weight-bold">
+                            Phone No:
+                        </span> @Model.PhoneNumber
+                    </span>
+                }
+            </div>
+            <div class="col-xs-6  top-margin-20">
+                <div class="col-xs-4">
+                    <h5>ORDER DATE</h5>
+                    <span class="green-text">
+                        @Model.OrderDate.ToString("MM/dd/yyyy")
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <h5>REQUEST DELIVERY DATE</h5>
+                    <span class="green-text">
+                        @Model.DesireShippingDate.Value.ToString("MM/dd/yyyy")
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <h5>EARLIEST SHIP DATE</h5>
+                    <span class="green-text">
+                        @Model.EarliestShippingDate.Value.ToString("MM/dd/yyyy")
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 top-margin-20">
+            <div class="col-xs-3 top-margin-20">
+                <div class="col-xs-12">
+                    <h5>HS CODE</h5>
+                    <span>
+                        @Model.HarmonizedCode<br />
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3 top-margin-20">
+                <div class="col-xs-12">
+                    <h5>GST/HST NO.</h5>
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-3 top-margin-20">
+                <div class="col-xs-12">
+                    <h5>(BC) PST NO.</h5>
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="top-margin-20">
+
+            <div class="col-xs-12 card-header default-color pull-left white-text status-title top-margin-30">
+                <span class="col-xs-2 no-padding">Part Name</span>
+                <span class="col-xs-2 no-padding">Part No.</span>
+                <span class="col-xs-1 no-padding">Revision</span>
+                <span class="col-xs-2 no-padding">Description</span>
+                <span class="col-xs-2 no-padding">Customer PO #</span>
+                <span class="col-xs-1 no-padding">Quantity</span>
+                <span class="col-xs-2 no-padding">Unit Price(or Tooling Charges)</span>
+            </div>
+            @if (Model.Quantity > Model.NumberSampleIncluded)
+            {
+                <div class="col-xs-12 line">
+                    <span class="col-xs-2">@Model.ProductName</span>
+                    <span class="col-xs-2">@Model.PartNumber</span>
+                    <span class="col-xs-1">@Model.PartRevision</span>
+                    <span class="col-xs-2">@Model.ProductDescription</span>
+                    <span class="col-xs-2">@Model.CustomerPONumber</span>
+                    <span class="col-xs-1 green-text">@Model.Quantity</span>
+                    <span class="col-xs-2 green-text">@($"{Model.VendorUnitPrice:C3}")</span>
+                </div>
+            }
+            else if (Model.Quantity == Model.NumberSampleIncluded)
+            {
+                <div class="col-xs-12 line">
+                    <span class="col-xs-2">@Model.ProductName</span>
+                    <span class="col-xs-2">@Model.PartNumber</span>
+                    <span class="col-xs-1">@Model.PartRevision</span>
+                    <span class="col-xs-2">Tooling Charges</span>
+                    <span class="col-xs-2">@Model.CustomerPONumber</span>
+                    <span class="col-xs-1 green-text">@Model.Quantity</span>
+                    <span class="col-xs-2 green-text">@($"{Model.VendorToolingCharge:C}")</span>
+                </div>
+            }
+            else if (Model.VendorToolingCharge > 0)
+            {
+                <div class="col-xs-12 line">
+                    <span class="col-xs-2">@Model.ProductName</span>
+                    <span class="col-xs-2">@Model.PartNumber</span>
+                    <span class="col-xs-1">@Model.PartRevision</span>
+                    <span class="col-xs-2">Tooling Charges</span>
+                    <span class="col-xs-2">@Model.CustomerPONumber</span>
+                    <span class="col-xs-1 green-text">1</span>
+                    <span class="col-xs-2 green-text">@($"{Model.VendorToolingCharge:C}")</span>
+                </div>
+            }
+            <div class="col-xs-12 line">
+                <div class="offset-xs-6 col-xs-6">
+                    <div class="col-xs-8">
+                        <span class="pull-right">SUB TOTAL</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <span class="col-xs-6 pull-right green-text">
+                            @($"{Model.Total:C}")
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 line">
+                <div class="offset-xs-6 col-xs-6">
+                    <div class="col-xs-8">
+                        <span class="pull-right">SALES TAX</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <span class="col-xs-6 pull-right green-text">
+                            @($"{Model.SalesTax:C}")
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 line">
+                <div class="offset-xs-6 col-xs-6">
+                    <div class="col-xs-8">
+                        <span class="pull-right no-padding">TOTAL</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <span class="col-xs-6 pull-right no-padding green-text">
+                            @($"{(Model.Total + Model.SalesTax):C}")
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 top-margin-20">
+                <span class="pull-left no-padding">PLEASE CONFIRM PRICE AND DELIVERY UPON RECEIPT OF THIS PURCHASE ORDER</span>
+            </div>
+
+            <div class="col-xs-6 top-margin-50">
+                <div class="col-xs-4">
+                    <p>Approved By</p>
+                </div>
+                <div class="col-xs-8">
+                    <hr class="col-xs-12" />
+                </div>
+            </div>
+            <div class="col-xs-6 top-margin-50">
+                <div class="col-xs-4">
+                    <p>Date</p>
+                </div>
+                <div class="col-xs-8">
+                    <hr class="col-xs-12" />
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-12 top-margin-30 red-text">
+            <h4 class="text-xs-center">Provided parameter is empty!</h4>
+        </div>
+    }
+</div>

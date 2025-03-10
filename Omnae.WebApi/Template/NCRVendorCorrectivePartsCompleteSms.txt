@@ -1,0 +1,5 @@
+﻿Hi @Model.UserName,
+
+This is to notify that the vendor has completed corrective part regarding part # @Model.PartNumber.
+Carrier Name: @Model.CarrierName
+Tracking #: @Model.TrackingNumber

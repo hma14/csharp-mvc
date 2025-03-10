@@ -1,0 +1,215 @@
+﻿@using Omnae.Common
+@using Omnae.Controllers
+@using Omnae.Model.Models
+@using StringExtensions = Omnae.Common.Extensions.StringExtensions
+
+@model Omnae.BusinessLayer.Models.TaskViewModel
+
+@if (Model.TaskData.Product != null)
+{
+    var td = Model.TaskData;
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+    var order = Model.Order;
+    var productUnitPrice = order?.UnitPrice ?? order?.SalesPrice;
+
+    <div class="col-md-12 line">
+
+        <a class="col-md-1" href="@td.Product.AvatarUri" target="_blank"><img src="@td.Product.AvatarUri" height="60" /></a>
+        <section class="col-md-2">
+            <span class="col-xs-6">@td.Product.PartNumber</span>
+            <span class="col-xs-6">@td.Product.PartNumberRevision</span>
+            <span class="col-xs-8">@td.Product.Name</span>
+
+            @if (td.StateId == (int)States.BackFromRFQ ||
+                        td.StateId == (int)States.BidReview && td.isEnterprise == true ||
+                        td.StateId == (int)States.OrderInitiated ||
+                        td.StateId == (int)States.PendingRFQRevision ||
+                        td.StateId == (int)States.ReOrderInitiated ||
+                        td.StateId == (int)States.ProofingComplete ||
+                        td.StateId == (int)States.SampleComplete ||
+                        td.StateId == (int)States.QuoteAccepted ||
+                        td.StateId == (int)States.NCRCustomerStarted ||
+                        td.StateId == (int)States.NCRCustomerApproval ||
+                        td.StateId == (int)States.NCRRootCauseDisputes ||
+                        td.StateId == (int)States.NCRCustomerRejectCorrective ||
+                        td.StateId == (int)States.NCRCustomerRejectRootCause ||
+                        td.StateId == (int)States.NCRCustomerCorrectivePartsReceived ||
+                        td.StateId == (int)States.NCRCustomerCorrectivePartsAccepted && td.isEnterprise == true ||
+                td.StateId == (int)States.NCRCustomerRevisionNeeded)
+            {
+                <a class="col-xs-3 red-text action-flag">
+                    <i class="fas fa-flag" title="You have new action event to handle for this part!"></i>
+                </a>
+            }
+        </section>
+        @if (td.StateId == (int)States.ProductionComplete)
+        {
+            <span class="col-md-2">
+                <i class="fas fa-check-square fa-1x"></i>Proof
+                <i class="fas fa-check-square fa-1x"></i>Sample
+                <i class="fas fa-check-square fa-1x"></i>Production
+            </span>
+            if (productUnitPrice != null)
+            {
+                <span class="col-md-1">@($"{productUnitPrice:C}")</span>
+            }
+            else
+            {
+                <span class="col-md-1"></span>
+            }
+            if (order != null)
+            {
+                <span class="col-md-1">@order.Quantity</span>
+            }
+            else
+            {
+                <span class="col-md-1"></span>
+            }
+            if (order != null)
+            {
+                <span class="col-md-1">@order.CustomerPONumber</span>
+            }
+            else
+            {
+                <span class="col-md-1"></span>
+            }
+        }
+        else
+        {
+            if (td.StateId < (int)States.OrderInitiated ||  td.StateId >= (int)States.BidForRFQ && td.StateId <= (int)States.RFQBidComplete)
+            {
+                <span class="col-md-2">
+                    <i class="far fa-square fa-1x"></i>Proof
+                    <i class="far fa-square fa-1x"></i>Sample
+                    <i class="far fa-square fa-1x"></i>Production
+                </span>
+                <span class="col-md-1"></span>
+                <span class="col-md-1"></span>
+                <span class="col-md-1"></span>               
+            }
+            else
+            {
+                if (td.StateId < (int)States.ProofApproved)
+                {
+                    <span class="col-md-2">
+                        <i class="far fa-square fa-1x"></i>Proof
+                        <i class="far fa-square fa-1x"></i>Sample
+                        <i class="far fa-square fa-1x"></i>Production
+                    </span>
+                }
+                else if (td.StateId == (int)States.ProofApproved)
+                {
+                    <span class="col-md-2">
+                        <i class="fas fa-check-square fa-1x"></i>Proof
+                        <i class="far fa-square fa-1x"></i>Sample
+                        <i class="far fa-square fa-1x"></i>Production
+                    </span>
+                }
+                else if (td.StateId >= (int)States.SampleApproved)
+                {
+                    <span class="col-md-2">
+                        <i class="fas fa-check-square fa-1x"></i>Proof
+                        <i class="fas fa-check-square fa-1x"></i>Sample
+                        <i class="far fa-square fa-1x"></i>Production
+                    </span>
+                }
+                else if (td.StateId >= (int)States.SampleComplete)
+                {
+                    <span class="col-md-2">
+                        <i class="fas fa-check-square fa-1x"></i>Proof
+                        <i class="far fa-square fa-1x"></i>Sample
+                        <i class="far fa-square fa-1x"></i>Production
+                    </span>
+                }
+                else
+                {
+                    <span class="col-md-2"></span>
+                }
+                if (productUnitPrice != null)
+                {
+                    <span class="col-md-1">@($"{productUnitPrice:C}")</span>
+                }
+                else
+                {
+                    <span class="col-md-1"></span>
+                }
+                if (order != null)
+                {
+                    <span class="col-md-1">@order.Quantity</span>
+                }
+                else
+                {
+                    <span class="col-md-1"></span>
+                }
+                if (order != null)
+                {
+                    <span class="col-md-1">@order.CustomerPONumber</span>
+                }
+                else
+                {
+                    <span class="col-md-1"></span>
+                }
+            }
+        }
+        @if (td.StateId == (int)States.BackFromRFQ ||
+                    td.StateId == (int)States.PendingRFQRevision ||
+                    td.StateId == (int)States.ReOrderInitiated ||
+                    td.StateId == (int)States.BidReview && td.isEnterprise == true ||
+                    td.StateId == (int)States.ProofingComplete ||
+                    td.StateId == (int)States.SampleComplete ||
+                    td.StateId == (int)States.NCRCustomerApproval ||
+                    td.StateId == (int)States.NCRCustomerCorrectivePartsReceived ||
+                    td.StateId == (int)States.NCRRootCauseDisputes ||
+                    td.StateId == (int)States.NCRVendorCorrectivePartsComplete ||
+                    td.StateId == (int)States.NCRCustomerCorrectivePartsAccepted && td.isEnterprise == true ||
+                    td.StateId == (int)States.NCRCustomerRevisionNeeded)
+        {
+            <a class="col-md-1" href="" data-toggle="modal" data-target="@($"#Modal_List{td.TaskId}")">
+                Action Needed
+            </a>
+            @Html.Partial("_ModalActionView_List", Model)
+        }
+        else if (td.StateId == (int)States.OrderInitiated)
+        {
+            <a class="col-md-1" href="" data-toggle="modal" data-target="@($"#Modal_List{td.TaskId}")">
+                Apply Payment
+            </a>
+            @Html.Partial("_ModalActionView_List", Model)
+        }
+        else if (td.StateId == (int)States.QuoteAccepted)
+        {
+            <a class="col-md-1" href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+        }
+        else if (td.StateId == (int)States.ProductionStarted || td.StateId == (int)States.ProductionComplete || td.StateId == (int)States.NCRClosed)
+        {
+            <a class="col-md-1" href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+        }
+        else
+        {
+            <span class="col-md-1"></span>
+        }
+        <span class="col-md-1">
+            @Model.EnumName
+        </span>
+        <div class="col-md-2">
+
+            <span class="col-md-6 green-text">
+                @Html.Raw(Utils.GetStateIconUrl(stateIconMapping, (States)td.StateId))
+            </span>
+            <span class="col-md-3"><a href="@Url.Action("Details", "Orders", new { @id = @td.TaskId })">View</a></span>
+            @Html.AntiForgeryToken()
+
+            @if (td.isTagged == true)
+            {
+                <a class="col-md-1 my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+            }
+            else
+            {
+                <a class="col-md-1 my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+            }
+
+        </div>
+    </div>
+}
+
+

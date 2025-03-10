@@ -1,0 +1,121 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+@using Omnae.BusinessLayer.Models
+@using Omnae.Model.Extentions
+@using Stateless
+
+@if (Model.TaskData.Product != null)
+{
+    var td = Model.TaskData;
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+    Order order = Model.Order;
+
+    var qty = order?.Quantity ?? 0;
+    var vendorUnitPrice = order?.UnitPrice ?? 0m;
+    var vendorPONumber = Model.VendorPONumber;
+    var vendPODocUri = Model.VendorPODocUri;
+
+
+    <div class="col-md-12 line">
+
+
+        <span class="col-md-3 no-padding">
+
+            <a class="col-md-4 pull-md-left no-padding" href="@td.Product.AvatarUri" target="_blank"><img src="@td.Product.AvatarUri" height="60" width="60" /></a>
+
+            <span class="col-xs-8 no-padding">
+                <span class="no-padding">@td.Product.PartNumber</span>
+
+                @*@if (@td.IsNeedAtention() || @td.StateId == (int)States.ProductionComplete && Model.ChkPreconditions == true)*@
+                @if (@td.IsNeedAtention())
+                {
+                    <a class="red-text col-xs-2 action-flag pull-xs-right">
+                        <i class="fas fa-flag" title="You have new action event to handle for this part!"></i>
+                    </a>
+                }
+                @*else if (td.isEnterprise == false && (td.StateId == (int)States.PaymentMade || td.StateId == (int)States.ReOrderPaymentMade))
+                    {
+                        StateMachine<States, Triggers> stTransition = new StateMachine<States, Triggers>((States)td.StateId);
+                        var stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition
+                        };
+                        Html.RenderPartial("_StateTransition", stateTransition);
+                    }*@
+            </span>
+
+            @if (td.Product.ParentPartRevisionId == null)
+            {
+                <span class="col-xs-5 no-padding">@td.Product.PartNumberRevision</span>
+            }
+            else
+            {
+                <span class="col-xs-5 no-padding">@td.Product.PartNumberRevision (from: @td.Product.ParentPartNumberRevision)</span>
+            }
+            <span class="col-xs-7 no-padding">@td.Product.Name</span>
+        </span>
+
+        <span class="col-md-1 no-padding">@td.Product.CustomerCompany.Name</span>
+
+        @if (order != null)
+        {
+            <span class="col-md-1 no-padding">@order.OrderDate.ToString("yyyy-MM-dd")</span>
+        }
+        else
+        {
+            <span class="col-md-1 no-padding"></span>
+        }
+        <span class="col-md-1 no-padding">@td.Product.ProductionLeadTime</span>
+
+
+        <span class="col-md-1 no-padding">@qty</span>
+        @if (vendorUnitPrice > 0)
+        {
+            <span class="col-md-1 no-padding">@($"{vendorUnitPrice:C3}")</span>
+        }
+        else
+        {
+            <span class="col-md-1 no-padding"></span>
+        }
+
+        @if (vendPODocUri != null)
+        {
+            <span class="col-md-1 no-padding"><a href="@vendPODocUri" target="_blank">@vendorPONumber</a></span>
+        }
+        else
+        {
+            <span class="col-md-1"></span>
+        }
+
+
+
+
+        <span class="col-md-3 no-padding">
+
+            @*@if (@td.isTagged == true)
+                {
+                <a class="col-md-2 my-tag small" data-id1="@td.TaskId" style="text-align:right;"><i class="fa fa-tag fa-2x  green-text" aria-hidden="true"></i></a>
+                }
+                else
+                {
+                <a class="col-md-2 my-tag small" data-id1="@td.TaskId" style="text-align:right;"><i class="fa fa-tag fa-2x" aria-hidden="true"></i></a>
+                }*@
+            <span class="col-md-6">
+                @Model.EnumName
+            </span>
+            <span class="col-md-3 green-text">
+                @Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@td.StateId))
+            </span>
+
+            <span class="col-md-3  no-padding">
+
+                <button type="button" class="btn accent-background-color btn-small" onclick='ShowModalView(@td.TaskId, @(order?.Id));' data-toggle="modal" data-target='#Modal@(td.TaskId)'>
+                    View
+                </button>
+
+            </span>
+
+        </span>
+
+    </div>
+}

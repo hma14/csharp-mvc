@@ -1,0 +1,195 @@
+﻿@using Omnae.Common
+@using Omnae.Controllers
+
+@model Omnae.BusinessLayer.Models.ProductFileViewModel
+
+<style>
+    #docs.dl-horizontal dt {
+        width: 35%;
+        text-align: left;
+        padding: 0px;
+        /*min-height: 60px;*/
+    }
+
+    #docs.dl-horizontal dd {
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+        font-size: 0.8em;
+        word-break: break-all;
+    }
+
+    .my-min-height {
+        min-height: 50px;
+    }
+</style>
+
+<div class="col-md-6">
+    @{
+        var doc2ds = Model.Doc2Ds;
+        var doc3ds = Model.Doc3Ds;
+        var quotedocs = Model.QuoteDocs;
+        var revisingdocs = Model.RevisingDocs;
+        var docproofs = Model.ProofDocs;
+        var vendorpos = Model.VendorPODocs;
+        var docpacking = Model.PackingDocs;
+        var docinspectionreport = Model.InspectionReportDocs;
+        var doccustInvoices = Model.CustInvoiceDocs;
+        var paymentProofs = Model.PaymentProofDocs;
+        var userType = Model.UserType;
+    }
+    <h4 class="pink-text">Product Files</h4>
+    <dl id="docs" class="dl-horizontal">
+        @if (doc2ds.Count > 0)
+        {
+            <dt>
+                2D
+            </dt>
+            <dd>
+                @foreach (var doc in doc2ds)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+        @if (doc3ds.Count > 0)
+        {
+            <dt>
+                3D
+            </dt>
+            <dd>
+                @foreach (var doc in doc3ds)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+        @if ((userType == USER_TYPE.Vendor || userType == USER_TYPE.Admin) && quotedocs.Count > 0)
+        {
+            if (userType == USER_TYPE.Admin)
+            {
+                <dt>
+                    Quote
+                </dt>
+                <dd>
+                    @foreach (var doc in quotedocs)
+                    {
+                        <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                    }
+                </dd>
+            }
+            else if (Model.QuoteDocumentForRFQBid != null)
+            {
+                <dt>
+                    Quote
+                </dt>
+                <dd>
+                    <a href="@Model.QuoteDocumentForRFQBid.DocUri" target="_blank">@Model.QuoteDocumentForRFQBid.Name &nbsp;</a>
+                </dd>
+            }
+        }
+        @if (docproofs.Count > 0)
+        {
+            <dt class="my-min-height">
+                Proof
+            </dt>
+            <dd>
+                @foreach (var doc in docproofs)
+                {
+                    if (doc.Id == docproofs.Last().Id && Model.StateId >= States.ProofApproved)
+                    {
+                        <a href="@doc.DocUri" target="_blank">@doc.Name (<span class="green-text">Approved Proof</span>)</a>
+                    }
+                    else
+                    {
+                        <a href="@doc.DocUri" target="_blank">@doc.Name</a>
+                    }
+
+                }
+            </dd>
+        }
+
+        @if (revisingdocs.Count > 0)
+        {
+            <dt class="my-min-height">
+                Revision
+            </dt>
+            <dd>
+                @foreach (var doc in revisingdocs)
+                {
+                    if (doc.UserType != null)
+                    {
+                        <a href="@doc.DocUri" target="_blank">@($"{doc.Name}") (<span class="green-text">@Enum.GetName(typeof(USER_TYPE), doc.UserType)</span>)</a>
+                    }
+                    else
+                    {
+                        <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                    }
+                }
+            </dd>
+        }
+        @if (vendorpos?.Count > 0 && userType == USER_TYPE.Vendor)
+        {
+            <dt>
+                PO
+            </dt>
+            <dd>
+                @foreach (var doc in vendorpos)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+
+        @if (docpacking.Count > 0 && userType == USER_TYPE.Customer)
+        {
+            <dt>
+                Packing Slip
+            </dt>
+            <dd>
+                @foreach (var doc in docpacking)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+        @if (docinspectionreport.Count > 0 && userType == USER_TYPE.Customer)
+        {
+            <dt>
+                Pk Insp. Report
+            </dt>
+            <dd>
+                @foreach (var doc in docinspectionreport)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+        @if (doccustInvoices.Count > 0 && userType == USER_TYPE.Customer)
+        {
+            <dt>
+                Invoice
+            </dt>
+            <dd>
+                @foreach (var doc in doccustInvoices)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+        @if (paymentProofs.Count > 0 && userType == USER_TYPE.Vendor)
+        {
+            <dt>
+                Payment Proof
+            </dt>
+            <dd>
+                @foreach (var doc in paymentProofs)
+                {
+                    <a href="@doc.DocUri" target="_blank">@doc.Name &nbsp;</a>
+                }
+            </dd>
+        }
+
+        
+    </dl>
+</div>

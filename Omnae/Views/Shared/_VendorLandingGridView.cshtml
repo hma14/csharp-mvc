@@ -1,0 +1,140 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+
+@using Omnae.Model.Extentions
+
+<style>
+    .my-tag {
+        margin-right: 10px !important;
+        float: right;
+    }
+
+    .dl-horizontal dd {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+@if (Model.TaskData.Product != null)
+{
+    var td = Model.TaskData;
+    Order order = Model.Order;
+    var vendorUnitPrice = order?.UnitPrice ?? 0m;
+
+    <div class="col-md-4">
+        <div class="card">
+
+            <!--Card Header-->
+
+            @{
+                Html.RenderPartial("_CardHeader", td);
+            }
+
+            <div class="wrapper">
+                <div class="card-block card-image-min-height">
+
+                    <!--Card text-->
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            State
+                        </dt>
+                        <dd class="green-text font-weight-bold">
+                            @Model.EnumName
+                        </dd>
+                        <dt>
+                            Customer
+                        </dt>
+                        <dd>
+                            @td.Product.CustomerCompany.Name
+                        </dd>
+                        @if (@td.Product.ParentPartRevisionId == null)
+                        {
+                            <dt>Part Revision</dt>
+                            <dd class="green-text">@td.Product.PartNumberRevision</dd>
+                        }
+                        else
+                        {
+                            <dt>Part Revision</dt>
+                            <dd class="green-text">@td.Product.PartNumberRevision (from: @td.Product.ParentPartNumberRevision)</dd>
+                        }
+
+                        <dt>
+                            Lead Time
+                        </dt>
+                        <dd>
+                            @td.Product.ProductionLeadTime (business days)
+                        </dd>
+                        @if (order != null)
+                        {
+                            <dt>Order Date</dt>
+                            <dd>@order.OrderDate</dd>
+                            <dt>
+                                Quantity
+                            </dt>
+                            <dd>
+                                @order.Quantity
+                            </dd>
+                            <dt>
+                                Unit Price
+                            </dt>
+                            <dd>
+                                @($"{vendorUnitPrice:C3}")
+                            </dd>
+                            if (order.CustomerPONumber != null)
+                            {
+                                <dt>
+                                    PO #
+                                </dt>
+                                <dd class="green-text">
+                                    @order.CustomerPONumber
+                                </dd>
+                            }
+                        }
+                    </dl>
+
+                    <!-- Action button -->
+                    @*@if (td.IsNeedAtention() || td.StateId == (int)States.ProductionComplete && Model.ChkPreconditions.Value)*@
+                    @if (td.IsNeedAtention())
+                    {
+                        <button type="button" class="btn accent-background-color btn-small pull-right btn-in-card" onclick='ShowModalView(@td.TaskId);' data-toggle="modal" data-target='#Modal@(td.TaskId)'>
+                            Action Needed
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn grey-background-color btn-small pull-right btn-in-card" onclick="ShowModalView(@td.TaskId);" data-toggle="modal" data-target='#Modal@(td.TaskId)'>
+                            Open
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <div class="card-data primary-background-color">
+                @* TODO: Move the Logic of the States.ProductionComplete iwth Missing DOCs to Another place. *@
+                @if (td.IsNeedAtention() || td.StateId == (int)States.ProductionComplete && Model.ChkPreconditions.Value)
+                {
+                    <a class="col-md-2 red-text action-flag padding-off">
+                        <i class="fas fa-flag" title="You have new action event to handle for this part!"></i>
+                    </a>
+                }
+                else
+                {
+                    <a class="col-md-2 padding-off">
+                        <i class="fas fa-flag" title="You have no new action for this part!"></i>
+                    </a>
+                }
+
+                @Html.AntiForgeryToken()
+
+                @if (@td.isTagged == true)
+                {
+                    <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                }
+                else
+                {
+                    <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                }
+            </div>
+        </div>
+
+    </div>
+}

@@ -1,0 +1,37 @@
+﻿@model Omnae.BusinessLayer.Models.ShippingQuoteRequestViewModel
+
+@for (int i = 0; i < Model.BkgDetails.Pieces.Count; i++)
+{
+
+    @Html.HiddenFor(m => Model.BkgDetails.Pieces[i].PieceID)
+
+
+    <span class="col-md-1 top-margin-30 bold">@Model.BkgDetails.Pieces[i].PieceID</span>
+        <div class="md-form col-md-2">
+            @Html.LabelFor(model => model.BkgDetails.Pieces[i].Height, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.BkgDetails.Pieces[i].Height, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BkgDetails.Pieces[i].Height, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="md-form col-md-3">
+            @Html.LabelFor(model => model.BkgDetails.Pieces[i].Depth, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.BkgDetails.Pieces[i].Depth, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BkgDetails.Pieces[i].Depth, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="md-form col-md-3">
+            @Html.LabelFor(model => model.BkgDetails.Pieces[i].Width, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.BkgDetails.Pieces[i].Width, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BkgDetails.Pieces[i].Width, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="md-form col-md-3">
+            @Html.LabelFor(model => model.BkgDetails.Pieces[i].Weight, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.BkgDetails.Pieces[i].Weight, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BkgDetails.Pieces[i].Weight, "", new { @class = "text-danger" })
+        </div>
+}
+
+
+
+

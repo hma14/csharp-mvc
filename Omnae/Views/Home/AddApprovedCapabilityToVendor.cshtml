@@ -1,0 +1,225 @@
+﻿@model Omnae.ViewModels.AddApprovedCapabilityToVendorViewModel
+@{
+    ViewBag.Title = "AddApprovedCapabilityToVendor";
+}
+
+<style>
+    #material, #metal, #plastics, #process {
+        display: none;
+    }
+</style>
+
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-plus-square"></i> Add Approved Capability for Vendor</h4>
+        <div class="card-block">
+            <div class="top-margin-30 col-md-12">
+
+                @if (Model != null && Model.VendorList != null)
+                {
+                    <div class="md-form col-md-3">
+                        @Html.DropDownListFor(model => model.VendorId, Model.VendorList, "-- Select Vendor --", new { @id = "companyId", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div id="build" class="md-form col-md-3">
+                        @Html.EnumDropDownListFor(model => model.BuildType, "-- Select a Build Type --", htmlAttributes: new { @id = "buildType", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BuildType, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="material" class="md-form col-md-3">
+                        @Html.EnumDropDownListFor(model => model.MaterialType, "-- Select a Material Type --", new { @id = "materialType", @class = "form-control", @value="0" })
+                        @Html.ValidationMessageFor(model => model.MaterialType, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div id="metal" class="md-form col-md-3">
+                        @Html.EnumDropDownListFor(model => model.MetalProcess, "-- Select a Metal Process --", new { @id = "metalProcess", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MetalProcess, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="plastics" class="md-form col-md-3">
+                        @Html.EnumDropDownListFor(model => model.PlasticsProcess, "-- Select a Plastics Process --", new { @id = "plasticsProcess", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PlasticsProcess, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="process" class="md-form col-md-3">
+
+                        @Html.EnumDropDownListFor(model => model.ProcessType, "-- Select a Process Type --", new { @id = "processType", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProcessType, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="md-form text-xs-center col-md-12">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-20">Add</button>
+                    </div>
+                    <div id="existingCaps" class="col-md-12 top-margin-20">
+                        @if (Model.ExistingApprovedCapabilities != null && Model.ExistingApprovedCapabilities.Any())
+                        {
+                            @Html.Partial("_ExistingCapabilities", Model)
+                        }
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+    $("#buildType").change(function () {
+        $("#material").hide(200);
+        $('#metal').hide(200);
+        $('#plastics').hide(200);
+        $('#process').hide(200);
+
+        var val = $(this).val();
+        if (val === "6") {
+            $("#material").hide(200);
+            $("#process").show(200);
+        }
+        else {
+            $("#process").hide(200);
+            $("#material").show(200, function () {
+                $('#materialType').val($('#materialType option:first').val());
+            });
+        }
+    })
+
+
+    $('#materialType').change(function () {
+        var val = $('#materialType option:selected').val();
+
+        if (val === "1") {
+            $('#metal').show(200);
+            $('#plastics').hide(200);
+            $('#process').hide(200);
+        } else if (val === "2") {
+            $('#plastics').show(200);
+            $('#metal').hide(200);
+            $('#process').hide(200);
+        }
+        else {
+            $('#plastics').hide(200);
+            $('#metal').hide(200);
+            $('#process').hide(200);
+        }
+    })
+
+
+
+
+    $('#companyId').change(function () {
+        $url = '//' + window.location.host + '/Home/GetVendorExistingApprovedCapabilities';
+        $('#spinner').show();
+        var $companyId = $('#companyId option:selected').val();
+        $.ajax({
+            url: $url,
+            type: 'GET',
+            data: { vendorId: $companyId },
+            success: function (result) {
+                $('#existingCaps').html(result);
+                $('#spinner').hide();
+            },
+            error: function (e) {
+                alertify.alert(e.responseText);
+            }
+        })
+    });
+
+    $("#submitButton").click(function (event) {
+
+        $url = '//' + window.location.host + '/Home/AddApprovedCapabilities';
+
+        $('#spinner').show();
+        var $companyId = $('#companyId option:selected').val();
+        var $buildType = $('#buildType option:selected').val();
+        var $materialType = $('#materialType option:selected').val();
+        var $metalProcess = $('#metalProcess option:selected').val();
+        var $plasticsProcess = $('#plasticsProcess option:selected').val();
+        var $processType = $('#processType option:selected').val();
+
+        if ($companyId == 0) {
+            alertify.error("You must choose a customer");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if ($buildType == 0) {
+            alertify.error("You must choose a build type");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if ($materialType == 0 && $buildType != 6) {
+            alertify.error("You must choose a material type");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if ($materialType == 1 && $metalProcess == 0) {
+            alertify.error("You must choose a metal process");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if ($buildType == 6 && $processType == 0) {
+            alertify.error("You must choose a process type");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        if ($buildType == 6) {
+            $materialType = 15;
+            $metalProcess = 0;
+            $plasticsProcess = 0;
+        }
+        //else {
+        //    if ($materialType == 15) {
+        //        alertify.error("Please select Process from Build Type dropdown list");
+        //        $materialType = 0;
+        //        $('#spinner').fadeToggle();
+        //        return false;
+
+        //    }
+        //    $processType = 0;
+
+        //}
+
+        $.ajax({
+            url: $url,
+            type: 'POST',
+            data: {
+                vendorId: $companyId, buildType: $buildType, materialType: $materialType,
+                metalProcess: $metalProcess, plasticsProcess: $plasticsProcess,
+                processType: $processType
+            },
+            success: function (result) {
+                $('#existingCaps').html(result);
+                $('#spinner').hide();
+            },
+            error: function (e) {
+                alertify.error(e.responseText);
+            }
+        })
+    });
+
+    function DeleteCapabilities($id) {
+
+        $url = '//' + window.location.host + '/Home/DeleteApprovedCapabilities';
+        $('#spinner').show();
+        $.ajax({
+            url: $url,
+            type: 'GET',
+            data: { id: $id },
+            success: function (result) {
+                $('#existingCaps').html(result);
+                $('#spinner').hide();
+            },
+            error: function (e) {
+                alertify.alert(e.responseText);
+            }
+        })
+    }
+
+</script>

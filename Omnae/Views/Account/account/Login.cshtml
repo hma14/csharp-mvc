@@ -1,0 +1,88 @@
+﻿@using Omnae.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </h4>
+        <div class="card-block">
+            <div class="offset-md-2 col-md-8 top-margin-30">
+                <section id="loginForm">
+
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "loginform", @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                        <!--Body-->
+                        <div>
+                            <i class="fas fa-at prefix"></i>
+                            @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div>
+                            <i class="fas fa-key prefix"></i>
+                            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div>
+                            <input type="checkbox" id="rememberMe" name="rememberMe" value="true">
+                            <label class="link" style="font-size:small;" for="rememberMe">Remember me?</label>
+                        </div>
+
+                        <div class="text-xs-center top-margin-50">
+                            <button type="submit" class="btn accent-background-color buttonWidth2">Login</button>
+                        </div>
+
+                        <!--Footer-->
+
+                        <div class="form-group" style="font-size:.8em;">
+                            <div class="modal-footer">
+                                <div class="options">
+                                    <p>
+                                        @Html.ActionLink("Sign up as a new user", "Register", "Account")
+                                    </p>
+                                    <p>
+                                        @Html.ActionLink("Forgot your password?", "ForgotPassword", "Account")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                    @*</div>*@
+                </section>
+            </div>
+        </div>
+
+        @*<div class="fb-like"
+             data-share="true"
+             data-width="450"
+             data-show-faces="true">
+        </div>*@
+
+        @*<div class="offset-md-1 col-md-4">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </div>*@
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#loginform').submit(function () {
+            $('#spinner').show();
+        })
+    });
+</script>
+

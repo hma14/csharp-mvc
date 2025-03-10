@@ -1,0 +1,37 @@
+﻿@model Omnae.ViewModels.GetQuoteDocByVendorViewModel
+
+<div class="col-md-12">
+    @if (Model != null)
+    {
+        @Html.DropDownListFor(model => model.ProductId, Model.ProductList, "-- Select a Part --", new { @id = "productId", @class = "btn grey-background-color dropdown-toggle  col-md-12" })
+        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+
+        <script>
+            $("#productId")
+                .change(function () {
+                    $('#spinner').show();
+                    var prodId = $(this).find(":selected").val();
+                    var $url = '//' + window.location.host + '/Home/GetQuoteDocs';
+
+                    $.ajax({
+                        type: 'POST',
+                        url: $url,
+                        data: { 'productId': prodId },
+                        success: function (result) {
+                            $('#spinner').hide();
+                            $('#result').html(result);
+                        },
+                        error: function (error) {
+                            $('#spinner').hide();
+                            alertify.error(error.statusCode);
+                        }
+                    });
+                });
+        </script>
+
+    }
+    else
+    {
+        <div class="red-text  col-md-12 top-margin-30">@TempData["ErrorMessage"].ToString()</div>
+    }
+</div>

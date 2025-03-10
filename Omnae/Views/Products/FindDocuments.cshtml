@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Omnae.Model.Models.Document>
+
+@{
+    ViewBag.Title = "FindDocuments";
+}
+
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h4 class="card-header text-md-center primary-background-color white-text"><i class="fas fa-cloud-download-alt"></i> Download Document</h4>
+        <div class="card-block">
+
+                @if (Model.Any())
+                {
+                    <table id="finddocuments" cellspacing="2" class=" table table-bordered tablesorter">
+                        <colgroup>
+                            <col style="width:40%;">
+                            <col style="width:50%;">
+                            <col style="width:10%;">
+                        </colgroup>
+                        <thead>
+                            <tr class="text-xs-center">
+                                <th class="header">Associated Product</th>
+                                <th class="header">Doc Name</th>
+                                <th class="header">Version</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="line">
+                                    <td>@Html.Raw(item.Product.Name)</td>
+                                    <td>
+                                        <a href="@item.DocUri">@Html.Raw(item.Name)</a>
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Version)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+                else
+                {
+                    if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+                    }
+                }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#finddocuments')
+            .tablesorter({ widthFixed: false, widgets: ['zebra'] });
+        //.tablesorterPager({ container: $("#pager") });
+    });
+
+</script>

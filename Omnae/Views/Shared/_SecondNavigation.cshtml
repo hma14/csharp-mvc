@@ -1,0 +1,159 @@
+﻿@{
+    BaseController controller = ViewContext.Controller as BaseController;
+    USER_TYPE? userType = null;
+    bool? isEnterprise = null;
+    if (controller?.UserContext?.User?.CanUseTheSystem == true)
+    {
+        userType = controller?.UserContext?.UserType;
+        isEnterprise = controller?.UserContext?.Company?.IsEnterprise;
+    }
+}
+
+<nav id="second-navbar" class="navbar  navbar-light  top-margin-40">
+    <div class="container-fluid">
+        @if (userType != null)
+        {
+            <div class="collapse navbar-collapse" id="secondnav">
+                @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @id = "secondnav", @class = "form-inline waves-effect waves-light  pull-left" }))
+                {
+                    <i class="fa fa-search prefix"></i>
+                    <input id="search" class="form-control" type="text" name="search">
+                }
+
+                <ul class="navbar-nav mr-auto pull-right dropdown">
+                    <li class="nav-item btn-group">
+
+                        <!--Trigger-->
+                        <a class="nav-link dropdown-toggle btn btn-secondary buttonWidth2" id="ddlFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</a>
+                        <!--Menu-->
+                        <ul class="dropdown-menu dropdowns shorter">
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 1})" class="dropdown-item">Tagged</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 2})" class="dropdown-item">Alert</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 3})" class="dropdown-item">Revision Required</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 4})" class="dropdown-item">Proofing</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 5})" class="dropdown-item">Sampling</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 6})" , class="dropdown-item">In Production</a></li>
+                            <li><a href="@Url.Action("Filter", "Home", new {@filter = 7})" , class="dropdown-item green-text">Remove Filter</a></li>
+                        </ul>
+
+                    </li>
+
+                    <li class="nav-item  dropdown btn-group">
+                        @if (userType == USER_TYPE.Customer)
+                        {
+                            <!--Trigger-->
+                            <a class="nav-link dropdown-toggle btn accent-background-color buttonWidth2" id="ddlDistributes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</a>
+                            <!--Menu-->
+                            <ul class="dropdown-menu dropdowns">
+                                <li>
+                                    <a href="@Url.Action("Create", "Products")" class="dropdown-item">Create New RFQ</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("CustomerUploadMissingFiles", "Home")" class="dropdown-item">Upload Missing Files</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("UploadMissingNcrImages", "Home")" class="dropdown-item">Upload Missing NCR Images</a>
+                                </li>
+                                @if (isEnterprise == true)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("AddCompanyLogo", "Home")" class="dropdown-item">Add Company Logo</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("AddShippingAccount", "Home")" class="dropdown-item">Add Shipping Accounts</a>
+                                    </li>
+
+                                    @*<li>
+                                            <a href="@Url.Action("UploadVendors", "Home")" class="dropdown-item">Invite My Vendors to Omnae</a>
+                                        </li>*@
+                                }
+                            </ul>
+                        }
+                        else if (userType == USER_TYPE.Vendor)
+                        {
+                            <!--Trigger-->
+                            <a class="nav-link dropdown-toggle btn accent-background-color buttonWidth2" id="ddlDistributes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</a>
+                            <!--Menu-->
+                            <ul class="dropdown-menu dropdowns">
+                                <li>
+                                    <a href="@Url.Action("UploadMissingNcrImages", "Home")" class="dropdown-item">Upload Missing NCR Images</a>
+                                </li>
+                            </ul>
+                        }
+                        else if (userType == USER_TYPE.Admin)
+                        {
+                            <!--Trigger-->
+                            <a href="#" class="dropdown-toggle btn accent-background-color  buttonWidth" id="ddlAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</a>
+                            <!--Menu-->
+                    <ul class="dropdown-menu columns">
+                        <li><a href="@Url.Action("PerformConnectQBOAuth", "Home")" class="dropdown-item pink-text">Update QBO Refresh Key</a></li>
+
+                        <li><a href="@Url.Action("CreateAccountForCustomer", "Home")" class="dropdown-item">Add Account for User</a></li>
+                        <li>
+                            <a href="@Url.Action("AddShippingAccount", "Home")" class="dropdown-item">Add Shipping Account for Customers</a>
+                        </li>
+                        <li><a href="@Url.Action("AddApprovedCapabilityToVendor", "Home")" class="dropdown-item">Add Approved Capability to Vendor</a></li>
+                        <li><a href="@Url.Action("AddExistingCustomersToQBO", "Home")" class="dropdown-item">Add Existing Customers to QBO</a></li>
+                        <li><a href="@Url.Action("AddExistingVendorsToQBO", "Home" )" class="dropdown-item">Add Existing Vendors to QBO</a></li>
+
+
+                        <li><a href="@Url.Action("AssignCustomerEnterprise", "Home")" class="dropdown-item">Assign Customer as Subscriber/Reseller</a></li>
+                        <li><a href="@Url.Action("AssignTerm", "Home")" class="dropdown-item">Assign Term & Credit to Customer (Reseller)</a></li>
+                        <li><a href="@Url.Action("AssignTermCreditLimit", "Home" )" class="dropdown-item">Assign Term & Credit to Customers (Enterprise)</a></li>
+                        <li><a href="@Url.Action("RemoveTermCreditLimit", "Home")" class="dropdown-item">Remove Term & Credit from Customers (Enterprise)</a></li>
+
+                        <li><a href="@Url.Action("AssignTermToVendor", "Home")" class="dropdown-item">Assign Term to Vendor</a></li>
+
+                        <li>
+                            <a href="@Url.Action("AssignVendor", "Home")" class="dropdown-item">Assign Vendor to User</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("AssignPartsToVendor", "Home")" class="dropdown-item">Assign Parts to Vendor</a>
+                        </li>
+
+                        <li><a href="@Url.Action("GetPOByProductId", "Home")" class="dropdown-item">Get PO Docs by Product</a></li>
+                        <li><a href="@Url.Action("GetQuoteDocByVendor", "Home")" class="dropdown-item">Get Quote Docs by Vendor</a></li>
+                        <li><a href="@Url.Action("RetrieveVendorInspectionReports", "Home")" class="dropdown-item">Get Vendor Inspection Reports</a></li>
+                        <li><a href="@Url.Action("AdminOrderDetails", "Home")" class="dropdown-item">Get Order Details by PO#</a></li>
+                        <li><a href="@Url.Action("GetCustomerInvoices", "Home")" class="dropdown-item">Get Customer Invoices</a></li>
+
+                        <li><a href="@Url.Action("GetAdminProducts", "Home")" class="dropdown-item">Get Product Details</a></li>
+
+
+                        <li><a href="@Url.Action("AdminUpdateUserEmail", "Home")" class="dropdown-item">Modify Email for User</a></li>
+                        <li>
+                            <a href="@Url.Action("ChangePartState", "Home")" class="dropdown-item">Modify Task State for Part</a>
+                        </li>
+                        <li><a href="@Url.Action("ChangeShippingDatesForCustomer", "Home")" class="dropdown-item">Modify Shipping Dates for Customer</a></li>
+                        <li><a href="@Url.Action("ChangeEstDatesForCustomer", "Home")" class="dropdown-item">Modify Est. Dates for Customer</a></li>
+
+                        <li><a href="@Url.Action("ModifyUnitPrices", "Home")" class="dropdown-item">Modify Unit Prices</a></li>
+
+                        <li>
+                            <a href="@Url.Action("CreatePartsFromExcelDataFile", "Home")" class="dropdown-item">Upload Data from Excel File</a>
+                        </li>
+                        <li><a href="@Url.Action("UploadVendors", "Home")" class="dropdown-item">Invite Vendors to Omnae</a></li>
+                        <li><a href="@Url.Action("UploadVendorProducts", "Home")" class="dropdown-item">Upload Products to Omnae</a></li>
+
+                        <li><a href="@Url.Action("MarginReport", "Home")" class="dropdown-item">Report Margin</a></li>
+                        <li><a href="@Url.Action("WipStatusReport", "Home" )" class="dropdown-item">Report WIP Status</a></li>
+                        <li><a href="@Url.Action("OrderHistory", "Home")" class="dropdown-item">Report Order History</a></li>
+                        <li><a href="@Url.Action("RFQLog", "Home")" class="dropdown-item">Report All RFQs</a></li>
+
+
+
+
+
+                        @if (Request?.Url == null || Request.Url.Host == "localhost" || Request.Url.Host.Contains("demo"))
+                        {
+                            <li><a href="@Url.Action("DemoRestore", "Home")" class="dropdown-item">Restore DEMO Database</a></li>
+                        }
+                    </ul>
+                        }
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</nav>
+

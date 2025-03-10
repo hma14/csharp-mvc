@@ -1,0 +1,254 @@
+﻿@using Omnae.BusinessLayer.Models
+@using Stateless
+@using StringExtensions = Omnae.Common.Extensions.StringExtensions
+
+@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var controller = ViewContext.Controller as BaseController;
+}
+
+<style>
+    .dl-horizontal dt {
+        width: 45%;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .dl-horizontal dd {
+        width: 100%;
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+        font-size: 0.8em;
+    }
+
+        .dl-horizontal dd span {
+            /*margin-left: 200px !important;*/
+            text-align: left;
+        }
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+}
+@if (TempData["Warning"] != null)
+{
+    <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+}
+
+<div class="top-margin-30">
+    <div class="offset-md-2 col-md-8">
+        <div class="card-block">
+            <h5 class="card-header primary-background-color white-text">@($"Current RFQs ({Model.FirstOrDefault()?.UserType})")</h5>
+            <div id="result">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var tdvm in Model)
+                    {
+                        var td = tdvm.TaskData;
+                        var order = tdvm.Order;
+
+                        StateMachine<States, Triggers> stTransition = new StateMachine<States, Triggers>((States)td.StateId);
+                        if (td.isEnterprise == true)
+                        {
+                            Utils.RegisterStates(stTransition, tdvm.MyFunc);
+                        }
+                        else
+                        {
+                            Utils.RegisterStates_Reseller(stTransition, tdvm.MyFunc);
+                        }
+
+
+                        var vendorName = tdvm.VendorName;
+
+                        <div class="card">
+                            <div class="card-block">
+                                <div>
+                                    <h4 class="col-md-12 pink-text">
+                                        Program Info
+                                    </h4>
+
+                                    <div class="col-md-6">
+                                        <dl class="dl-horizontal">
+
+                                            <dt>State:</dt>
+                                            <dd class="red-text font-weight-bold">@tdvm.EnumName</dd>
+                                            <dt>Task Id</dt>
+                                            <dd class="green-text">@td.TaskId</dd>
+                                            <dt>Part Id</dt>
+                                            <dd class="green-text">@td.ProductId</dd>
+
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="dl-horizontal">
+                                            @if (td.Product?.Name != null)
+                                            {
+
+                                                <dt>RFQ Name</dt>
+                                                <dd>@Html.ActionLink(td.Product.Name, "Details", "Products", new { id = td.ProductId }, null)</dd>
+                                                <dt>For Enterprise</dt>
+                                                <dd class="green-text">@td.isEnterprise</dd>
+                                                <dt>Customer Id</dt>
+                                                <dd class="green-text">@td.Product.CustomerId</dd>
+
+                                                if (td.Product.CustomerCompany != null)
+                                                {
+                                                    <dt>Customer</dt>
+                                                    <dd class="green-text">@td.Product.CustomerCompany.Name</dd>
+                                                }
+
+                                                if (td.Product.VendorCompany != null)
+                                                {
+                                                    <dt>Vender Id</dt>
+                                                    <dd class="green-text">@td.Product.VendorId</dd>
+                                                    <dt>Vendor</dt>
+                                                    <dd class="green-text">@td.Product.VendorCompany.Name</dd>
+                                                }
+                                                else if (vendorName != null)
+                                                {
+                                                    <dt>Vendor</dt>
+                                                    <dd class="pink-text">@vendorName</dd>
+                                                }
+                                            }
+
+
+                                        </dl>
+                                    </div>
+                                </div>
+
+                                <!-- part details -->
+
+                                <div>
+                                    <h4 class="col-md-12 top-margin-20 pink-text">Product Details</h4>
+                                    <div class="col-md-6">
+                                        <dl class="dl-horizontal">
+
+                                            @if (order != null)
+                                            {
+                                                <dt>
+                                                    PO Number
+                                                </dt>
+                                                <dd>
+                                                    @order.CustomerPONumber
+                                                </dd>
+                                            }
+                                            @if (td.Product != null)
+                                            {
+                                                <dt>
+                                                    Part Number
+                                                </dt>
+                                                <dd>
+                                                    @td.Product.PartNumber
+                                                </dd>
+                                            }
+
+                                        </dl>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dl class="dl-horizontal">
+                                            @if (td.Product?.Name != null)
+                                            {
+                                                <dt>
+                                                    Part Revision
+                                                </dt>
+                                                <dd>
+                                                    @td.Product.PartNumberRevision
+                                                </dd>
+                                            }
+                                        </dl>
+
+                                    </div>
+                                    @if (td.Product != null)
+                                    {
+                                        <div class="col-md-12 no-padding">
+                                            @{
+                                                Html.RenderPartial("_PartDetails", tdvm.ProductDetailsVM);
+                                            }
+                                        </div>
+                                    }
+
+                                </div>
+                                <div>
+                                    @if (td.Product != null)
+                                    {
+                                        Html.RenderPartial("_ProductFiles", tdvm.ProductFileVM);
+                                    }
+
+                                    <div class="col-md-6">
+                                        <h4>Date Stamps</h4>
+                                        <dl class="dl-horizontal">
+                                            <dt>Created <span class="small grey-text">(UTC)</span></dt>
+                                            <dd>@td.CreatedUtc</dd>
+                                            <dt>Modified <span class="small grey-text">(UTC)</span></dt>
+                                            <dd>@td.ModifiedUtc</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    @if (td.StateId == (int)States.PendingRFQ)
+                                    {
+                                        @Html.ActionLink("Choose Vendors for Bid", "PopulateRFQToVendors", "TaskDatas", new { id = td.TaskId }, new { @class = "btn accent-background-color pull-right" })
+                                    }
+                                    else if (td.StateId == (int)States.BidReview)
+                                    {
+                                        if (td.isEnterprise)
+                                        {
+                                            @Html.ActionLink("Bid For Review", "BidForReview", "TaskDatas", new { id = td.TaskId }, new { @class = "btn accent-background-color pull-right" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Setup Markups", "SetupMarkups", "TaskDatas", new { id = td.TaskId }, new { @class = "btn accent-background-color pull-right" })
+                                        }
+
+                                    }
+                                    else if (td.StateId == (int)States.SetupMarkupExtraQty)
+                                    {
+                                        @Html.ActionLink("Setup Markups for Add Extra Qty", "SetupMarkupsForAddQty", "TaskDatas", new { id = td.TaskId, rfqBidId = td.RFQBidId }, new { @class = "btn accent-background-color pull-right" })
+                                    }
+                                    else if (td.isEnterprise == false && (td.StateId == (int)States.PaymentMade || td.StateId == (int)States.ReOrderPaymentMade))
+                                    {
+                                        var stateTransition = new StateTransitionViewModel
+                                        {
+                                            TaskData = td,
+                                            StTransition = stTransition
+                                        };
+                                        Html.RenderPartial("_StateTransition", stateTransition);
+                                    }
+                                    else if (td.StateId == (int)States.NCRAdminDisputesIntervention ||
+                                             td.StateId == (int)States.NCRCustomerRevisionNeeded ||
+                                             td.StateId == (int)States.NCRCustomerRejectCorrective ||
+                                             td.StateId == (int)States.NCRCustomerCorrectivePartsAccepted && td.isEnterprise == false ||
+                                             td.StateId == (int)States.NCRDamagedByCustomer ||
+                                             td.StateId == (int)States.NCRCustomerRevisionNeeded ||
+                                             td.StateId == (int)States.NCRCustomerRejectRootCause)
+                                    {
+                                        var stateTransition = new StateTransitionViewModel
+                                        {
+                                            TaskData = td,
+                                            StTransition = stTransition,
+                                            NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                                        };
+                                        Html.RenderPartial("_StateTransition", stateTransition);
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5 class="text-xs-center"><i class="fa fa-info-circle fa-2x"></i> There are no RFQ in pendding state at the moment</h5>
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>

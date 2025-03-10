@@ -1,0 +1,25 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<div class="top-margin-100">
+    <div class="card-block no-padding">
+
+        @Html.HiddenFor(m => m.ProductId)
+
+        <h4>NCR Decline - Root Cause On Customer   <a title="NCR Decline: it is not your responsibility but root cause is customer's."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+
+        <div class="top-margin-20">
+            @Html.LabelFor(model => model.NcrDescriptionVM.RootCauseOnCustomerReason, htmlAttributes: new { @class = "control-label" })
+            @*@Html.TextAreaFor(model => model.NcrDescriptionVM.RootCauseOnCustomerReason, new { rows = 10, cols = 50, @class = "form-control xeditable", placeholder = "Customer Reason ..." })*@
+            <textarea id="RootCauseOnCustomerReason" data-pk="@Model.NcrDescriptionVM.NCRId" rows=5 cols=50 class="form-control xeditable" placeholder="Revison Cause ...">
+                            @Model.NcrDescriptionVM.RootCauseOnCustomerReason
+            </textarea>
+
+            <div class="top-margin-30">
+
+                @Html.Partial("_UploadNCDoc")
+
+            </div>
+        </div>
+    </div>
+</div>
+

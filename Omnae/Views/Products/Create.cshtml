@@ -1,0 +1,142 @@
+﻿@model Omnae.BusinessLayer.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 78%;
+    }
+</style>
+
+<div class="container-fluid top-margin-30 offset-lg-3 col-md-6">
+    <div class="card">
+
+        <h4 class="card-header primary-background-color text-md-center white-text"><i class="fas fa-plus-square"></i> Create a new RFQ</h4>
+        <div class="card-block">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+            }
+            @if (TempData["Warning"] != null)
+            {
+                <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+            }
+
+            <div class="col-md-12">
+                @using (Html.BeginForm("Create", "Products", FormMethod.Post, new { id = "createProduct", enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="col-md-12 md-form">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-12 md-form">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Description, new { @class = "md-textarea form-control" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <br />
+                    <div class="top-margin-30 no-padding">
+                        <span class="col-md-12 grey-text">Upload thumbnail image of this part (e.g., PNG, JPG, GIF, TIF ...)</span>
+                        <div class="col-md-12 top-margin-30">
+                            @Html.TextBoxFor(model => model.AvatarFile, new { type = "file", name = "AvatarFile", @id = "AvatarFile", @class = "no-padding" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 top-margin-30">
+                        @{
+                            Html.RenderPartial("_CreateProduct", Model);
+                        }
+                    </div>
+                    @*<div class="col-md-12 top-margin-30">
+                            @Html.Partial("_UploadProductDoc", Model)
+                        </div>*@
+
+                    <div class="col-md-12 text-xs-center">
+                        <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth top-margin-30">Create</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+<script type="text/javascript">
+
+    $("#createProduct").submit(function (event) {
+        $('#spinner').show();
+
+        var buildtype = $('#buildtype option:selected').val();
+        var avatar = $('#AvatarFile').val();
+        var material = $('#material option:selected').val();
+        var customerPriority = $('#customerPriority option:selected').val();
+        var partnumber = $('#partnumber').val();
+        var partrevision = $('#partrevision').val();
+        var qty1 = $('#qty1').val();
+        var productDoc = $('#productDoc').val();
+
+        if (avatar == '') {
+            alertify.error("You must upload thumbnail image for this part!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (buildtype == 0) {
+            alertify.error("You must select  a build type!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (material == 0) {
+            alertify.error("You must select a material!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (partnumber == '') {
+            alertify.error("You must enter Part #!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (partrevision == '') {
+            alertify.error("You must enter Part Revision!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (customerPriority == 0) {
+            alertify.error("You must select a customer priority!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (qty1 == '') {
+            alertify.error("You must enter at least one quantity!");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else if (productDoc == '') {
+            alertify.error("You must upload 2D or 3D draw file(s) for this product");
+            this.submitButton.disabled = false;
+            $('#spinner').hide();
+            return false;
+        }
+        else {
+            this.submitButton.disabled = true;
+            return true;
+        }
+    })
+
+</script>

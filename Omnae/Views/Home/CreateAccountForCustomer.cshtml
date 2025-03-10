@@ -1,0 +1,60 @@
+﻿@model Omnae.ViewModels.CreateAccountForCustomerViewModel
+
+@{
+    ViewBag.Title = "CreateAccountForCustomer";
+}
+<style>
+    .dynamic {
+        display: none;
+    }
+</style>
+<div class="container-fluid top-margin-30">
+    <div class="offset-md-2 col-md-8">
+        <div class="card">
+            <h5 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-pencil-alt"></i> Administrator Registration for User</h5>
+            <!--Form without header-->
+            <div class="card-block">
+                <div class="offset-md-1 col-md-10">
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="red-text">@TempData["ErrorMessage"]</div>
+                    }
+                    @if (TempData["AzureException"] != null)
+                    {
+                        <div class="red-text">@TempData["AzureException"]</div>
+                    }
+                    <br />
+                    @using (Html.BeginForm("CreateAccountForCustomer", "Home", FormMethod.Post, new
+                    {
+                        id = "CreateAccountForCustomerform",
+                        enctype = "multipart/form-data",
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                        <!--Body-->
+                        if (Model != null)
+                        {
+
+                            @Html.Partial("_AccountRegister", Model)
+
+                            @Html.Partial("_Registration", Model)
+
+                            <div class="text-xs-center top-margin-30">
+                                <button type="submit" class="btn accent-background-color buttonWidth2">Create</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <h4 class="red-text text-md-center">Provided model is empty</h4>
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

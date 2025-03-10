@@ -1,0 +1,9 @@
+﻿@model  Omnae.BusinessLayer.Models.PackingSlipUriViewModel
+
+    download <a id='clkPackingSlipUri@(Model.OrderId)' href="@Model.Uri" target="_blank"> Packing Slip</a>
+
+    <script type="text/javascript">
+    $('#clkPackingSlipUri' + @Model.OrderId).click(function () {
+        $('#tracking' + @Model.OrderId).show();
+    });
+    </script>

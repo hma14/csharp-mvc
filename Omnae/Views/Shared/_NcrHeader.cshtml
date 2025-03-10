@@ -1,0 +1,22 @@
+﻿@model Omnae.BusinessLayer.Models.NcrDescriptionViewModel
+
+<style>
+    .my-margin {
+        margin-top: 5px;
+        float: right !important;
+        margin-right:0px;
+        padding-right:0px;
+    }
+</style>
+
+<div class="card-header primary-background-color white-text grid-min-height">
+    <div class="col-md-11">
+        <h4 class="margin-off my-h5">
+            @Model.ProductName
+        </h4>
+    </div>
+
+    <div class="col-md-1 my-margin">
+        <a href="@Model.ProductAvatarUri" target="_blank"><img class="thumb pull-right" src=@Model.ProductAvatarUri alt="" title="Origin Image" /></a>
+    </div>
+</div>

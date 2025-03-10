@@ -1,0 +1,147 @@
+﻿@model Omnae.BusinessLayer.Models.StateTrackingViewModel
+@using Omnae.Common
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+    .dl-horizontal dt {
+        text-align: left;
+        width: 120px !important;
+    }
+
+    .dl-horizontal dd {
+        margin-left: 0px;
+    }
+
+    p {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+<div class="col-lg-12 top-margin-30">
+    <div class="col-lg-6">
+        <div class="card col-md-12">
+            <div class="card-block">
+                <div class="col-md-5 view overlay hm-white-slight">
+                    <a href="~/Products/Details/@Model.Product.Id"><img class="img-fluid center-block card-image-height" src=@Model.Product.AvatarUri alt="" title="@Model.Product.Name" /></a>
+                </div>
+                <div class="card-block col-md-7">
+                    <h4 class="col-xs-8">@Model.Product.Name</h4>
+                    @Html.AntiForgeryToken()
+                    @if (Model.IsTagged == true)
+                    {
+                        <a class="pull-right my-tag green-text col-xs-2" data-id1="@Model.TaskId"><i class="fas fa-tag"></i></a>
+                    }
+                    else
+                    {
+                        <a class="pull-right my-tag col-xs-2" data-id1="@Model.TaskId"><i class="fas fa-tag"></i></a>
+                    }
+
+                    <h5 class="col-xs-10">@Model.Product.PartNumber</h5>
+                    @*<h5 class="col-xs-10">@Model.Product.HarmonizedCode</h5>*@
+                    <h5 class="col-xs-10">Revision @Model.Product.PartNumberRevision</h5>
+
+                    @if (Model.StateId >= States.SampleApproved &&
+                        Model.StateId <= States.NCRClosed &&
+                        Model.StateId != States.RFQBidComplete &&
+                        Model.StateId != States.SampleRejected ||
+                        Model.StateId == States.NCRCustomerCorrectivePartsAccepted ||
+                        Model.StateId == States.NCRDamagedByCustomer)
+                    {
+                        <a class="col-md-10" href="~/Products/ReOrder/@Model.TaskId">RE-ORDER</a>
+                    }
+                    else if (Model.StateId >= States.SampleApproved &&
+                            Model.StateId <= States.NCRClosed &&
+                            Model.StateId != States.RFQBidComplete &&
+                            Model.StateId != States.SampleRejected ||
+                            Model.StateId == States.NCRCustomerCorrectivePartsAccepted ||
+                            Model.StateId == States.NCRDamagedByCustomer)
+                    {
+                        <a class="col-md-10" href="~/Products/PlaceOrder/@Model.TaskId">PLACE ORDER</a>
+                    }
+
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="col-md-6">
+                    <h4>Source File</h4>
+                    <ul class="small">
+                        @foreach (var doc in Model.Product.Documents)
+                        {
+                            if (doc.DocType == (int)DOCUMENT_TYPE.QUOTE_PDF)
+                            {
+                                continue;
+                            }
+                            if (doc.DocType == (int)DOCUMENT_TYPE.QBO_PURCHASEORDER_PDF && Model.UserType == USER_TYPE.Customer && Model.isEnterprise == false)
+                            {
+                                continue;
+                            }
+                            <li style="word-break:break-all;">
+                                <a href="@doc.DocUri">@doc.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4>Build</h4>
+                    <dl class="dl-horizontal">
+                        <dt>Type</dt>
+                        <dd>@Model.Product.BuildType</dd>
+                        <dt>Material</dt>
+                        <dd>@Omnae.Common.Extensions.StringExtensions.SplitCamelCase(Enum.GetName(typeof(MATERIALS_TYPE), @Model.Product.Material))</dd>
+
+                    </dl>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="col-md-6">
+                    <h4>Lead Time</h4>
+                    <dl class="dl-horizontal">
+                        @if (Model.Product.ToolingLeadTime != null)
+                        {
+                            <dt>Tooling</dt>
+                            <dd>@Model.Product.ToolingLeadTime <span class="grey, small">bus. days</span></dd>
+                        }
+                        <dt>Sample</dt>
+                        <dd>@Model.Product.SampleLeadTime <span class="grey, small">bus. days</span></dd>
+                        <dt>Production</dt>
+                        <dd>@Model.Product.ProductionLeadTime <span class="grey, small">bus. days</span></dd>
+
+                    </dl>
+
+                </div>
+                <div class="col-md-6">
+                    @if (@Model.Order != null)
+                    {
+                        <h4>@Model.Order.Quantity Ordered</h4>
+                    }
+                    else
+                    {
+                        <h4>No Order Placed yet</h4>
+                    }
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="col-md-12">
+                    <h4>Description</h4>
+                    <p>@Model.Product.Description</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-6">
+        @Html.Partial("_CurrentState", Model.LastUpdated)
+    </div>
+    <div class="col-lg-6">
+        @if (Model.OrderStateTrackings != null)
+        {
+            @Html.Partial("_OrderMileStone", Model.OrderStateTrackings)
+        }
+        else if (Model.ProductStateTrackings != null)
+        {
+            @Html.Partial("_ProductStateHistory", Model.ProductStateTrackings)
+        }
+    </div>
+</div>

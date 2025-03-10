@@ -1,0 +1,74 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+
+<style>
+    .myddl {
+        margin-bottom: 0;
+    }
+</style>
+
+
+<div class="col-md-12 top-margin-20">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.CountryCode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.Postalcode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.CountryCode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Origin.Postalcode)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Destination.City)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.Dutiable.DeclaredCurrency)
+    @Html.HiddenFor(m => m.RFQVM.ShippingQuoteVM.BkgDetails.PaymentAccountNumber)
+
+
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Package Details</legend>
+        <div class="col-md-4  top-margin-40 myddl">
+            @*@Html.DropDownListFor(model => model.RFQVM.BkgDetails.PaymentCountryCode, ViewBag.CountryCode as SelectList, "-- Payment Country --", new { @class = "form-control" })*@
+            @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.PaymentCountryCode, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4 top-margin-40 myddl">
+            @Html.DropDownListFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.DimensionUnit, Model.RFQVM.ShippingQuoteVM.BkgDetails.DdlDimensionUnit as SelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.DimensionUnit, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-4 top-margin-40 myddl">
+            @Html.DropDownListFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.WeightUnit, Model.RFQVM.ShippingQuoteVM.BkgDetails.DdlWeightUnit as SelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.WeightUnit, "", new { @class = "text-danger" })
+        </div>
+        
+        @*<div class="col-md-3 top-margin-40">
+            @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.Volume, "", new { @class = "text-danger" })
+        </div>*@
+
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Pieces</legend>
+            <div id="Pieces">
+                @Html.Partial("_ShippingAddPiece", Model)
+            </div>
+
+
+        </fieldset>
+    </fieldset>
+
+
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Dutiable</legend>
+        <div class="col-md-3 top-margin-20">
+            @Html.DropDownListFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.IsDutiable, Model.RFQVM.ShippingQuoteVM.BkgDetails.DdlIsDutiable as SelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.BkgDetails.IsDutiable, "", new { @class = "text-danger" })
+        </div>
+        <div class="offset-md-1 col-md-4  top-margin-20">
+            @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredCurrency, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredCurrency, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredCurrency, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-4  top-margin-20">
+            @Html.LabelFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredValue, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredValue, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RFQVM.ShippingQuoteVM.Dutiable.DeclaredValue, "", new { @class = "text-danger" })
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+This is to notify you that customer of @Model.CustomerName has cancelled the RFQ bidding for @Model.PartNumber. 

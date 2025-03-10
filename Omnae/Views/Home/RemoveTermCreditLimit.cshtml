@@ -1,0 +1,48 @@
+﻿@model Omnae.BusinessLayer.Models.RemoveCreditRelationshipViewModel
+@{
+    ViewBag.Title = "RemoveTermCreditLimit";
+}
+
+
+<div class="offset-md-1 col-md-10 top-margin-30">
+    <div class="card">
+        <h4 class="card-header primary-background-color white-text text-md-center"><i class="far fa-hand-point-right"></i> Remove Term & Credit Limit from Customer</h4>
+        <div class="card-block">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+            }
+            else if (TempData["Message"] != null)
+            {
+                <div class="green-text text-md-center">@TempData["Message"].ToString()</div>
+            }
+            <div class="top-margin-30">
+
+                @using (Html.BeginForm("RemoveTermCreditLimit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    if (Model != null)
+                    {
+                        <div class="md-form col-md-4">
+                            @Html.DropDownListFor(model => model.VendorId, Model.Vendors, "-- Select Vendor --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="md-form col-md-4">
+                            Remove Term, Credit Limit from customer:
+                        </div>
+                        <div class="md-form col-md-4">
+                            @Html.DropDownListFor(model => model.CustomerId, Model.Customers, "-- Select Customer --", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                        </div>                   
+
+                        <div class="text-xs-center">
+                            <button type="submit" class="btn accent-background-color buttonWidth top-margin-30">Remove</button>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

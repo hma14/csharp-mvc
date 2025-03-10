@@ -1,0 +1,9 @@
+﻿Hi @Model.UserName,
+
+This is notice that your proof for @Model.PartNumber has been approved.
+Purchase Order #: @Model.PONumber
+
+
+Best regards,
+    
+Omnae Team

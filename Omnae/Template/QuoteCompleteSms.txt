@@ -1,0 +1,8 @@
+﻿
+Hi @Model.UserName,
+
+Your new part @Model.PartNumber
+is ready to order! 
+Place Order for New Part
+Purchase Order #: @Model.PONumber
+

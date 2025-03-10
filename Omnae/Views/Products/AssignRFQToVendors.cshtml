@@ -1,0 +1,155 @@
+﻿@model Omnae.BusinessLayer.Models.AssignRFQToVendorsViewModel
+@{
+    ViewBag.Title = "AssignRFQToVendors";
+}
+
+<style>
+
+    .my-checkbox {
+        height: 20px;
+        left: -2px !important;
+        margin-top: 2px;
+        position: relative !important;
+        top: 0;
+        transition-delay: 0s;
+        transition-duration: 0.2s;
+        transition-property: all;
+        transition-timing-function: ease;
+        width: 20px;
+        z-index: 0;
+        visibility: visible !important;
+        background: aliceblue !important;
+    }
+
+    .chart {
+        display: none;
+    }
+
+</style>
+
+@if (Model != null)
+{
+    <div class="col-md-12 top-margin-30">
+        <div class="card">
+            <h5 class="card-header primary-background-color white-text text-md-center"><i class="fas fa-pencil-alt"></i> Choose Vendors for Bidding</h5>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+            }
+            @if (TempData["Warning"] != null)
+            {
+                <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+            }
+                <div class="card-block">
+                    @using (Html.BeginForm("AssignRFQToVendors", "Products", FormMethod.Post, new { id = "assignRFQToVendors", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(x => x.ProductId)
+                        @Html.HiddenFor(x => x.isEnterprise)
+                        <div class="grey-text small"><span class="red-text">* </span> You may choose up to 5 vendors to participate the bidding</div>
+                        <div class="col-md-12 d-block card-header pull-left default-color status-title white-text">
+                            <span class="col-md-1">#</span>
+                            <span class="col-md-4">Choose Vendors</span>
+                            <span class="col-md-7">Vendor Location</span>
+                        </div>
+
+                        for (int i = 0; i < Model.VendorIds.Length; i++)
+                        {
+
+                            if (Model.VendorIds[i] > 0)
+                            {
+                                <div id="CheckboxContainer" class="line col-md-12">
+                                    @Html.HiddenFor(x => x.VendorIds[i])
+
+
+                                    @if (Model.Address[i] != null)
+                                    {
+                                        <span class="col-md-1 green-text">@(i + 1)</span>
+                                        <span class="col-md-4">
+                                            @*<input type="checkbox" id="@Model.VendorIds[i]" name="isChosen[@i]" value="true" />
+                                <label for="@Model.VendorIds[i]">@Model.Name[i] </label>*@
+
+
+                                            @Html.CheckBoxFor(m => m.isChosen[i], new { @class = "my-checkbox" })
+                                            @Html.LabelFor(m => m.isChosen[i], Model.Name[i])
+                                            @Html.ValidationMessageFor(m => m.isChosen[i], "", new { @class = "text-danger" })
+
+                                        </span>
+                                        if (Model.Address[i].AddressLine2 != null)
+                                        {
+                                            <span class="col-md-7">
+                                                @Model.Address[i].AddressLine2 - @Model.Address[i].AddressLine1, @Model.Address[i].City, @Model.Address[i].Country.CountryName
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="col-md-7">
+                                                @Model.Address[i].AddressLine1, @Model.Address[i].City, @Model.Address[i].Country.CountryName
+                                            </span>
+                                        }
+                                    }
+
+
+                                    <h5 class="col-md-12 text-md-center">
+                                        Quality Analytics
+                                        <a class="minusplus green-text" href="#" data-id1="@(i)" style="text-decoration:none;"><i class="fas fa-plus-square"></i></a>
+                                    </h5>
+                                    <div id="charts@(i)" class="row chart no-padding">
+                                        @Html.Partial("_Charts", Model.Charts[i])
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="text-xs-center col-md-12 top-margin-50">
+                            <button type="submit" class="btn accent-background-color buttonWidth">Submit</button>
+                        </div>
+                    }
+                </div>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="red-text">Empty</div>
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        var counter = 0;
+        $('input[type="checkbox"]').click(function () {
+
+            if ($(this).prop("checked") == true) {
+                counter = counter + 1;
+                if (counter > 5) {
+                    this.checked = false;
+                    alertify.alert("You can only choose up to 5 vendors.");
+                }
+            }
+            if ($(this).prop("checked") == false) {
+                counter = counter - 1;
+            }
+        });
+
+        $('.minusplus').click(function () {
+            var id = $(this).data('id1');
+            var $events = $('#charts' + id);
+            $events.animate({ opacity: 'toggle', height: 'toggle' }, 2000);
+
+            if ($(this).find($('.fa-minus-square')).hasClass('fa-minus-square')) {
+
+                $(this).find($('.fa-minus-square')).removeClass('fa-minus-square').addClass('fa-plus-square');
+            }
+            else if ($(this).find($('.fa-plus-square')).hasClass('fa-plus-square')) {
+
+                $(this).find($('.fa-plus-square')).removeClass('fa-plus-square').addClass('fa-minus-square');
+            }
+
+            return false;
+        });
+
+    });
+</script>

@@ -1,0 +1,68 @@
+﻿@model Omnae.BusinessLayer.Models.VendorDashboardViewModel
+<!--Panel-->
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .card .card-header {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+
+    div#grid1 {
+        display: none;
+    }
+
+    .line {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+        .line:nth-child(odd) {
+            background: #e8eaf6;
+        }
+
+        .line:nth-child(even) {
+            background: #e3f2fd;
+        }
+
+    .grid-min-height {
+        min-height: 90px;
+    }
+
+    .productInfo.dl-horizontal dt {
+        width: 200px !important;
+    }
+</style>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="col-md-12 red-text">@TempData["ErrorMessage"].ToString()</div>
+}
+@if (TempData["Warning"] != null)
+{
+    <div class="col-md-12 green-text">@TempData["Warning"].ToString()</div>
+}
+@{
+    Html.RenderPartial("_VendorLandingPartial1", Model.RFQs);
+}
+<br />
+@{
+    Html.RenderPartial("_VendorLandingPartial2", Model.ORDORs);
+}
+<br />
+@{
+    Html.RenderPartial("_VendorLandingPartial5", Model.Billings);
+}
+<br />
+@{
+    Html.RenderPartial("_VendorLandingPartial3", Model.NCRs);
+}
+<br />
+@{
+    Html.RenderPartial("_VendorLandingPartial4", Model.Products);
+}
+
+<!--/.Panel-->

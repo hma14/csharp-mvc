@@ -1,0 +1,46 @@
+﻿@model Omnae.Models.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<div class="row top grey-text">
+    <div class="offset-md-4 col-md-4">
+        <div class="card-block">
+            <h3><i class="fa fa-plug fa-2x"></i> Associate your @ViewBag.LoginProvider account.</h3>
+            <br />
+            @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <p class="card-text text-justify">
+                    You've successfully authenticated with <b>@ViewBag.LoginProvider</b>.
+                    Please enter a user name for this site below and click the Register button to finish
+                    logging in.
+                </p>
+                <br />
+                <div class="md-form">
+                    <i class="fa fa-envelope-o prefix"></i>
+                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-mobile prefix"></i>
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-user prefix"></i>
+                    @Html.LabelFor(m => m.UserType, new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(m => m.UserType, new { @class = "form-control my-form-control" })
+                    @Html.ValidationMessageFor(m => m.UserType, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form text-xs-center">
+                    <button type="submit" class="btn btn-cyan" style="width:50%;">Register</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

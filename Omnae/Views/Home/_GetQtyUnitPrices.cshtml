@@ -1,0 +1,52 @@
+﻿@model Omnae.ViewModels.ModifyUnitPricesViewModel
+
+
+<div class="col-md-12 top-margin-50">
+    @if (Model != null && Model.UnitPriceList != null && Model.UnitPriceList.Count > 0)
+    {
+        <h2 class="col-md-12">Vendor: <span class="green-text">@Model.VendorName</span></h2>
+        <div class="top-margin-30">
+
+            @for (int i = 0; i < Model.UnitPriceList.Count; i++)
+            {
+                @Html.HiddenFor(m => m.UnitPriceList[i].PriceBreakId)
+                <div class="col-md-2">
+                    Qty
+                    @Html.EditorFor(m => m.UnitPriceList[i].Quantity, new { htmlAttributes = new { @class = "form-control  green-text" } })
+                </div>
+                <div class="col-md-2">
+                    Cust. Unit Price
+                    @Html.EditorFor(m => m.UnitPriceList[i].CustomerUnitPrice, new { htmlAttributes = new { @class = "form-control  green-text" } })
+                    @Html.ValidationMessageFor(m => m.UnitPriceList[i].CustomerUnitPrice, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-2">
+                    Vend. Unit Price
+                    @Html.EditorFor(m => m.UnitPriceList[i].VendorUnitPrice, new { htmlAttributes = new { @class = "form-control green-text" } })
+                    @Html.ValidationMessageFor(m => m.UnitPriceList[i].VendorUnitPrice, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3">
+                    Cust. Tooling Charges
+                    @Html.EditorFor(m => m.UnitPriceList[i].CustomerToolingCharge, new { htmlAttributes = new { @class = "form-control green-text" } })
+                    @Html.ValidationMessageFor(m => m.UnitPriceList[i].VendorUnitPrice, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3">
+                    Vend. Tooling Charges
+                    @Html.EditorFor(m => m.UnitPriceList[i].VendorToolingCharge, new { htmlAttributes = new { @class = "form-control green-text" } })
+                    @Html.ValidationMessageFor(m => m.UnitPriceList[i].VendorUnitPrice, "", new { @class = "text-danger" })
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        if (TempData["ErrorMessage"] != null)
+        {
+            <div class="red-text">
+                @TempData["ErrorMessage"].ToString()
+            </div>
+        }
+
+
+    }
+</div>
+

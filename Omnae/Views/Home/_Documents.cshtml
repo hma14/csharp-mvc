@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Omnae.Model.Models.Document>
+
+@{
+    ViewBag.Title = "Documents";
+}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+}
+@if (Model != null && Model.Any())
+{
+    foreach (var doc in Model)
+    {
+        <div class="offset-md-1 col-md-10 top-margin-10">
+            <a href="@doc.DocUri">@doc.Name</a>
+            <a class="del pull-xs-right" onclick="deleteDoc(@doc.Id, @doc.ProductId);"><i class="fa fa-trash"></i></a>
+        </div>
+    }
+}

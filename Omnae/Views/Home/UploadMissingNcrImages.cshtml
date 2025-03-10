@@ -1,0 +1,155 @@
+﻿@model  Omnae.BusinessLayer.Models.UploadMissingNcrImagesViewModel
+@{
+    ViewBag.Title = "UploadMissingNcrImages";
+}
+
+
+
+<div class="col-md-12 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center"><i class="far fa-edit"></i> Upload Missing NCR Image Files</h5>
+        <div class="card-block">
+
+            @if (Model != null)
+            {
+                <div class="top-margin-30">
+
+                    @using (Html.BeginForm("UploadMissingNcrImages", "Home", FormMethod.Post, new { id = "UploadMissingNcrImages", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                @Html.EnumDropDownListFor(model => model.DocType, "-- Select NCR Image Type --", new { @id = "docType", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                            </div>
+                            <div class="col-md-5">
+                                @Html.DropDownListFor(model => model.NcrId, Model.NcrDDL, "-- Select NC Report --", new { @id = "ncrId", @class = "btn grey-background-color dropdown-toggle col-md-12" })
+                                @Html.ValidationMessageFor(model => model.NcrId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="file-field col-md-4 top-margin-30  pull-md-right">
+                                <div class="btn grey-background-color">
+                                    <span class="fileupload">Browse</span>
+                                    <input type="file" name="uploadedFile" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload Images" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-md-center">
+                            <button type="submit" name="submitButton" class="btn accent-background-color buttonWidth top-margin-50">Upload</button>
+                        </div>
+                        <div id="ncrImages" class="col-md-10 top-margin-30">
+                            @if (Model != null && Model.NcrImages != null && Model.NcrImages.Any())
+                            {
+                                Html.RenderPartial("_NcrFiles", Model.NcrImages);
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function showMessage() {
+        var message = "Documents are uploaded successfully!";
+        alertify.log(message, "info", 0);
+        return true;
+    };
+
+    $(function () {
+        $('#UploadMissingNcrImages').submit(function () {
+            $('#spinner').show();
+
+            var docType = $('#docType option:selected').val();
+            var ncrImageId = $('#ncrImageId option:selected').val();
+
+            if (docType == 0) {
+                $('#spinner').hide();
+                alertify.error("Document type must be selected");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else if (ncrImageId == 0) {
+                $('#spinner').hide();
+                alertify.error("A NCR image Id must be selected");
+                this.submitButton.disabled = false;
+                return false;
+            }
+            else {
+                this.submitButton.disabled = true;
+                return true;
+            }
+        });
+
+
+        $('#ncrId')
+            .change(function () {
+
+                $('#spinner').show();
+                var ncrId = $('#ncrId').val();
+                var $url = '//' + window.location.host + '/Home/GetNcrImagesByNcrId';
+
+                $.ajax({
+                    type: 'GET',
+                    url: $url,
+                    data: { 'ncrId': ncrId },
+                    success: function (result) {
+                        $('#spinner').hide();
+                        $('#ncrImages').html(result);
+                    },
+                    error: function (error) {
+                        $('#spinner').hide();
+                        alertify.error(error.statusCode);
+                    }
+                });
+            });
+    });
+
+
+
+    function deleteNcrImage(imageId, ncrId) {
+
+        $('#spinner').show();
+        var $url = '//' + window.location.host + '/Home/DeleteNcrImage';
+
+
+        $.ajax({
+            type: 'POST',
+            url: $url,
+            data: { 'imageId': imageId, 'ncrId': ncrId },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#ncrImages').html(result);
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+
+    function GetNcrImagesByNcrId(ncrId) {
+
+        $('#spinner').show();
+        var $url = '//' + window.location.host + '/Home/GetNcrImagesByNcrId';
+
+
+        $.ajax({
+            type: 'GET',
+            url: $url,
+            data: { 'ncrId': ncrId },
+            success: function (result) {
+                $('#spinner').hide();
+                $('#ncrImages').html(result);
+            },
+            error: function (error) {
+                $('#spinner').hide();
+                alertify.error(error.statusCode);
+            }
+        });
+    };
+</script>

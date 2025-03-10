@@ -1,0 +1,101 @@
+﻿@model Omnae.Libs.ViewModels.VendorDataViewModel
+@{
+    ViewBag.Title = "UploadVendors";
+}
+
+<style>
+    x::-webkit-file-upload-button, input[type=file]:after {
+        content: 'Browse...';
+        left: 83%;
+    }
+</style>
+
+<div class="offset-md-2 col-md-8 top-margin-30">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center">Invite My Vendors to OMNAE</h5>
+
+        <div class="card-block">
+            <div class="offset-md-1 col-md-10">
+                @*<fieldset class="scheduler-border">
+                        <legend class="scheduler-border">How to upload your vendors to OMNAE system</legend>
+                        <br />
+                        <h5 class="col-md-12 col-md-30">You may choose one of following two options:</h5>
+                        <ol type="1">
+                            <li>
+                                Your company has own database and vendor info have already been stored in your database and if you have more than 20 vendor records to upload then
+                                click this <a href="https://omnaestg.blob.core.windows.net/documents/How%20to%20upload%20Vendors%20to%20OMNA.pdf" target="_blank">link</a>
+                                to find out how to create excel file as input data file. <br /> You may download <a href="https://omnaestg.blob.core.windows.net/documents/invite_vendors_to_omnae.xlsx">Sample Excel Data File</a> for reference.
+                            </li>
+                            <li>
+                                Even you have your vendors stored in database but the number of the vendors less than 20. Or you vendor's info haven't been stored in database, then you can download
+                                <a href="https://omnaestg.blob.core.windows.net/documents/UploadVendors.xlsx">Sample Excel Data File</a> and use it as template to fill in the excel file manually.
+                            </li>
+                        </ol>
+
+                    </fieldset>
+                    <br />
+                    <h4 class="col-md-12 text-md-center">Start to upload your vendor list to OMNAE system</h4>*@
+
+                <div>
+                    @using (Html.BeginForm("UploadVendors", "Home", FormMethod.Post, new
+                    {
+                        id = "uploadVendors",
+                        data_parsley_validate = "",
+                        enctype = "multipart/form-data",
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <label class="top-margin-20 grey-text">Choose an excel data input file (*.xlsx) for inviting <span class="green-text">vendors</span> to OMNAE system <span class="red-text">*</span></label>
+                        <div class="upload-border col-md-12 no-padding">
+                            <input type="file" name="InputVendorsExcel" id="InputVendorsExcel" class="no-padding">
+                        </div>
+
+                        <div class="text-md-center grey-text">
+                            <button type="submit" id="submitButton" class="btn accent-background-color buttonWidth2  top-margin-40">Submit</button>
+                        </div>
+
+                    }
+                    <div class="top-margin-30 grey-text small">
+                        <span class="red-text">*</span> You may download <a href="https://omnaestg.blob.core.windows.net/documents/invite_vendors_to_omnae.xlsx">
+                            Sample Excel Data File
+                        </a> as reference to create input data file.
+                    </div>
+                    <div class="card-block col-md-12">
+                        @if (TempData["Result"] != null)
+                        {
+                            <div class="green-text text-md-center">@TempData["Result"].ToString()</div>
+                        }
+                        else if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#uploadVendors').submit(function (evt) {
+            evt.preventDefault();
+            var fileName = $('#InputVendorsExcel').val();
+            $('#spinner').show();
+
+            if (fileName == '') {
+                alertify.error("Choose an Excel data file ");
+                this.submitButton.disabled = false;
+                $('#spinner').hide();
+                return false;
+            }
+            else {
+                this.submitButton.disabled = true;
+                $('#spinner').show();
+                $('#uploadVendors').unbind('submit').submit();
+                //return true;
+            }
+        })
+    });
+</script>

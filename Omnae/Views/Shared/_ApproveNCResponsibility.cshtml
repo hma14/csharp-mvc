@@ -1,0 +1,39 @@
+﻿@model Omnae.BusinessLayer.Models.StateTransitionViewModel
+
+<div class="top-margin-100">
+    <div class="card-block no-padding">
+
+        @Html.HiddenFor(m => m.ProductId)
+
+        <h4>NCR Approval - Root Cause On Vendor   <a title="NCR Approval: You take responsibility of the root cause."><i class="fa fa-info-circle" aria-hidden="true"></i></a></h4>
+        <div class="top-margin-20 no-padding">
+            @Html.EnumDropDownListFor(model => model.Disposition, "Disposition", new { @class = "btn grey-background-color dropdown-toggle buttonWidth" })
+            @Html.ValidationMessageFor(model => model.Disposition, "", new { @class = "text-danger" })
+        </div>
+
+        <div>
+            @Html.LabelFor(model => model.DetailRootCause, htmlAttributes: new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.DetailRootCause, new { rows = 10, cols = 50, @class = "form-control", placeholder = "Detail Root Cause ..." })
+            @Html.ValidationMessageFor(model => model.DetailRootCause, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.CorrectiveAction, htmlAttributes: new { @class = "control-label" })
+
+            @Html.TextAreaFor(model => model.CorrectiveAction, new { rows = 10, cols = 50, @class = "form-control", placeholder = "Corrective Action ..." })
+            @Html.ValidationMessageFor(model => model.CorrectiveAction, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.ActionTaken, htmlAttributes: new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.ActionTaken, new { rows = 10, cols = 50, @class = "form-control", placeholder = "Action Taken ..." })
+            @Html.ValidationMessageFor(model => model.ActionTaken, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            @Html.LabelFor(model => model.ActionTakenBy, htmlAttributes: new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.ActionTakenBy, new { rows = 2, cols = 50, @class = "form-control", placeholder = "Action By ..." })
+            @Html.ValidationMessageFor(model => model.ActionTakenBy, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+</div>
+
+

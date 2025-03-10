@@ -1,0 +1,29 @@
+﻿<div class="container-fluid top-margin-30 offset-lg-1 col-md-10">
+    <div class="card">
+        <h5 class="card-header primary-background-color white-text text-md-center">Callback</h5>
+        <div class="card-block">
+            @{
+        ViewBag.Title = "Index";
+            }
+            Code: <strong>@ViewBag.Code</strong>
+            <br />
+            State: <strong>@ViewBag.State</strong>
+            <br />
+            RealmId: <strong>@ViewBag.RealmId</strong>
+            <br />
+            Error: <strong>@ViewBag.Error</strong>
+            <br />
+            <br />
+            
+
+            <br />
+            @if (ViewBag.Code != "none")
+    {
+        using (Html.BeginForm())
+        {
+            <input type="submit" value="Get token" />
+}
+}
+        </div>
+    </div>
+</div>

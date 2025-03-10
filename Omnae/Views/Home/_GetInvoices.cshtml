@@ -1,0 +1,256 @@
+﻿@model Omnae.ViewModels.GetInvoicesViewModel
+
+@using Omnae.Common
+
+<style>
+    .dl-horizontal dt {
+        width: 40%;
+        text-align: left;
+        padding: 0px;
+    }
+
+    .dl-horizontal dd {
+        width: 60%;
+        margin-left: 0px !important;
+        text-align: left;
+        padding: 0px;
+        color: green;
+    }
+</style>
+
+
+
+<div class="card-block">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="red-text text-md-center">@TempData["ErrorMessage"].ToString()</div>
+    }
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                Balance
+            </dt>
+            <dd>
+                @string.Format("{0:C}", Model.Balance)
+            </dd>
+            @if (Model.UserType == USER_TYPE.Customer)
+            {
+                <dt>
+                    Work in Progress (WIP)
+                </dt>
+                <dd>
+                    @string.Format("{0:C}", Model.Wip)
+                </dd>
+            }
+            @if (Model.Term != null)
+            {
+                <dt>
+                    Term
+                </dt>
+                <dd>
+                    @Model.Term (days)
+                </dd>
+            }
+        </dl>
+    </div>
+
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            @if (Model.UserType == USER_TYPE.Vendor)
+            {
+                <dt>
+                    Approved Invoice Amount
+                </dt>
+                <dd>
+                    @string.Format("{0:C}", Model.Wip)
+                </dd>
+            }
+            else if (Model.UserType == USER_TYPE.Customer)
+            {
+                <dt>
+                    Credit Limit
+                </dt>
+                <dd>
+                    @string.Format("{0:C}", Model.CreditLimit)
+                </dd>
+                <dt>
+                    Available Credit
+                </dt>
+                <dd>
+                    @if (Model.AvailableCredit < 0)
+                    {
+                        <span class="red-text">@string.Format("{0:C}", Model.AvailableCredit)</span>
+                    }
+                    else
+                    {
+                        <span class="green-text">@string.Format("{0:C}", Model.AvailableCredit)</span>
+                    }
+                </dd>
+            }
+            <dt>Total Open Invoices</dt>
+            <dd>@Model.OpenInvoices.Count</dd>
+            @if (Model.ClosedInvoices != null)
+            {
+                <dt>Total Closed Invoices</dt>
+                <dd>@Model.ClosedInvoices.Count</dd>
+            }
+        </dl>
+    </div>
+</div>
+@if (Model.OpenInvoices != null)
+{
+    <div class="card-block">
+        <div id="list1">
+            <h4 class="text-md-center">Open Invoices</h4>
+            <div class="col-md-12 card-header default-color pull-left white-text status-title">
+                @if (Model.UserType == USER_TYPE.Vendor)
+                {
+                    <span class="col-md-1">Bill #</span>
+                }
+                else
+                {
+                    <span class="col-md-1">Invoice #</span>
+                }
+
+                <span class="col-md-1">Invoice Date</span>
+                <span class="col-md-1">Due Date</span>
+                <span class="col-md-1">Product</span>
+                <span class="col-md-1">Part #</span>
+                <span class="col-md-1">Quantity</span>
+                <span class="col-md-1">Unit Price</span>
+                <span class="col-md-1">Tooling Chgs</span>
+                <span class="col-md-1">Sales Tax</span>
+                <span class="col-md-1">Amount</span>
+                <span class="col-md-1">Actions</span>
+            </div>
+
+            @foreach (var invoice in Model.OpenInvoices)
+            {
+
+                <div class="col-md-12 line small">
+                    <span class="col-md-1">
+                        @if (Model.UserType == USER_TYPE.Vendor)
+                        {
+                            @invoice.BillNumber
+                        }
+                        else
+                        {
+                            @invoice.InvoiceNumber
+                        }
+
+                    </span>
+                    <span class="col-md-1">@invoice.InvoiceDate.ToString("MM/dd/yyyy")</span>
+                    <span class="col-md-1">@invoice.DueDate.ToString("MM/dd/yyyy")</span>
+                    <span class="col-md-1">@invoice.ProductName</span>
+                    <span class="col-md-1">@invoice.PartNumber</span>
+
+                    <div class="green-text">
+                        <span class="col-md-1">@invoice.Quantity</span>
+                        <span class="col-md-1">@string.Format("{0:F3}", invoice.UnitPrice)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.ToolingSetupCharges)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.SalesTax)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.Amount)</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="col-md-6">
+                            @Ajax.ActionLink("View", "InvoiceDetail", "Home", new { @Id = @invoice.Id },
+                                                new AjaxOptions
+                                                {
+                                                    UpdateTargetId = "invoiceDetails",
+                                                    HttpMethod = "GET",
+                                                    InsertionMode = InsertionMode.Replace,
+                                                    OnBegin = "$('#spinner').show();",
+                                                    OnSuccess = "$('#spinner').hide();"
+                                                })
+                        </span>
+                        <span class="col-md-6">
+                            @Html.ActionLink("Print", "ExportInvoiceToPdf", "Home", new { @id = @invoice.Id, @companyId = @invoice.CompanyId }, null)
+                        </span>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}
+@if (Model.ClosedInvoices != null)
+{
+    <div class="card-block">
+        <div id="list2">
+            <h4 class="text-md-center">Closed Invoices</h4>
+            <div class="col-md-12 card-header default-color pull-left white-text status-title">
+                @if (Model.UserType == USER_TYPE.Vendor)
+                {
+                    <span class="col-md-1">Bill #</span>
+                }
+                else
+                {
+                    <span class="col-md-1">Invoice #</span>
+                }
+                <span class="col-md-1">Invoice Date</span>
+                <span class="col-md-1">Due Date</span>
+                <span class="col-md-1">Product</span>
+                <span class="col-md-1">Part #</span>
+                <span class="col-md-1">Quantity</span>
+                <span class="col-md-1">Unit Price</span>
+                <span class="col-md-1">Tooling Chgs</span>
+                <span class="col-md-1">Sales Tax</span>
+                <span class="col-md-1">Amount</span>
+                <span class="col-md-1">Actions</span>
+
+
+            </div>
+
+            @foreach (var invoice in Model.ClosedInvoices)
+            {
+
+                <div class="col-md-12 line small">
+                    <span class="col-md-1">
+                        @if (Model.UserType == USER_TYPE.Vendor)
+                        {
+                            @invoice.BillNumber
+                        }
+                        else
+                        {
+                            @invoice.InvoiceNumber
+                        }
+                    </span>
+                    <span class="col-md-1">@invoice.InvoiceDate.ToString("MM/dd/yyyy")</span>
+                    <span class="col-md-1">@invoice.DueDate.ToString("MM/dd/yyyy")</span>
+                    <span class="col-md-1">@invoice.ProductName</span>
+                    <span class="col-md-1">@invoice.PartNumber</span>
+
+                    <div class="green-text">
+                        <span class="col-md-1">@invoice.Quantity</span>
+                        <span class="col-md-1">@string.Format("{0:F3}", invoice.UnitPrice)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.ToolingSetupCharges)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.SalesTax)</span>
+                        <span class="col-md-1">@string.Format("{0:C}", invoice.Amount)</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="col-md-6">
+                            @Ajax.ActionLink("View", "InvoiceDetail", "Home", new { @Id = @invoice.Id },
+                                                      new AjaxOptions
+                                                      {
+                                                          UpdateTargetId = "invoiceDetails",
+                                                          HttpMethod = "GET",
+                                                          InsertionMode = InsertionMode.Replace,
+                                                          OnBegin = "$('#spinner').show();",
+                                                          OnSuccess = "$('#spinner').hide();"
+                                                      })
+                        </span>
+                        <span class="col-md-6">
+                            @Html.ActionLink("Print", "ExportInvoiceToPdf", "Home", new { @id = @invoice.Id, @companyId = @invoice.CompanyId }, null)
+                        </span>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+}
+<div class="card-block">
+    <div class="top-margin-20" id="invoiceDetails"></div>
+</div>
+
+

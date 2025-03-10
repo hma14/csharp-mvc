@@ -1,0 +1,13 @@
+﻿
+Hi @Model.UserName,
+
+Part Number: @Model.PartNumber
+Quantity: @Model.Quantity
+Price Paid: $@Model.Price
+Order Status: @Model.OrderStatus
+Purchase Order: @Model.PurchaseOrder.DocUri
+Purchase Order #: @Model.PONumber
+
+Best regards,
+    
+Omnae Team

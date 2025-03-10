@@ -1,0 +1,86 @@
+﻿@model Omnae.ViewModels.UpdateRFQViewModel
+
+@{
+    ViewBag.Title = "UpdateProduct";
+}
+
+<div class="row top grey-text">
+    <div class="offset-md-2 col-md-8">
+        <div class="card-block">
+            <div class="text-xs-center">
+                <h3><i class="fa fa-pencil-square-o fa-2x"></i> Update RFQ</h3>
+            </div>
+            <br />
+
+            @using (Html.BeginForm("UpdateProduct", "Products", FormMethod.Post, new
+            {
+                id = "uploadform",
+                data_parsley_validate = "",
+                enctype = "multipart/form-data"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.SampleLeadTime, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.SampleLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SampleLeadTime, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.ProductionLeadTime, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ProductionLeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProductionLeadTime, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.ToolingSetupCharges, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ToolingSetupCharges, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ToolingSetupCharges, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="md-form">
+                    @Html.LabelFor(model => model.HarmonizedCode, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.HarmonizedCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HarmonizedCode, "", new { @class = "text-danger" })
+                </div>
+
+                if (Model.QuoteDoc == null)
+                {
+                    <div class="md-form file-field row">
+                        <div class="btn grey-background-color col-xs-4">
+                            <span class="fileupload">Browse</span>
+                            <input type="file" name="uploadedFile" multiple>
+                        </div>
+                        <div class="col-xs-7 file-path-wrapper">
+                            <input class="file-path validate small text-xs-center" type="text" placeholder="Upload Official Quote Doc" disabled>
+                        </div>
+
+                        @if ( TempData["AzureException"] != null)
+                        {
+                            <p class="red-text"> @TempData["AzureException"]</p>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="md-form">
+                        <a href="@Model.QuoteDoc.DocUri">@Model.QuoteDoc.Name</a>
+                        <a class="del pull-xs-right" href="@Url.Action("Delete", "Documents",new { @id = Model.QuoteDoc.Id, @actionName = "UpdateProduct", @controllerName = "Products" })"><i class="fa fa-trash"></i></a>
+                    </div>
+                }
+
+                <div class="md-form text-xs-center top-margin-50">
+                    <button type="submit" id="submit" class="btn accent-background-color buttonWidth">Update</button>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

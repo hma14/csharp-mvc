@@ -1,0 +1,151 @@
+﻿@model Omnae.BusinessLayer.Models.ChartTypeViewModel
+
+
+@Html.Hidden("ChartType", Model.ChartType)
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-block text-md-center">
+            @if (Model.DicFilter != null && Model.DicFilter.FirstOrDefault().Key != "NoFilter" && Model.DicFilter.Count()> 0)
+            {
+
+            <label>
+                Conformance Statistics (<span class="text-info"><i>Filtered by:</i></span>
+                @foreach (var dic in  @Model.DicFilter)
+                {
+                    <span class="text-warning">@dic.Key = <i>@dic.Value</i></span>
+                })
+            </label>
+            }
+            else
+            {
+                <label>Conformance Statistics</label>
+            }
+            <canvas id="QualityChart@(Model.Index)" width="1000" height="200"></canvas>
+        </div>
+        <div class="card-block">
+            <div class="text-md-center">
+                <div class="row card-header unique-color text-md-center status-title white-text">
+                    <span class="col-md-2">Conformance Rate<span class="red-text"> *</span></span>
+                    <span class="col-md-2">NCRs/Orders</span>
+                    <span class="col-md-2">NCRs Caused by Customer</span>
+                    <span class="col-md-2">NCRs Caused by Vendor</span>
+                    <span class="col-md-2">Total Order Qty </span>
+                    <span class="col-md-2">Completed Orders</span>
+                </div>
+
+                <div class="row line text-md-center green-text">
+                    <span class="col-md-2">@string.Format("{0:0.00%}", Model.ConformanceRate) </span>
+                    <span class="col-md-2">@string.Format("{0:0.00%}", Model.PctgNCRsOrders)</span>
+                    <span class="col-md-2">@string.Format("{0:0.00%}", Model.PctgCustomerNCRsQuantities)</span>
+                    <span class="col-md-2">@string.Format("{0:0.00%}", Model.PctgVendorNCRsQuantities)</span>
+                    <span class="col-md-2">@Model.TotalOrderQty.ToString("#,##")</span>
+                    <span class="col-md-2">@Model.TotalOrders</span>
+                </div>
+            </div>
+            <div class="top-margin-20 grey-text"><span class="red-text">* </span>The percentage of total amount of products meets the requirements or specified standards.</div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/Common.js"></script>
+<script type="text/javascript">
+
+    var $url = '//' + window.location.host + '/Home/';
+    if ($('#ChartType').val() == 'BarChart') {
+        $url += "MultiBarChartData";
+    }
+    else if ($('#ChartType').val() == 'LineChart') {
+        $url += "MultiLineChartData";
+    }
+    else {
+        $url += "MultiPieChartData";
+    }
+
+    var chart = document.getElementById("QualityChart@(Model.Index)");
+
+
+    var dateRangeArray = @Html.Raw(Json.Encode(@Model.chartData.DateRange));
+    var totalQuantityArray = @Html.Raw(Json.Encode(@Model.chartData.TotalQuantity));
+    var totalCustomerNcrsArray = @Html.Raw(Json.Encode(@Model.chartData.TotalCustomerNcrs));
+    var totalVendorNcrsArray = @Html.Raw(Json.Encode(@Model.chartData.TotalVendorNcrs));
+
+    var ctx;
+    var tData;
+    if (chart !== null) {
+        ctx = chart.getContext("2d");
+
+        $.ajax({
+            url: $url,
+            type: 'POST',
+            data: { 'DateRange': dateRangeArray, 'TotalQuantity': totalQuantityArray, 'TotalCustomerNcrs': totalCustomerNcrsArray, 'TotalVendorNcrs': totalVendorNcrsArray },
+            async: false,
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                tData = data;
+            },
+            error: function (e) {
+                alert('Something wrong')
+            }
+        })
+    }
+
+    if ($('#ChartType').val() == 'BarChart') {
+
+        //-----Multi Bar Chart --------------
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: tData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+    else if ($('#ChartType').val() == 'LineChart') {
+
+        //----Multi Line Chart---------
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: tData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                responsive: true,
+
+                //bezierCurve: true,
+                //scaleShowLabels: true,
+                //scaleFontSize: 0,
+                //pointDot: true,
+                //scaleBeginAtZero: true,
+                //scaleShowHorizontalLines: true,
+                //scaleShowVerticalLines: true,
+                //scaleGridLineColor: "rgba(232,232,232)",
+                //showTooltips: true,
+            },
+        });
+    }
+    else {
+
+        //----Multi Pie Chart---------
+        var myPieChart = new Chart(ctx, {
+            //type: 'doughnut',
+            type: 'pie',
+            data: tData,
+            options: {
+                responsive: true
+            },
+        });
+    }
+</script>

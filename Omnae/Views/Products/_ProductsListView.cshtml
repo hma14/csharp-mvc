@@ -1,0 +1,139 @@
+﻿@model Omnae.BusinessLayer.Models.TaskViewModel
+
+@{
+    var td = Model.TaskData;
+    var stateIconMapping = Utils.ConstructStateIconMapping();
+    Order order = Model.Order;
+}
+
+<div class="col-md-12 line">
+    <span class="col-md-1"><img src="@td.Product.AvatarUri" height="45" /></span>
+    <section class="col-md-1">
+        <span class="col-md-12">
+            @td.Product.Name
+            @if (td.IsRiskBuild == true)
+            {
+                <span class="pink-text bold">*</span>
+            }
+        </span>
+        <span class="col-md-12">@td.Product.PartNumber</span>
+    </section>
+
+    <span class="col-md-1">@td.CreatedUtc.ToString("yyyy/MM/dd")</span>
+    @if (@td.StateId == (int)States.ProductionComplete)
+    {
+        <span class="col-md-2">
+            <i class="fas fa-check-square fa-1x"></i>Proof
+            <i class="fas fa-check-square fa-1x"></i>Sample
+            <i class="fas fa-check-square fa-1x"></i>Production
+        </span>
+        if (@td.Product.PriceBreak != null)
+        {
+            <span class="col-md-1">@($"{@td.Product.PriceBreak.UnitPrice:C}")</span>
+        }
+        else
+        {
+            <span class="col-md-1"></span>
+        }
+        if (order != null)
+        {
+            <span class="col-md-1">@order.Quantity</span>
+        }
+        else
+        {
+            <span class="col-md-1"></span>
+        }
+    }
+    else
+    {
+        if (td.StateId < (int)States.OrderPaid)
+        {
+            <span class="col-md-2">
+                <i class="far fa-square fa-1x"></i>Proof
+                <i class="far fa-square fa-1x"></i>Sample
+                <i class="far fa-square fa-1x"></i>Production
+            </span>
+            <span class="col-md-1"></span>
+            <span class="col-md-1"></span>
+        }
+        else
+        {
+            if (td.StateId < (int)States.ProofApproved)
+            {
+                <span class="col-md-2">
+                    <i class="far fa-square fa-1x"></i>Proof
+                    <i class="far fa-square fa-1x"></i>Sample
+                    <i class="far fa-square fa-1x"></i>Production
+                </span>
+            }
+            else if (td.StateId == (int)States.ProofApproved)
+            {
+                <span class="col-md-2">
+                    <i class="fas fa-check-square fa-1x"></i>Proof
+                    <i class="far fa-square fa-1x"></i>Sample
+                    <i class="far fa-square fa-1x"></i>Production
+                </span>
+            }
+            else if (td.StateId >= (int)States.SampleApproved)
+            {
+                <span class="col-md-2">
+                    <i class="fas fa-check-square fa-1x"></i>Proof
+                    <i class="fas fa-check-square fa-1x"></i>Sample
+                    <i class="far fa-square fa-1x"></i>Production
+                </span>
+            }
+            if (@td.Product.PriceBreak != null)
+            {
+                <span class="col-md-1">@($"{@td.Product.PriceBreak.UnitPrice:C}")</span>
+            }
+            else
+            {
+                <span class="col-md-1"></span>
+            }
+            if (order != null)
+            {
+                <span class="col-md-1">@order.Quantity</span>
+            }
+            else
+            {
+                <span class="col-md-1"></span>
+            }
+        }
+    }
+
+    @if (@td.StateId >= (int)States.QuoteAccepted && @td.StateId < (int)States.ReOrderPaid)
+    {
+        <a class="col-md-1" href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+    }
+    else if (@td.StateId >= (int)States.ProductionStarted || @td.StateId == (int)States.ReOrderPaid)
+    {
+        <a class="col-md-1" href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+    }
+    else
+    {
+        <span class="col-md-1"></span>
+    }
+    <span class="col-md-2">
+        @Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), @td.StateId))
+    </span>
+    <div class="col-md-2">
+
+        <span class="col-md-8 green-text">
+            @Html.Raw(@Utils.GetStateIconUrl(@stateIconMapping, (States)@td.StateId))
+        </span>
+        @Html.AntiForgeryToken()
+        @if (@td.isTagged == true)
+        {
+            <a class="col-md-4 green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+        }
+        else
+        {
+            <a class="col-md-4" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+        }
+
+    </div>
+
+    @Html.Partial("_ModalActionView_List", Model)
+</div>
+
+

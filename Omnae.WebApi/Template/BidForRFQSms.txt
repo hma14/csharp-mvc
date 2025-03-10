@@ -1,0 +1,4 @@
+﻿
+Hi @Model.UserName
+
+The bid for @Model.PartNumber, @Model.Description from Omnae.com is ready.

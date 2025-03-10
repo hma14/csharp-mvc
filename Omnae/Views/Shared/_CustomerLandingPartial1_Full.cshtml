@@ -1,0 +1,238 @@
+﻿@model IEnumerable<Omnae.BusinessLayer.Models.TaskViewModel>
+@using Omnae.Common
+@using Omnae.Controllers
+@using Omnae.Model.Models
+
+<style>
+
+    #list1, .gridview1 {
+        display: none;
+    }
+
+    .my-tag {
+        margin-right: 10px !important;
+        margin-top: 5px !important;
+        float: right;
+    }
+</style>
+
+<div class="card-block">
+    <div class="col-lg-12">
+        <h4 class="col-md-11">Newly Updated</h4>
+
+        <span class="col-md-1  small-button pull-right">
+
+            <a href="#" class="switcher small-button listview1 green-text"><i class="fas fa-list-ul fa-2x"></i></a>
+            <a href="#" class="switcher active small-button gridview1 pink-text"><i class="fas fa-th fa-2x"></i></a>
+        </span>
+        <br />
+        <hr class="gradient" />
+    </div>
+
+    <div id="grid1" class="card-block">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var tdvm in @Model)
+            {
+                var td = tdvm.TaskData;
+                var order = tdvm?.Order;
+                <div class="col-md-4">
+                    <div class="card">
+
+                        <!--Card Header-->
+
+                        @Html.Partial("_CardHeader", td)
+
+                        <div class="wrapper">
+                            <div class="card-image card-image-min-height">
+
+                                <!--Card image-->
+
+                                @Html.Partial("_CardImage", td)
+
+                            </div>
+
+                            <div class="card-block my-card-text card-image-min-height">
+
+                                <!--Card text-->
+                                <dl class="productInfo dl-horizontal">
+                                    <dt>
+                                        State
+                                    </dt>
+                                    <dd class="green-text font-weight-bold">
+                                        @Omnae.Common.Extensions.StringExtensions.SplitCamelCase(@Enum.GetName(typeof(States), @td.StateId))
+                                    </dd>
+                                    @if (@td.Product.ParentPartRevisionId == null)
+                                    {
+                                        <dt>Part Revision:</dt>
+                                        <dd>@td.Product.PartNumberRevision</dd>
+                                    }
+                                    else
+                                    {
+                                        <dt>Part Revision:</dt>
+                                        <dd class="green-text">@td.Product.PartNumberRevision (from: @td.Product.ParentPartNumberRevision)</dd>
+                                    }
+                                    @Html.Partial("_NextStates", @tdvm)
+                                    @if (@td.StateId == (int)States.BackFromRFQ && @td.RevisingReason != null)
+                                    {
+                                        <dt>Revising Reason:</dt>
+                                        <dd>
+                                            @td.RevisingReason
+                                        </dd>
+                                    }
+
+                                    @if (order != null)
+                                    {
+                                        <dt>Order Date</dt>
+                                        <dd>@order.OrderDate.ToString("yyyy-MM-dd")</dd>
+
+                                        <dt>
+                                            Order Qty
+                                        </dt>
+                                        <dd>
+                                            @order.Quantity
+                                        </dd>
+                                        if (@order.DesireShippingDate != null)
+                                        {
+                                            <dt>Desired Delivery Date</dt>
+                                            <dd>@order.DesireShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                        }
+                                        if (@order.EarliestShippingDate != null)
+                                        {
+                                            <dt>Earliest Ship Date</dt>
+                                            <dd>@order.EarliestShippingDate.Value.ToString("yyyy-MM-dd")</dd>
+                                        }
+                                        if (order.EstimateCompletionDate != null)
+                                        {
+                                            <dt>
+                                                Est. Completion Date
+                                            </dt>
+                                            <dd>
+                                                @order.EstimateCompletionDate.Value.ToString("yyyy-MM-dd")
+                                            </dd>
+                                        }
+                                        if (order.CustomerPONumber != null)
+                                        {
+                                            <dt>
+                                                PO #
+                                            </dt>
+                                            <dd class="green-text">
+                                                @order.CustomerPONumber
+                                            </dd>
+                                        }
+                                    }
+                                </dl>
+
+                                @if (@td.StateId == (int)States.BackFromRFQ ||
+                                        //@td.StateId == (int)States.OrderInitiated ||
+                                        //@td.StateId == (int)States.ReOrderInitiated ||
+                                        @td.StateId == (int)States.ProofingComplete ||
+                                        @td.StateId == (int)States.SampleComplete ||
+                                        @td.StateId == (int)States.NCRCustomerApproval ||
+                                        @td.StateId == (int)States.NCRCustomerCorrectivePartsReceived ||
+                                        @td.StateId == (int)States.NCRRootCauseDisputes ||
+                                        @td.StateId == (int)States.NCRVendorCorrectivePartsComplete ||
+                                        @td.StateId == (int)States.NCRCustomerRevisionNeeded)
+                                {
+                                    <button type="button" class="btn accent-background-color btn-small pull-right btn-in-card" onclick="ShowModalView(@td.TaskId);" data-toggle="modal" data-target="@string.Format("#Modal{0}", @td.TaskId)">
+                                        Action Needed
+                                    </button>
+                                }
+                                else if (@td.StateId == (int)States.OrderInitiated || @td.StateId == (int)States.ReOrderInitiated)
+                                {
+                                    <button type="button" class="btn accent-background-color btn-small pull-right btn-in-card" onclick="ShowModalView(@td.TaskId);" data-toggle="modal" data-target="@string.Format("#Modal{0}", @td.TaskId)">
+                                        Apply Payment
+                                    </button>
+                                }
+                                else if (@td.StateId == (int)States.QuoteAccepted)
+                                {
+                                    <a class="btn accent-background-color btn-small pull-right btn-in-card" href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a>
+                                }
+                                else if (@td.StateId == (int)States.ProductionComplete || @td.StateId == (int)States.NCRClosed)
+                                {
+                                    <a class="btn accent-background-color btn-small pull-right btn-in-card" href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="modal" id="@string.Format("Modal{0}", td.TaskId)" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+
+                        <div class="card-data primary-background-color">
+                            @*<span data-id1="@td.ProductId" class="col-xs-12 pull-left font-weight-bold part-number">@td.Product.PartNumber.ToString().PadLeft(8, '0')</span>*@
+
+                            @if (@td.StateId == (int)States.BackFromRFQ ||
+                                        @td.StateId == (int)States.OrderInitiated ||
+                                        @td.StateId == (int)States.ReOrderInitiated ||
+                                        @td.StateId == (int)States.ProofingComplete ||
+                                        @td.StateId == (int)States.SampleComplete ||
+                                        @td.StateId == (int)States.QuoteAccepted ||
+                                        @td.StateId == (int)States.NCRCustomerApproval ||
+                                        @td.StateId == (int)States.NCRCustomerCorrectivePartsReceived ||
+                                        @td.StateId == (int)States.NCRRootCauseDisputes ||
+                                        @td.StateId == (int)States.NCRVendorCorrectivePartsComplete ||
+                                        @td.StateId == (int)States.NCRCustomerRevisionNeeded)
+                            {
+                                <spin class="col-md-1 red-text action-flag padding-off">
+                                    <i class="fas fa-flag" title="You have new action event to handle for this part!"></i>
+                                </spin>
+                            }
+                            else
+                            {
+                                <a class="col-md-1 padding-off">
+                                    <i class="fas fa-flag" title="You have no new action for this part!"></i>
+                                </a>
+                            }
+                            @if (td.StateId == (int)States.QuoteAccepted)
+                            {
+                                <span class="col-md-4 padding-off"><a href="~/Products/PlaceOrder/@td.TaskId">PLACE ORDER</a></span>
+                            }
+                            else if (@td.StateId == (int)States.ProductionComplete || @td.StateId == (int)States.NCRClosed)
+                            {
+                                <span class="col-md-4 padding-off">
+                                    <a href="~/Products/ReOrder/@td.TaskId">RE-ORDER</a>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="col-md-4 padding-off"></span>
+                            }
+                            @if (td.StateId >= (int)States.OrderPaid && td.StateId < (int)States.BidForRFQ)
+                            {
+                                <span class="col-md-5 padding-off"><a href="@Url.Action("OrderDetails", "Orders", new { @id = @td.TaskId })">ORDER DETAILS</a></span>
+                            }
+                            else
+                            {
+                                <span class="col-md-5 padding-off"><a href="@Url.Action("Details", "Orders", new { @id = @td.TaskId })">DETAILS</a></span>
+                            }
+                            @Html.AntiForgeryToken()
+                            @if (@td.isTagged == true)
+                            {
+                                <a class="my-tag green-text" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                            }
+                            else
+                            {
+                                <a class="my-tag" data-id1="@td.TaskId"><i class="fas fa-tag"></i></a>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+
+    <div id="list1" class="card-block">
+        <div class="col-md-12">
+            @Html.Partial("_DashboardRowColumnNames")
+            @if (Model != null && Model.Any())
+            {
+                foreach (var td in @Model)
+                {
+                @Html.Partial("_CustomerLandingListView", @td)
+                }
+            }
+        </div>
+    </div>
+</div>
