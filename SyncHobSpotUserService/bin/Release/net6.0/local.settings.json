@@ -1,0 +1,72 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=omnaestg;AccountKey=U6K4JVX5bB0EL0Er6qU23V/2fphOp6ckbATB7zev9RyX/E7EmZ+YDD8zRjN8k/tzEHDpAwdR06K3w0YBgdgZnA==;EndpointSuffix=core.windows.net",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=omnaestg;AccountKey=U6K4JVX5bB0EL0Er6qU23V/2fphOp6ckbATB7zev9RyX/E7EmZ+YDD8zRjN8k/tzEHDpAwdR06K3w0YBgdgZnA==;EndpointSuffix=core.windows.net",
+
+    //////////////////////////////////////////////////////////////////////
+
+    ////Demo
+    //"auth0_base": "https://omnae-demo.auth0.com/oauth/token",
+    //"auth0_domain": "https://omnae-demo.auth0.com/api/v2/",
+    //"auth0_client_id": "uvx9cNzBlJHN4B5IQo24rtRp866KlSQk",
+    //"auth0_client_secret": "0vgkJYgSFFsOX-MUdLfcMeykRHoJs4_kjfXbFezBpIAGTQjKWod1LxRVUcdWJlpe",
+
+    //"hubspot_APIKEY": "008e6ef2-a82c-4771-bdbb-c7f54869fae8", // (on TestImport - testImport-dev-6543729.com - 6543729)
+
+    //Email
+    //"Mailgun.Domain": "sandboxf0f73f0f8ce94ec49e0e2e1f55bc4d7f.mailgun.org",
+    //"Mailgun.APIKEY": "ac9b6819825bf320eb3e8ae3bb4e5c57-28d78af2-8b8b478b",
+    //"SendToEmails": "rafael@omnae.com",
+
+    //"OmnaeDbContext": "Data Source=tcp:omnaedemo-srv.database.windows.net,1433;Initial Catalog=OmnaeDbDemo; User ID=hma14@omnaedemo-srv.database.windows.net; Password=aoxDTSzdhYprYxTDdRfeL2YGdFvkkkPmoTZOoPfwdbvplwSkZCqjVUQcDvq5GtZC; MultipleActiveResultSets=true;",
+
+    //"SendToEmails": "rafael@omnae.com"
+
+    //////////////////////////////////////////////////////////////////////
+
+    //Staging
+
+    "auth0_base": "https://omnae-staging.auth0.com/oauth/token",
+    "auth0_domain": "https://omnae-staging.auth0.com/api/v2/",
+    "auth0_client_id": "pt79aesG0jZU4MDTZ6UlqBidj1Tk1ytn",
+    "auth0_client_secret": "Vi0_c9HO9cvQNwDJaX2hoC7rh-yo_1ddcSpKYsKTcx0XCDzJ4FrT1xpth-MGBrje",
+
+    "hubspot_APIKEY": "008e6ef2-a82c-4771-bdbb-c7f54869fae8", // (on TestImport - testImport-dev-6543729.com - 6543729)
+    "hubspot_baseurl": "https://api.hubapi.com",
+    "hubspot_access_token": "pat-na1-b6b8ff61-d2db-4d7f-9028-8cb0cc2a70e7",
+
+    //Email
+    "Mailgun.Domain": "sandboxf0f73f0f8ce94ec49e0e2e1f55bc4d7f.mailgun.org",
+    "Mailgun.APIKEY": "ac9b6819825bf320eb3e8ae3bb4e5c57-28d78af2-8b8b478b",
+    "SendToEmails": "hma@omnae.com",
+
+    "OmnaeDbContext": "Data Source=tcp:omnaestg.database.windows.net,1433;Initial Catalog=OmnaeDbStg; User Id=hma14@omnaestg.database.windows.net;Password=Bilibalabon12345; MultipleActiveResultSets=true;",
+
+
+    //////////////////////////////////////////////////////////////////////
+
+    "Enable_Auth0_Sync": true
+
+    //Production
+
+    //"auth0_base": "https://omnae-production.auth0.com/oauth/token",
+    //"auth0_domain": "https://omnae-production.auth0.com/api/v2/",
+    //"auth0_client_id": "CYzhZbfffnohoGItXG8yGRMKualdK00E",
+    //"auth0_client_secret": "XKwDqKNvgImnFkHuNvKBDUF7VCcAWZhMJ9NIurSQ6fkkPAUYA02_2JdPpVvnQrI6",
+
+    //"hubspot_APIKEY": "6c1352ad-0192-4af2-b694-ed66ba2e4f02",
+    //"hubspot_baseurl": "https://api.hubapi.com",
+    //"hubspot_access_token": "pat-na1-b6b8ff61-d2db-4d7f-9028-8cb0cc2a70e7",
+
+    ////Email
+    //"Mailgun.Domain": "sandboxf0f73f0f8ce94ec49e0e2e1f55bc4d7f.mailgun.org",
+    //"Mailgun.APIKEY": "ac9b6819825bf320eb3e8ae3bb4e5c57-28d78af2-8b8b478b",
+    //"SendToEmails": "hma@omnae.com",
+    ////"ACCOUNTING_EMAIL": "hma@omnae.com",
+    //"FROM_EMAIL": "info@omnae.com",
+
+    //Database
+    //"OmnaeDbContext": "Data Source=tcp:omnae-scus.database.windows.net,1433;Initial Catalog=OmnaeDb;User ID=OmnaeAspNetAppUser@omnae-scus.database.windows.net;Password=dY2gFx4Lnn0k_mBlmmI0kFOccWUgGR2Q;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+}

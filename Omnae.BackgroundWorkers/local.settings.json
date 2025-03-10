@@ -1,0 +1,32 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=omnae;AccountKey=6J2h97SKjIF9retOC/bAuYBsYFmiHLCONAwWODk85Mp/mU3gMmhoBSviRHmxAviuGDG6gAiFsXURds+uqzjynQ==",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=omnae;AccountKey=6J2h97SKjIF9retOC/bAuYBsYFmiHLCONAwWODk85Mp/mU3gMmhoBSviRHmxAviuGDG6gAiFsXURds+uqzjynQ==",
+    "Enable_Auth0_Sync": "true",
+    "auth0_base": "https://omnae-production.auth0.com/oauth/token",
+    "auth0_domain": "https://omnae-production.auth0.com/api/v2/",
+    "auth0_client_id": "CYzhZbfffnohoGItXG8yGRMKualdK00E",
+    "auth0_client_secret": "XKwDqKNvgImnFkHuNvKBDUF7VCcAWZhMJ9NIurSQ6fkkPAUYA02_2JdPpVvnQrI6",
+    "hubspot_APIKEY": "6c1352ad-0192-4af2-b694-ed66ba2e4f02",
+    "hubspot_baseurl": "https://api.hubapi.com",
+    "Mailgun.Domain": "omnae.com",
+    "Mailgun.APIKEY": "8c8b7d5469c694811829b2dde52b9d87-a0cfb957-c5bef5d2",
+    "SendToEmails": "hma@omnae.com",
+    "FROM_EMAIL": "info@omnae.com",
+    "OmnaeDbContext": "Data Source=tcp:omnae-scus.database.windows.net,1433;Initial Catalog=OmnaeDb;User ID=OmnaeAspNetAppUser@omnae-scus.database.windows.net;Password=dY2gFx4Lnn0k_mBlmmI0kFOccWUgGR2Q;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "ACCOUNTING_EMAIL": "accounting@omnae.com",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "79268cfd-0e5d-4ba5-92e4-990cc4bf2f07",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=79268cfd-0e5d-4ba5-92e4-990cc4bf2f07",
+    "AzureWebJobs.AuthZeroSync.Disabled": "1",
+    "FUNCTIONS_EXTENSION_VERSION": "~1",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "hubspot_access_token": "pat-na1-b6b8ff61-d2db-4d7f-9028-8cb0cc2a70e7",
+    "OnBoarding.HubspotIntegration": "true",
+    "SendGrid_APIKEY": "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",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=backgroundworkersstorage;AccountKey=Y9OMr1qH5xPpstMG/DmV/kTqh4Tk1GndPSOxepNN2dCSvh16f1eMPIdNiSdNWyoGKEG6BJhgTVKQcMOV5LO9AQ==;EndpointSuffix=core.windows.net",
+    "WEBSITE_CONTENTSHARE": "omnae-backgroundworkers",
+    "WEBSITE_RUN_FROM_PACKAGE": "1"
+  },
+  "ConnectionStrings": {}
+}

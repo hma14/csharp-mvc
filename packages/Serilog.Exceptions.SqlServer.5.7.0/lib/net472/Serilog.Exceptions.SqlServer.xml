@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Serilog.Exceptions.SqlServer</name>
+    </assembly>
+    <members>
+        <member name="T:Serilog.Exceptions.SqlServer.Destructurers.SqlExceptionDestructurer">
+            <summary>
+            A destructurer for <see cref="T:System.Data.SqlClient.SqlException"/>.
+            </summary>
+            <seealso cref="T:Serilog.Exceptions.Destructurers.ExceptionDestructurer" />
+        </member>
+        <member name="P:Serilog.Exceptions.SqlServer.Destructurers.SqlExceptionDestructurer.TargetTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Serilog.Exceptions.SqlServer.Destructurers.SqlExceptionDestructurer.Destructure(System.Exception,Serilog.Exceptions.Core.IExceptionPropertiesBag,System.Func{System.Exception,System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}})">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

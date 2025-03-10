@@ -1,0 +1,10 @@
+H:\programs\omnae\omnae-stg\Common\bin\Release\Common.dll.config
+H:\programs\omnae\omnae-stg\Common\bin\Release\Common.dll
+H:\programs\omnae\omnae-stg\Common\bin\Release\Common.pdb
+H:\programs\omnae\omnae-stg\Common\bin\Release\stateless.dll
+H:\programs\omnae\omnae-stg\Common\bin\Release\stateless.xml
+H:\programs\omnae\omnae-stg\Common\obj\Release\Omnae.Common.csproj.AssemblyReference.cache
+H:\programs\omnae\omnae-stg\Common\obj\Release\Omnae.Common.csproj.CoreCompileInputs.cache
+H:\programs\omnae\omnae-stg\Common\obj\Release\Omnae.Common.csproj.CopyComplete
+H:\programs\omnae\omnae-stg\Common\obj\Release\Common.dll
+H:\programs\omnae\omnae-stg\Common\obj\Release\Common.pdb

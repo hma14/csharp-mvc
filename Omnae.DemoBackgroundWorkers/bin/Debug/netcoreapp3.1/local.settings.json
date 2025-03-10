@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=omnaedemo;AccountKey=VmaguMwKtxqKeWO4qMU/VTiftqVPRMSN/4drT3wr8rcf9pDNWT+7jzaOvN+xirR1GkASCZwkEUVb8anft0rHzQ==;EndpointSuffix=core.windows.net",
+    //"AzureWebJobsStorage": "UseDevelopmentStorage=true",
+
+    //Email
+    "Mailgun.Domain": "sandboxf0f73f0f8ce94ec49e0e2e1f55bc4d7f.mailgun.org",
+    "Mailgun.APIKEY": "ac9b6819825bf320eb3e8ae3bb4e5c57-28d78af2-8b8b478b",
+    "SendToEmails": "hma@omnae.com"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "generatedBy": "Microsoft.NET.Sdk.Functions.Generator-4.3.0",
+  "configurationSource": "attributes",
+  "bindings": [
+    {
+      "type": "queueTrigger",
+      "connection": "AzureWebJobsStorage",
+      "queueName": "demo-restore-db",
+      "name": "myQueueItem"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../bin/Omnae.DemoBackgroundWorkers.dll",
+  "entryPoint": "Omnae.DemoBackgroundWorkers.RestoreDemoDatabase.Run"
+}

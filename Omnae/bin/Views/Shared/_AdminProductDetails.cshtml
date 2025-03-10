@@ -1,0 +1,211 @@
+﻿@using Omnae.BusinessLayer.Models
+@using Stateless
+@using StringExtensions = Omnae.Common.Extensions.StringExtensions
+
+@model Omnae.ViewModels.TaskDataModalViewModel
+
+
+@if (Model.TaskVM.TaskData.Product != null)
+{
+    var tdvm = Model.TaskVM;
+    var td = tdvm.TaskData;
+
+    //TODO: Remove the stateMachine from the View.
+    StateMachine<States, Triggers> stTransition = new StateMachine<States, Triggers>((States)td.StateId);
+    Utils.RegisterStates_Reseller(stTransition, tdvm.MyFunc);
+    Order order = tdvm.Order;
+    USER_TYPE userType = tdvm.UserType;
+
+    <style>
+        .dl-horizontal dt {
+            width: 50%;
+            text-align: left;
+            padding: 0px;
+            /*min-height: 60px;*/
+        }
+
+        .dl-horizontal dd {
+            margin-left: 0px !important;
+            text-align: left;
+            padding: 0px;
+            font-size: 0.8em;
+            word-break: break-all;
+        }
+
+        .my-min-height {
+            min-height: 60px;
+        }
+    </style>
+
+    <div class="modal-body card-block">
+
+        <div class="col-md-12">
+            <div class="card-block">
+                <h4 class="col-md-12 pink-text">Product Details</h4>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                State
+                            </dt>
+                            <dd class="green-text font-weight-bold">
+                                @tdvm.EnumName
+                            </dd>
+                            <dt>
+                                Part Number
+                            </dt>
+                            <dd>
+                                @td.Product.PartNumber
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+
+                            @if (td.Product != null)
+                            {
+                                <dt>For Enterprise</dt>
+                                <dd class="green-text">@td.isEnterprise</dd>
+                                if (userType == USER_TYPE.Customer && td.Product.VendorCompany != null && td.isEnterprise == true)
+                                {
+                                    <dt>Vendor </dt>
+                                    <dd>@td.Product.VendorCompany.Name</dd>
+                                }
+                                else if (userType == USER_TYPE.Vendor && td.Product.CustomerCompany.Name != null)
+                                {
+                                    <dt>Cutomer </dt>
+                                    <dd>@td.Product.CustomerCompany.Name</dd>
+                                }
+                            }
+                            @if (@td.Product.ParentPartRevisionId == null)
+                            {
+                                <dt>Part Revision</dt>
+                                <dd class="green-text">@td.Product.PartNumberRevision</dd>
+                            }
+                            else
+                            {
+                                <dt>Part Revision</dt>
+                                <dd class="green-text">@td.Product.PartNumberRevision (from: @td.Product.ParentPartNumberRevision)</dd>
+                            }
+
+                            @if (tdvm.ChangeRevisionReason != null)
+                            {
+                                <dt>
+                                    Change Rev. Reason
+                                </dt>
+                                <dd>
+                                    @tdvm.ChangeRevisionReason
+                                </dd>
+                            }
+                            @if (td.RevisingReason != null)
+                            {
+                                <dt style="word-break:break-word">
+                                    Revision Reasons
+                                </dt>
+                                <dd>
+                                    @td.RevisingReason
+                                </dd>
+                            }
+                        </dl>
+
+                    </div>
+                </div>
+                <br />
+                <div>
+                    @{
+                        if (tdvm.ProductDetailsVM != null)
+                        {
+                            Html.RenderPartial("_PartDetails", tdvm.ProductDetailsVM);
+                        }
+                    }
+                </div>
+            </div>
+            <div class="card-block">
+                @{
+                    if (tdvm.ProductFileVM != null)
+                    {
+                        Html.RenderPartial("_ProductFiles", tdvm.ProductFileVM);
+                    }
+                }
+
+                <div class="col-md-6">
+                    <h4 class="pink-text">Date Stamps</h4>
+                    <dl class="dl-horizontal my-dl">
+
+                        <dt>Created <span class="small grey-text">(UTC)</span></dt>
+                        <dd>@td.CreatedUtc</dd>
+                        <dt>Modified <span class="small grey-text">(UTC)</span></dt>
+                        <dd>@td.ModifiedUtc</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ($('#indicate').is(':visible')) {
+            $('#btnSubmit').hide();
+        }
+        else {
+            $('#btnSubmit').show();
+        }
+
+
+        $('#btnUpload').click(function () {
+
+            $('#spinner').show();
+
+            var $url = '//' + window.location.host + '/Documents/UploadProofingDoc';
+
+            var productId = @Model.TaskVM.TaskData.ProductId;
+            var taskId =  @Model.TaskVM.TaskData.TaskId;
+
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#proofDoc").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('productId', productId);
+                fileData.append('taskId', taskId);
+
+                $.ajax({
+                    type: 'POST',
+                    url: $url,
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function(result) {
+
+                        if (result == 'success') {
+                            //$('#btnSubmit').show();
+                            $('#indicate').hide();
+                            $('#spinner').hide();
+                            alertify.alert('Please close this popup and re-open it to see the changes');
+                        }
+                    },
+                    error: function(error) {
+                        $('#spinner').hide();
+                        alertify.error(error.statusCode);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+
+        });
+    })
+</script>

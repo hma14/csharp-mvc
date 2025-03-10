@@ -1,0 +1,978 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED27C48C-C68C-4AE7-8397-56A5FD392A83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Omnae.Data</RootNamespace>
+    <AssemblyName>Omnae.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <LangVersion>latest</LangVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstracts\DbFactory.cs" />
+    <Compile Include="Abstracts\Disposable.cs" />
+    <Compile Include="Abstracts\IDbFactory.cs" />
+    <Compile Include="Abstracts\IRepository.cs" />
+    <Compile Include="Abstracts\IUnitOfWork.cs" />
+    <Compile Include="Abstracts\RepositoryBase.cs" />
+    <Compile Include="Abstracts\UnitOfWork.cs" />
+    <Compile Include="AsyncTransactionScope.cs" />
+    <Compile Include="Configuration\AddressConfiguration.cs" />
+    <Compile Include="Configuration\CompanyConfiguration.cs" />
+    <Compile Include="Configuration\OrderConfiguration.cs" />
+    <Compile Include="Configuration\ProductConfiguration.cs" />
+    <Compile Include="Configuration\TaskDataConfiguration.cs" />
+    <Compile Include="Migrations\201808010424341_removeVendorTermCompanyTable.cs" />
+    <Compile Include="Migrations\201808010424341_removeVendorTermCompanyTable.Designer.cs">
+      <DependentUpon>201808010424341_removeVendorTermCompanyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808022004270_addindexCompany.cs" />
+    <Compile Include="Migrations\201808022004270_addindexCompany.Designer.cs">
+      <DependentUpon>201808022004270_addindexCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808052252063_AddIndexes.cs" />
+    <Compile Include="Migrations\201808052252063_AddIndexes.Designer.cs">
+      <DependentUpon>201808052252063_AddIndexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808072149468_AddIndexToAspNetIdentity.cs" />
+    <Compile Include="Migrations\201808072149468_AddIndexToAspNetIdentity.Designer.cs">
+      <DependentUpon>201808072149468_AddIndexToAspNetIdentity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808082256042_addCreateDateToProduct_addQuoteAcceptDateToRFQBid.cs" />
+    <Compile Include="Migrations\201808082256042_addCreateDateToProduct_addQuoteAcceptDateToRFQBid.Designer.cs">
+      <DependentUpon>201808082256042_addCreateDateToProduct_addQuoteAcceptDateToRFQBid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808132159339_modifiedShippingTable.cs" />
+    <Compile Include="Migrations\201808132159339_modifiedShippingTable.Designer.cs">
+      <DependentUpon>201808132159339_modifiedShippingTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808160126400_AddOmnaeInvoiceFK.cs" />
+    <Compile Include="Migrations\201808160126400_AddOmnaeInvoiceFK.Designer.cs">
+      <DependentUpon>201808160126400_AddOmnaeInvoiceFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808162323576_AddedFKeyToShipping.cs" />
+    <Compile Include="Migrations\201808162323576_AddedFKeyToShipping.Designer.cs">
+      <DependentUpon>201808162323576_AddedFKeyToShipping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808201619308_mergeBranchChanges.cs" />
+    <Compile Include="Migrations\201808201619308_mergeBranchChanges.Designer.cs">
+      <DependentUpon>201808201619308_mergeBranchChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808221907103_addNewTable_NCRImages.cs" />
+    <Compile Include="Migrations\201808221907103_addNewTable_NCRImages.Designer.cs">
+      <DependentUpon>201808221907103_addNewTable_NCRImages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809022109121_addTaskId_Order.cs" />
+    <Compile Include="Migrations\201809022109121_addTaskId_Order.Designer.cs">
+      <DependentUpon>201809022109121_addTaskId_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810030027369_AddedCompanyLogoUriCompanyTable.cs" />
+    <Compile Include="Migrations\201810030027369_AddedCompanyLogoUriCompanyTable.Designer.cs">
+      <DependentUpon>201810030027369_AddedCompanyLogoUriCompanyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810100113226_addShippingAccountTable.cs" />
+    <Compile Include="Migrations\201810100113226_addShippingAccountTable.Designer.cs">
+      <DependentUpon>201810100113226_addShippingAccountTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810112221123_added_isEnterprise_Company_table.cs" />
+    <Compile Include="Migrations\201810112221123_added_isEnterprise_Company_table.Designer.cs">
+      <DependentUpon>201810112221123_added_isEnterprise_Company_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810100554431_MultUser.cs" />
+    <Compile Include="Migrations\201810100554431_MultUser.Designer.cs">
+      <DependentUpon>201810100554431_MultUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810172344336_AddUserActive.cs" />
+    <Compile Include="Migrations\201810172344336_AddUserActive.Designer.cs">
+      <DependentUpon>201810172344336_AddUserActive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810181919267_AddDefaultsValuesForUser.cs" />
+    <Compile Include="Migrations\201810181919267_AddDefaultsValuesForUser.Designer.cs">
+      <DependentUpon>201810181919267_AddDefaultsValuesForUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810300518063_AddUserToModel.cs" />
+    <Compile Include="Migrations\201810300518063_AddUserToModel.Designer.cs">
+      <DependentUpon>201810300518063_AddUserToModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811021952157_added_ApprovedCapability_table.cs" />
+    <Compile Include="Migrations\201811021952157_added_ApprovedCapability_table.Designer.cs">
+      <DependentUpon>201811021952157_added_ApprovedCapability_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811060329066_AddRoleData.cs" />
+    <Compile Include="Migrations\201811060329066_AddRoleData.Designer.cs">
+      <DependentUpon>201811060329066_AddRoleData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811132011323_Add_isQualified_Company.cs" />
+    <Compile Include="Migrations\201811132011323_Add_isQualified_Company.Designer.cs">
+      <DependentUpon>201811132011323_Add_isQualified_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811132039504_Add_ForeignKey_ApprovedCapability.cs" />
+    <Compile Include="Migrations\201811132039504_Add_ForeignKey_ApprovedCapability.Designer.cs">
+      <DependentUpon>201811132039504_Add_ForeignKey_ApprovedCapability.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811210111001_RemovedUniqueKeys-ApprovedCapability.cs" />
+    <Compile Include="Migrations\201811210111001_RemovedUniqueKeys-ApprovedCapability.Designer.cs">
+      <DependentUpon>201811210111001_RemovedUniqueKeys-ApprovedCapability.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811252345199_addNotes_Order_table.cs" />
+    <Compile Include="Migrations\201811252345199_addNotes_Order_table.Designer.cs">
+      <DependentUpon>201811252345199_addNotes_Order_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905131853009_add_CreateDateTime_BidRequestRevision.cs" />
+    <Compile Include="Migrations\201905131853009_add_CreateDateTime_BidRequestRevision.Designer.cs">
+      <DependentUpon>201905131853009_add_CreateDateTime_BidRequestRevision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905140106084_removed_IX_BidRequestRevision.cs" />
+    <Compile Include="Migrations\201905140106084_removed_IX_BidRequestRevision.Designer.cs">
+      <DependentUpon>201905140106084_removed_IX_BidRequestRevision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905140130556_Add_RevisionNumber_BidRequestRevision.cs" />
+    <Compile Include="Migrations\201905140130556_Add_RevisionNumber_BidRequestRevision.Designer.cs">
+      <DependentUpon>201905140130556_Add_RevisionNumber_BidRequestRevision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905172145389_Add_BillAddressId_Company.cs" />
+    <Compile Include="Migrations\201905172145389_Add_BillAddressId_Company.Designer.cs">
+      <DependentUpon>201905172145389_Add_BillAddressId_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906122109334_add_NcrId_OrderStateTracking_ProductStateTracking.cs" />
+    <Compile Include="Migrations\201906122109334_add_NcrId_OrderStateTracking_ProductStateTracking.Designer.cs">
+      <DependentUpon>201906122109334_add_NcrId_OrderStateTracking_ProductStateTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906261901075_add_table_CompaniesCreditRelationships.cs" />
+    <Compile Include="Migrations\201906261901075_add_table_CompaniesCreditRelationships.Designer.cs">
+      <DependentUpon>201906261901075_add_table_CompaniesCreditRelationships.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907012216500_CompanyAddresses.cs" />
+    <Compile Include="Migrations\201907012216500_CompanyAddresses.Designer.cs">
+      <DependentUpon>201907012216500_CompanyAddresses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907020033137_CompanyAddresses2.cs" />
+    <Compile Include="Migrations\201907020033137_CompanyAddresses2.Designer.cs">
+      <DependentUpon>201907020033137_CompanyAddresses2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907020516502_CompanyAddresses3.cs" />
+    <Compile Include="Migrations\201907020516502_CompanyAddresses3.Designer.cs">
+      <DependentUpon>201907020516502_CompanyAddresses3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907041917030_AddShippingProfile.cs" />
+    <Compile Include="Migrations\201907041917030_AddShippingProfile.Designer.cs">
+      <DependentUpon>201907041917030_AddShippingProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907082236415_ShippingAccountAndProfile.cs" />
+    <Compile Include="Migrations\201907082236415_ShippingAccountAndProfile.Designer.cs">
+      <DependentUpon>201907082236415_ShippingAccountAndProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907092306328_AddNameToShippingAccount.cs" />
+    <Compile Include="Migrations\201907092306328_AddNameToShippingAccount.Designer.cs">
+      <DependentUpon>201907092306328_AddNameToShippingAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907120635226_add_ShippingAccountNumber_Order.cs" />
+    <Compile Include="Migrations\201907120635226_add_ShippingAccountNumber_Order.Designer.cs">
+      <DependentUpon>201907120635226_add_ShippingAccountNumber_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907102241194_AddIsActive.cs" />
+    <Compile Include="Migrations\201907102241194_AddIsActive.Designer.cs">
+      <DependentUpon>201907102241194_AddIsActive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907162232246_AddCarrierTypeToOrder.cs" />
+    <Compile Include="Migrations\201907162232246_AddCarrierTypeToOrder.Designer.cs">
+      <DependentUpon>201907162232246_AddCarrierTypeToOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907260147296_add_Currency_ToolingDepositPercentage_table_CompaniesCreditRelationship.cs" />
+    <Compile Include="Migrations\201907260147296_add_Currency_ToolingDepositPercentage_table_CompaniesCreditRelationship.Designer.cs">
+      <DependentUpon>201907260147296_add_Currency_ToolingDepositPercentage_table_CompaniesCreditRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909051926047_AddTaskToNCR.cs" />
+    <Compile Include="Migrations\201909051926047_AddTaskToNCR.Designer.cs">
+      <DependentUpon>201909051926047_AddTaskToNCR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909051940340_AddTaskToOrderTracking.cs" />
+    <Compile Include="Migrations\201909051940340_AddTaskToOrderTracking.Designer.cs">
+      <DependentUpon>201909051940340_AddTaskToOrderTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909102036195_AddCompanyAccountingEmail.cs" />
+    <Compile Include="Migrations\201909102036195_AddCompanyAccountingEmail.Designer.cs">
+      <DependentUpon>201909102036195_AddCompanyAccountingEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909240226447_Add_IX_PriceBreak_TaskId_PriceBreak.cs" />
+    <Compile Include="Migrations\201909240226447_Add_IX_PriceBreak_TaskId_PriceBreak.Designer.cs">
+      <DependentUpon>201909240226447_Add_IX_PriceBreak_TaskId_PriceBreak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909271849034_Add_StripeCustomerId_Company.cs" />
+    <Compile Include="Migrations\201909271849034_Add_StripeCustomerId_Company.Designer.cs">
+      <DependentUpon>201909271849034_Add_StripeCustomerId_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910152127033_Add_IsAddedExtraQty_RFQQuantity.cs" />
+    <Compile Include="Migrations\201910152127033_Add_IsAddedExtraQty_RFQQuantity.Designer.cs">
+      <DependentUpon>201910152127033_Add_IsAddedExtraQty_RFQQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910302111380_added_HarmonizedCode_RFQBid.cs" />
+    <Compile Include="Migrations\201910302111380_added_HarmonizedCode_RFQBid.Designer.cs">
+      <DependentUpon>201910302111380_added_HarmonizedCode_RFQBid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911132021255_nullable_ShippedDate_Order.cs" />
+    <Compile Include="Migrations\201911132021255_nullable_ShippedDate_Order.Designer.cs">
+      <DependentUpon>201911132021255_nullable_ShippedDate_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912042320387_NewTable_CompanyBankInfo.cs" />
+    <Compile Include="Migrations\201912042320387_NewTable_CompanyBankInfo.Designer.cs">
+      <DependentUpon>201912042320387_NewTable_CompanyBankInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002212107442_FixDocumentIndex.cs" />
+    <Compile Include="Migrations\202002212107442_FixDocumentIndex.Designer.cs">
+      <DependentUpon>202002212107442_FixDocumentIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003192217045_added_ProductSharing.cs" />
+    <Compile Include="Migrations\202003192217045_added_ProductSharing.Designer.cs">
+      <DependentUpon>202003192217045_added_ProductSharing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003201824086_created_index_unique_ProductSharing.cs" />
+    <Compile Include="Migrations\202003201824086_created_index_unique_ProductSharing.Designer.cs">
+      <DependentUpon>202003201824086_created_index_unique_ProductSharing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003260150008_added_taskId_ProductSharing.cs" />
+    <Compile Include="Migrations\202003260150008_added_taskId_ProductSharing.Designer.cs">
+      <DependentUpon>202003260150008_added_taskId_ProductSharing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004030413033_add_OrderCompanyName_Order.cs" />
+    <Compile Include="Migrations\202004030413033_add_OrderCompanyName_Order.Designer.cs">
+      <DependentUpon>202004030413033_add_OrderCompanyName_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005062115531_add_createAt_Company.cs" />
+    <Compile Include="Migrations\202005062115531_add_createAt_Company.Designer.cs">
+      <DependentUpon>202005062115531_add_createAt_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005071848056_added_ProcessType_ApprovedCapability.cs" />
+    <Compile Include="Migrations\202005071848056_added_ProcessType_ApprovedCapability.Designer.cs">
+      <DependentUpon>202005071848056_added_ProcessType_ApprovedCapability.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005080106075_add_processType_Product.cs" />
+    <Compile Include="Migrations\202005080106075_add_processType_Product.Designer.cs">
+      <DependentUpon>202005080106075_add_processType_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005082350291_add_customerId_Order.cs" />
+    <Compile Include="Migrations\202005082350291_add_customerId_Order.Designer.cs">
+      <DependentUpon>202005082350291_add_customerId_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006222058288_AddActiveToXompany.cs" />
+    <Compile Include="Migrations\202006222058288_AddActiveToXompany.Designer.cs">
+      <DependentUpon>202006222058288_AddActiveToXompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007070010326_OnboardedFlags.cs" />
+    <Compile Include="Migrations\202007070010326_OnboardedFlags.Designer.cs">
+      <DependentUpon>202007070010326_OnboardedFlags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007210101457_add_new_table_ExpeditedShipmentRequest.cs" />
+    <Compile Include="Migrations\202007210101457_add_new_table_ExpeditedShipmentRequest.Designer.cs">
+      <DependentUpon>202007210101457_add_new_table_ExpeditedShipmentRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007211927120_add_IsActive_Order_table.cs" />
+    <Compile Include="Migrations\202007211927120_add_IsActive_Order_table.Designer.cs">
+      <DependentUpon>202007211927120_add_IsActive_Order_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007212005362_replace_IsActive_with_IsCancelled_Order.cs" />
+    <Compile Include="Migrations\202007212005362_replace_IsActive_with_IsCancelled_Order.Designer.cs">
+      <DependentUpon>202007212005362_replace_IsActive_with_IsCancelled_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007221730554_add_cancel_reasons_order.cs" />
+    <Compile Include="Migrations\202007221730554_add_cancel_reasons_order.Designer.cs">
+      <DependentUpon>202007221730554_add_cancel_reasons_order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007221831502_add_naming_order.cs" />
+    <Compile Include="Migrations\202007221831502_add_naming_order.Designer.cs">
+      <DependentUpon>202007221831502_add_naming_order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007312054525_merge_migrations.cs" />
+    <Compile Include="Migrations\202007312054525_merge_migrations.Designer.cs">
+      <DependentUpon>202007312054525_merge_migrations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008060519586_AddInvitation.cs" />
+    <Compile Include="Migrations\202008060519586_AddInvitation.Designer.cs">
+      <DependentUpon>202008060519586_AddInvitation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008062240161_add_OrderCancelledBy_Order.cs" />
+    <Compile Include="Migrations\202008062240161_add_OrderCancelledBy_Order.Designer.cs">
+      <DependentUpon>202008062240161_add_OrderCancelledBy_Order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008191853382_add_TimerStartAt_TimerSetup_table.cs" />
+    <Compile Include="Migrations\202008191853382_add_TimerStartAt_TimerSetup_table.Designer.cs">
+      <DependentUpon>202008191853382_add_TimerStartAt_TimerSetup_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009212159305_change_to_nullables.cs" />
+    <Compile Include="Migrations\202009212159305_change_to_nullables.Designer.cs">
+      <DependentUpon>202009212159305_change_to_nullables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009282209286_Add_TaskData_BidRequestRevision.cs" />
+    <Compile Include="Migrations\202009282209286_Add_TaskData_BidRequestRevision.Designer.cs">
+      <DependentUpon>202009282209286_Add_TaskData_BidRequestRevision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061713339_Add_new_tables_BidRFQStatus_VendorBidRFQStatus.cs" />
+    <Compile Include="Migrations\202010061713339_Add_new_tables_BidRFQStatus_VendorBidRFQStatus.Designer.cs">
+      <DependentUpon>202010061713339_Add_new_tables_BidRFQStatus_VendorBidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061828551_Remove_RevisionDocs_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010061828551_Remove_RevisionDocs_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010061828551_Remove_RevisionDocs_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061940091_Remove__updatedAt_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010061940091_Remove__updatedAt_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010061940091_Remove__updatedAt_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061944311_Change__createdAt_nullable_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010061944311_Change__createdAt_nullable_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010061944311_Change__createdAt_nullable_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010061949382_Change__createdAt_nullable_VendorBidRFQStatus.cs" />
+    <Compile Include="Migrations\202010061949382_Change__createdAt_nullable_VendorBidRFQStatus.Designer.cs">
+      <DependentUpon>202010061949382_Change__createdAt_nullable_VendorBidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010062007225_Add_Identity_DateTime_VendorBidRFQStatus.cs" />
+    <Compile Include="Migrations\202010062007225_Add_Identity_DateTime_VendorBidRFQStatus.Designer.cs">
+      <DependentUpon>202010062007225_Add_Identity_DateTime_VendorBidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010062022530_Addback__updatedAt_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010062022530_Addback__updatedAt_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010062022530_Addback__updatedAt_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010070225129_Add_VendorRejectRFQ_table.cs" />
+    <Compile Include="Migrations\202010070225129_Add_VendorRejectRFQ_table.Designer.cs">
+      <DependentUpon>202010070225129_Add_VendorRejectRFQ_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010071809097_Remove_Identity__updatedAt_VendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010071809097_Remove_Identity__updatedAt_VendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010071809097_Remove_Identity__updatedAt_VendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010071900319_Remove_Identity__createdAt_VendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010071900319_Remove_Identity__createdAt_VendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010071900319_Remove_Identity__createdAt_VendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010071918281_Add_back_Identity__createdAt_VendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010071918281_Add_back_Identity__createdAt_VendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010071918281_Add_back_Identity__createdAt_VendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010071925150_Add_back__updatedAt_VendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010071925150_Add_back__updatedAt_VendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010071925150_Add_back__updatedAt_VendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010080030492_Add_ReasonType_VendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010080030492_Add_ReasonType_VendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010080030492_Add_ReasonType_VendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010080101218_Add_VendorRejectRFQId_BidRequestRevision.cs" />
+    <Compile Include="Migrations\202010080101218_Add_VendorRejectRFQId_BidRequestRevision.Designer.cs">
+      <DependentUpon>202010080101218_Add_VendorRejectRFQId_BidRequestRevision.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010142126256_Add_KeepCurrentRevisionReason_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010142126256_Add_KeepCurrentRevisionReason_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010142126256_Add_KeepCurrentRevisionReason_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010212128086_RenameVendorRejectRFQ.cs" />
+    <Compile Include="Migrations\202010212128086_RenameVendorRejectRFQ.Designer.cs">
+      <DependentUpon>202010212128086_RenameVendorRejectRFQ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010212211123_Add_RFQActionReason_BidRFQStatus.cs" />
+    <Compile Include="Migrations\202010212211123_Add_RFQActionReason_BidRFQStatus.Designer.cs">
+      <DependentUpon>202010212211123_Add_RFQActionReason_BidRFQStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010262246189_Modified_TimerSetup.cs" />
+    <Compile Include="Migrations\202010262246189_Modified_TimerSetup.Designer.cs">
+      <DependentUpon>202010262246189_Modified_TimerSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101190649466_Added_StripeQbo_Table.cs" />
+    <Compile Include="Migrations\202101190649466_Added_StripeQbo_Table.Designer.cs">
+      <DependentUpon>202101190649466_Added_StripeQbo_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101192040300_added_CreatedAt_StripeQbo.cs" />
+    <Compile Include="Migrations\202101192040300_added_CreatedAt_StripeQbo.Designer.cs">
+      <DependentUpon>202101192040300_added_CreatedAt_StripeQbo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101220544095_AddDefaultShippingProfile.cs" />
+    <Compile Include="Migrations\202101220544095_AddDefaultShippingProfile.Designer.cs">
+      <DependentUpon>202101220544095_AddDefaultShippingProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101280041043_Added_OriginProductId_Product.cs" />
+    <Compile Include="Migrations\202101280041043_Added_OriginProductId_Product.Designer.cs">
+      <DependentUpon>202101280041043_Added_OriginProductId_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102050132582_AddShippingConcurrencyCheck.cs" />
+    <Compile Include="Migrations\202102050132582_AddShippingConcurrencyCheck.Designer.cs">
+      <DependentUpon>202102050132582_AddShippingConcurrencyCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103312348272_Added_PreferredCurrency_Product.cs" />
+    <Compile Include="Migrations\202103312348272_Added_PreferredCurrency_Product.Designer.cs">
+      <DependentUpon>202103312348272_Added_PreferredCurrency_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104012355129_Added_PreferredCurrency_RFQBid.cs" />
+    <Compile Include="Migrations\202104012355129_Added_PreferredCurrency_RFQBid.Designer.cs">
+      <DependentUpon>202104012355129_Added_PreferredCurrency_RFQBid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104121813006_Set_ToolingSetupCharges_3_digit_Product.cs" />
+    <Compile Include="Migrations\202104121813006_Set_ToolingSetupCharges_3_digit_Product.Designer.cs">
+      <DependentUpon>202104121813006_Set_ToolingSetupCharges_3_digit_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104141724071_Set_ToolingSetupCharges_3_digit_PriceBreak.cs" />
+    <Compile Include="Migrations\202104141724071_Set_ToolingSetupCharges_3_digit_PriceBreak.Designer.cs">
+      <DependentUpon>202104141724071_Set_ToolingSetupCharges_3_digit_PriceBreak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104240200295_AddTaxToCompaniesCreditRelationship.cs" />
+    <Compile Include="Migrations\202104240200295_AddTaxToCompaniesCreditRelationship.Designer.cs">
+      <DependentUpon>202104240200295_AddTaxToCompaniesCreditRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105211800541_Add_IsPrimaryContact_AspNetUsers.cs" />
+    <Compile Include="Migrations\202105211800541_Add_IsPrimaryContact_AspNetUsers.Designer.cs">
+      <DependentUpon>202105211800541_Add_IsPrimaryContact_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106120238592_Add_Auth0_Roles_AspNetUsers.cs" />
+    <Compile Include="Migrations\202106120238592_Add_Auth0_Roles_AspNetUsers.Designer.cs">
+      <DependentUpon>202106120238592_Add_Auth0_Roles_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108292332209_Made_ProductId_nullable_ProductStateTracking.cs" />
+    <Compile Include="Migrations\202108292332209_Made_ProductId_nullable_ProductStateTracking.Designer.cs">
+      <DependentUpon>202108292332209_Made_ProductId_nullable_ProductStateTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108292342182_Added_ProductId_FKey_ProductStateTracking.cs" />
+    <Compile Include="Migrations\202108292342182_Added_ProductId_FKey_ProductStateTracking.Designer.cs">
+      <DependentUpon>202108292342182_Added_ProductId_FKey_ProductStateTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109232203367_Add_column_Currency_Company.cs" />
+    <Compile Include="Migrations\202109232203367_Add_column_Currency_Company.Designer.cs">
+      <DependentUpon>202109232203367_Add_column_Currency_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109292123135_Add_ProductPriceQuote_table.cs" />
+    <Compile Include="Migrations\202109292123135_Add_ProductPriceQuote_table.Designer.cs">
+      <DependentUpon>202109292123135_Add_ProductPriceQuote_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202180050530_Add_POLegalTerms_Company.cs" />
+    <Compile Include="Migrations\202202180050530_Add_POLegalTerms_Company.designer.cs">
+      <DependentUpon>202202180050530_Add_POLegalTerms_Company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212022354100_Add_BarCode_Product.cs" />
+    <Compile Include="Migrations\202212022354100_Add_BarCode_Product.designer.cs">
+      <DependentUpon>202212022354100_Add_BarCode_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305111523050_Add_UnitOfMeasurement_decimal_Quantity.cs" />
+    <Compile Include="Migrations\202305111523050_Add_UnitOfMeasurement_decimal_Quantity.Designer.cs">
+      <DependentUpon>202305111523050_Add_UnitOfMeasurement_decimal_Quantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305111630478_Changed_Decimal_Qty_RFQQuantity.cs" />
+    <Compile Include="Migrations\202305111630478_Changed_Decimal_Qty_RFQQuantity.designer.cs">
+      <DependentUpon>202305111630478_Changed_Decimal_Qty_RFQQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305121806513_Changed_Decimal_Qty_OmnaeInvoices.cs" />
+    <Compile Include="Migrations\202305121806513_Changed_Decimal_Qty_OmnaeInvoices.designer.cs">
+      <DependentUpon>202305121806513_Changed_Decimal_Qty_OmnaeInvoices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305160256056_Modified_Qtys_Decimal_ExtraQuantities.cs" />
+    <Compile Include="Migrations\202305160256056_Modified_Qtys_Decimal_ExtraQuantities.designer.cs">
+      <DependentUpon>202305160256056_Modified_Qtys_Decimal_ExtraQuantities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305292229437_Change_Column_Length_PartNumber_Product.cs" />
+    <Compile Include="Migrations\202305292229437_Change_Column_Length_PartNumber_Product.designer.cs">
+      <DependentUpon>202305292229437_Change_Column_Length_PartNumber_Product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306062203356_Add_UnitOf_Measurement_RFQQuantities.cs" />
+    <Compile Include="Migrations\202306062203356_Add_UnitOf_Measurement_RFQQuantities.designer.cs">
+      <DependentUpon>202306062203356_Add_UnitOf_Measurement_RFQQuantities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\OrderHistoryModel.cs" />
+    <Compile Include="OmnaeContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\AddressesQuery.cs" />
+    <Compile Include="Query\CompanyQuery.cs" />
+    <Compile Include="Query\NcrQuery.cs" />
+    <Compile Include="Query\OrderQuery.cs" />
+    <Compile Include="Query\TaskDataQuery.cs" />
+    <Compile Include="Repositories.Interfaces\IAddressRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IApprovedCapabilityRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IBidRFQStatusRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ICompaniesCreditRelationshipRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ICompanyBankInfoRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ICompanyRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ICountryRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IExpeditedShipmentRequestRepository.cs" />
+    <Compile Include="Repositories.Interfaces\INCRImagesRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IOmnaeInvoiceRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IProductPriceQuoteRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IProductSharingRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IQboTokensRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IShippingAccountRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IShippingProfileRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IShippingRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IStripeQboRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ITimerSetupRepository.cs" />
+    <Compile Include="Repositories.Interfaces\INCReportRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IPartRevisionRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IDocumentRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IOrderRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IProductStateTrackingRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IOrderStateTrackingRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IPriceBreakRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IProductRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IBidRequestRevisionRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IRFQBidRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IExtraQuantityRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IRFQQuantityRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IStateProvinceRepository.cs" />
+    <Compile Include="Repositories.Interfaces\ITaskDataRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IVendorBidRFQStatusRepository.cs" />
+    <Compile Include="Repositories.Interfaces\IRFQActionReasonRepository.cs" />
+    <Compile Include="Repositories\BidRFQStatusRepository.cs" />
+    <Compile Include="Repositories\CompanyBankInfoRepository.cs" />
+    <Compile Include="Repositories\ExpeditedShipmentRequestRepository.cs" />
+    <Compile Include="Repositories\ProductPriceQuoteRepository.cs" />
+    <Compile Include="Repositories\ProductSharingRepository.cs" />
+    <Compile Include="Repositories\ShippingProfileRepository.cs" />
+    <Compile Include="Repositories\AddressRepository.cs" />
+    <Compile Include="Repositories\ApprovedCapabilityRepository.cs" />
+    <Compile Include="Repositories\BidRequestRevisionRepository.cs" />
+    <Compile Include="Repositories\CompaniesCreditRelationshipRepository.cs" />
+    <Compile Include="Repositories\CompanyRepository.cs" />
+    <Compile Include="Repositories\CountryRepository.cs" />
+    <Compile Include="Repositories\NCRImagesRepository.cs" />
+    <Compile Include="Repositories\OmnaeInvoiceRepository.cs" />
+    <Compile Include="Repositories\QboTokensRepository.cs" />
+    <Compile Include="Repositories\ShippingAccountRepository.cs" />
+    <Compile Include="Repositories\StripeQboRepository.cs" />
+    <Compile Include="Repositories\TimerSetupRepository.cs" />
+    <Compile Include="Repositories\NCReportRepository.cs" />
+    <Compile Include="Repositories\PartRevisionRepository.cs" />
+    <Compile Include="Repositories\DocumentRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
+    <Compile Include="Repositories\ProductStateTrackingRepository.cs" />
+    <Compile Include="Repositories\OrderStateTrackingRepository.cs" />
+    <Compile Include="Repositories\PriceBreakRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\RFQBidRepository.cs" />
+    <Compile Include="Repositories\ExtraQuantityRepository.cs" />
+    <Compile Include="Repositories\RFQQuantityRepository.cs" />
+    <Compile Include="Repositories\ShippingRepository.cs" />
+    <Compile Include="Repositories\StateProvinceRepository.cs" />
+    <Compile Include="Repositories\VendorBidRFQStatusRepository.cs" />
+    <Compile Include="Repositories\RFQActionReasonRepository.cs" />
+    <Compile Include="StoredProcedures\IStoredProcedure.cs" />
+    <Compile Include="StoredProcedures\StoredProcedure.cs" />
+    <Compile Include="Repositories\TaskDataRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Omnae.Common.csproj">
+      <Project>{95514a04-7be8-4dc2-b9b5-b7f5ccac366d}</Project>
+      <Name>Omnae.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Omnae.Model.csproj">
+      <Project>{e130d899-401c-4829-8617-aede21a4879b}</Project>
+      <Name>Omnae.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201808010424341_removeVendorTermCompanyTable.resx">
+      <DependentUpon>201808010424341_removeVendorTermCompanyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808022004270_addindexCompany.resx">
+      <DependentUpon>201808022004270_addindexCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808052252063_AddIndexes.resx">
+      <DependentUpon>201808052252063_AddIndexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808072149468_AddIndexToAspNetIdentity.resx">
+      <DependentUpon>201808072149468_AddIndexToAspNetIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808082256042_addCreateDateToProduct_addQuoteAcceptDateToRFQBid.resx">
+      <DependentUpon>201808082256042_addCreateDateToProduct_addQuoteAcceptDateToRFQBid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808132159339_modifiedShippingTable.resx">
+      <DependentUpon>201808132159339_modifiedShippingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808160126400_AddOmnaeInvoiceFK.resx">
+      <DependentUpon>201808160126400_AddOmnaeInvoiceFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808162323576_AddedFKeyToShipping.resx">
+      <DependentUpon>201808162323576_AddedFKeyToShipping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808201619308_mergeBranchChanges.resx">
+      <DependentUpon>201808201619308_mergeBranchChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808221907103_addNewTable_NCRImages.resx">
+      <DependentUpon>201808221907103_addNewTable_NCRImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809022109121_addTaskId_Order.resx">
+      <DependentUpon>201809022109121_addTaskId_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810030027369_AddedCompanyLogoUriCompanyTable.resx">
+      <DependentUpon>201810030027369_AddedCompanyLogoUriCompanyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810100113226_addShippingAccountTable.resx">
+      <DependentUpon>201810100113226_addShippingAccountTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810112221123_added_isEnterprise_Company_table.resx">
+      <DependentUpon>201810112221123_added_isEnterprise_Company_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810100554431_MultUser.resx">
+      <DependentUpon>201810100554431_MultUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810172344336_AddUserActive.resx">
+      <DependentUpon>201810172344336_AddUserActive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810181919267_AddDefaultsValuesForUser.resx">
+      <DependentUpon>201810181919267_AddDefaultsValuesForUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810300518063_AddUserToModel.resx">
+      <DependentUpon>201810300518063_AddUserToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811021952157_added_ApprovedCapability_table.resx">
+      <DependentUpon>201811021952157_added_ApprovedCapability_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811060329066_AddRoleData.resx">
+      <DependentUpon>201811060329066_AddRoleData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811132011323_Add_isQualified_Company.resx">
+      <DependentUpon>201811132011323_Add_isQualified_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811132039504_Add_ForeignKey_ApprovedCapability.resx">
+      <DependentUpon>201811132039504_Add_ForeignKey_ApprovedCapability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811210111001_RemovedUniqueKeys-ApprovedCapability.resx">
+      <DependentUpon>201811210111001_RemovedUniqueKeys-ApprovedCapability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811252345199_addNotes_Order_table.resx">
+      <DependentUpon>201811252345199_addNotes_Order_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905131853009_add_CreateDateTime_BidRequestRevision.resx">
+      <DependentUpon>201905131853009_add_CreateDateTime_BidRequestRevision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905140106084_removed_IX_BidRequestRevision.resx">
+      <DependentUpon>201905140106084_removed_IX_BidRequestRevision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905140130556_Add_RevisionNumber_BidRequestRevision.resx">
+      <DependentUpon>201905140130556_Add_RevisionNumber_BidRequestRevision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905172145389_Add_BillAddressId_Company.resx">
+      <DependentUpon>201905172145389_Add_BillAddressId_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906122109334_add_NcrId_OrderStateTracking_ProductStateTracking.resx">
+      <DependentUpon>201906122109334_add_NcrId_OrderStateTracking_ProductStateTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906261901075_add_table_CompaniesCreditRelationships.resx">
+      <DependentUpon>201906261901075_add_table_CompaniesCreditRelationships.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907012216500_CompanyAddresses.resx">
+      <DependentUpon>201907012216500_CompanyAddresses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907020033137_CompanyAddresses2.resx">
+      <DependentUpon>201907020033137_CompanyAddresses2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907020516502_CompanyAddresses3.resx">
+      <DependentUpon>201907020516502_CompanyAddresses3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041917030_AddShippingProfile.resx">
+      <DependentUpon>201907041917030_AddShippingProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907082236415_ShippingAccountAndProfile.resx">
+      <DependentUpon>201907082236415_ShippingAccountAndProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907092306328_AddNameToShippingAccount.resx">
+      <DependentUpon>201907092306328_AddNameToShippingAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907120635226_add_ShippingAccountNumber_Order.resx">
+      <DependentUpon>201907120635226_add_ShippingAccountNumber_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907102241194_AddIsActive.resx">
+      <DependentUpon>201907102241194_AddIsActive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907162232246_AddCarrierTypeToOrder.resx">
+      <DependentUpon>201907162232246_AddCarrierTypeToOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907260147296_add_Currency_ToolingDepositPercentage_table_CompaniesCreditRelationship.resx">
+      <DependentUpon>201907260147296_add_Currency_ToolingDepositPercentage_table_CompaniesCreditRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909051926047_AddTaskToNCR.resx">
+      <DependentUpon>201909051926047_AddTaskToNCR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909051940340_AddTaskToOrderTracking.resx">
+      <DependentUpon>201909051940340_AddTaskToOrderTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909102036195_AddCompanyAccountingEmail.resx">
+      <DependentUpon>201909102036195_AddCompanyAccountingEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909240226447_Add_IX_PriceBreak_TaskId_PriceBreak.resx">
+      <DependentUpon>201909240226447_Add_IX_PriceBreak_TaskId_PriceBreak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909271849034_Add_StripeCustomerId_Company.resx">
+      <DependentUpon>201909271849034_Add_StripeCustomerId_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910152127033_Add_IsAddedExtraQty_RFQQuantity.resx">
+      <DependentUpon>201910152127033_Add_IsAddedExtraQty_RFQQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910302111380_added_HarmonizedCode_RFQBid.resx">
+      <DependentUpon>201910302111380_added_HarmonizedCode_RFQBid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911132021255_nullable_ShippedDate_Order.resx">
+      <DependentUpon>201911132021255_nullable_ShippedDate_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912042320387_NewTable_CompanyBankInfo.resx">
+      <DependentUpon>201912042320387_NewTable_CompanyBankInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912041904447_AddInterationControlTable.resx">
+      <DependentUpon>201912041904447_AddInterationControlTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002212107442_FixDocumentIndex.resx">
+      <DependentUpon>202002212107442_FixDocumentIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003192217045_added_ProductSharing.resx">
+      <DependentUpon>202003192217045_added_ProductSharing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003201824086_created_index_unique_ProductSharing.resx">
+      <DependentUpon>202003201824086_created_index_unique_ProductSharing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003260150008_added_taskId_ProductSharing.resx">
+      <DependentUpon>202003260150008_added_taskId_ProductSharing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004030413033_add_OrderCompanyName_Order.resx">
+      <DependentUpon>202004030413033_add_OrderCompanyName_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005062115531_add_createAt_Company.resx">
+      <DependentUpon>202005062115531_add_createAt_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005071848056_added_ProcessType_ApprovedCapability.resx">
+      <DependentUpon>202005071848056_added_ProcessType_ApprovedCapability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005080106075_add_processType_Product.resx">
+      <DependentUpon>202005080106075_add_processType_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005082350291_add_customerId_Order.resx">
+      <DependentUpon>202005082350291_add_customerId_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006222058288_AddActiveToXompany.resx">
+      <DependentUpon>202006222058288_AddActiveToXompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007070010326_OnboardedFlags.resx">
+      <DependentUpon>202007070010326_OnboardedFlags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007210101457_add_new_table_ExpeditedShipmentRequest.resx">
+      <DependentUpon>202007210101457_add_new_table_ExpeditedShipmentRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007211927120_add_IsActive_Order_table.resx">
+      <DependentUpon>202007211927120_add_IsActive_Order_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007212005362_replace_IsActive_with_IsCancelled_Order.resx">
+      <DependentUpon>202007212005362_replace_IsActive_with_IsCancelled_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007221730554_add_cancel_reasons_order.resx">
+      <DependentUpon>202007221730554_add_cancel_reasons_order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007221831502_add_naming_order.resx">
+      <DependentUpon>202007221831502_add_naming_order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007312054525_merge_migrations.resx">
+      <DependentUpon>202007312054525_merge_migrations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008060519586_AddInvitation.resx">
+      <DependentUpon>202008060519586_AddInvitation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008062240161_add_OrderCancelledBy_Order.resx">
+      <DependentUpon>202008062240161_add_OrderCancelledBy_Order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008191853382_add_TimerStartAt_TimerSetup_table.resx">
+      <DependentUpon>202008191853382_add_TimerStartAt_TimerSetup_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009212159305_change_to_nullables.resx">
+      <DependentUpon>202009212159305_change_to_nullables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009282209286_Add_TaskData_BidRequestRevision.resx">
+      <DependentUpon>202009282209286_Add_TaskData_BidRequestRevision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061713339_Add_new_tables_BidRFQStatus_VendorBidRFQStatus.resx">
+      <DependentUpon>202010061713339_Add_new_tables_BidRFQStatus_VendorBidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061828551_Remove_RevisionDocs_BidRFQStatus.resx">
+      <DependentUpon>202010061828551_Remove_RevisionDocs_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061940091_Remove__updatedAt_BidRFQStatus.resx">
+      <DependentUpon>202010061940091_Remove__updatedAt_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061944311_Change__createdAt_nullable_BidRFQStatus.resx">
+      <DependentUpon>202010061944311_Change__createdAt_nullable_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010061949382_Change__createdAt_nullable_VendorBidRFQStatus.resx">
+      <DependentUpon>202010061949382_Change__createdAt_nullable_VendorBidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010062007225_Add_Identity_DateTime_VendorBidRFQStatus.resx">
+      <DependentUpon>202010062007225_Add_Identity_DateTime_VendorBidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010062022530_Addback__updatedAt_BidRFQStatus.resx">
+      <DependentUpon>202010062022530_Addback__updatedAt_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010070225129_Add_VendorRejectRFQ_table.resx">
+      <DependentUpon>202010070225129_Add_VendorRejectRFQ_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010071809097_Remove_Identity__updatedAt_VendorRejectRFQ.resx">
+      <DependentUpon>202010071809097_Remove_Identity__updatedAt_VendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010071900319_Remove_Identity__createdAt_VendorRejectRFQ.resx">
+      <DependentUpon>202010071900319_Remove_Identity__createdAt_VendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010071918281_Add_back_Identity__createdAt_VendorRejectRFQ.resx">
+      <DependentUpon>202010071918281_Add_back_Identity__createdAt_VendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010071925150_Add_back__updatedAt_VendorRejectRFQ.resx">
+      <DependentUpon>202010071925150_Add_back__updatedAt_VendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010080030492_Add_ReasonType_VendorRejectRFQ.resx">
+      <DependentUpon>202010080030492_Add_ReasonType_VendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010080101218_Add_VendorRejectRFQId_BidRequestRevision.resx">
+      <DependentUpon>202010080101218_Add_VendorRejectRFQId_BidRequestRevision.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010142126256_Add_KeepCurrentRevisionReason_BidRFQStatus.resx">
+      <DependentUpon>202010142126256_Add_KeepCurrentRevisionReason_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010212128086_RenameVendorRejectRFQ.resx">
+      <DependentUpon>202010212128086_RenameVendorRejectRFQ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010212211123_Add_RFQActionReason_BidRFQStatus.resx">
+      <DependentUpon>202010212211123_Add_RFQActionReason_BidRFQStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010262246189_Modified_TimerSetup.resx">
+      <DependentUpon>202010262246189_Modified_TimerSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101190649466_Added_StripeQbo_Table.resx">
+      <DependentUpon>202101190649466_Added_StripeQbo_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101192040300_added_CreatedAt_StripeQbo.resx">
+      <DependentUpon>202101192040300_added_CreatedAt_StripeQbo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101220544095_AddDefaultShippingProfile.resx">
+      <DependentUpon>202101220544095_AddDefaultShippingProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101280041043_Added_OriginProductId_Product.resx">
+      <DependentUpon>202101280041043_Added_OriginProductId_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102050132582_AddShippingConcurrencyCheck.resx">
+      <DependentUpon>202102050132582_AddShippingConcurrencyCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103312348272_Added_PreferredCurrency_Product.resx">
+      <DependentUpon>202103312348272_Added_PreferredCurrency_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104012355129_Added_PreferredCurrency_RFQBid.resx">
+      <DependentUpon>202104012355129_Added_PreferredCurrency_RFQBid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104121813006_Set_ToolingSetupCharges_3_digit_Product.resx">
+      <DependentUpon>202104121813006_Set_ToolingSetupCharges_3_digit_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104141724071_Set_ToolingSetupCharges_3_digit_PriceBreak.resx">
+      <DependentUpon>202104141724071_Set_ToolingSetupCharges_3_digit_PriceBreak.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104240200295_AddTaxToCompaniesCreditRelationship.resx">
+      <DependentUpon>202104240200295_AddTaxToCompaniesCreditRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105211800541_Add_IsPrimaryContact_AspNetUsers.resx">
+      <DependentUpon>202105211800541_Add_IsPrimaryContact_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106120238592_Add_Auth0_Roles_AspNetUsers.resx">
+      <DependentUpon>202106120238592_Add_Auth0_Roles_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108292332209_Made_ProductId_nullable_ProductStateTracking.resx">
+      <DependentUpon>202108292332209_Made_ProductId_nullable_ProductStateTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108292342182_Added_ProductId_FKey_ProductStateTracking.resx">
+      <DependentUpon>202108292342182_Added_ProductId_FKey_ProductStateTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109232203367_Add_column_Currency_Company.resx">
+      <DependentUpon>202109232203367_Add_column_Currency_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109292123135_Add_ProductPriceQuote_table.resx">
+      <DependentUpon>202109292123135_Add_ProductPriceQuote_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202180050530_Add_POLegalTerms_Company.resx">
+      <DependentUpon>202202180050530_Add_POLegalTerms_Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212022354100_Add_BarCode_Product.resx">
+      <DependentUpon>202212022354100_Add_BarCode_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305111523050_Add_UnitOfMeasurement_decimal_Quantity.resx">
+      <DependentUpon>202305111523050_Add_UnitOfMeasurement_decimal_Quantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305111630478_Changed_Decimal_Qty_RFQQuantity.resx">
+      <DependentUpon>202305111630478_Changed_Decimal_Qty_RFQQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305121806513_Changed_Decimal_Qty_OmnaeInvoices.resx">
+      <DependentUpon>202305121806513_Changed_Decimal_Qty_OmnaeInvoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305160256056_Modified_Qtys_Decimal_ExtraQuantities.resx">
+      <DependentUpon>202305160256056_Modified_Qtys_Decimal_ExtraQuantities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305292229437_Change_Column_Length_PartNumber_Product.resx">
+      <DependentUpon>202305292229437_Change_Column_Length_PartNumber_Product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306062203356_Add_UnitOf_Measurement_RFQQuantities.resx">
+      <DependentUpon>202306062203356_Add_UnitOf_Measurement_RFQQuantities.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

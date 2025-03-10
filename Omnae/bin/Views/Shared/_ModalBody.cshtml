@@ -1,0 +1,462 @@
+﻿@using Omnae.BusinessLayer.Models
+@using Stateless
+@using StringExtensions = Omnae.Common.Extensions.StringExtensions
+
+@model Omnae.ViewModels.TaskDataModalViewModel
+
+
+@if (Model.TaskVM.TaskData.Product != null)
+{
+    var tdvm = Model.TaskVM;
+    var td = tdvm.TaskData;
+
+    //TODO: Remove the stateMachine from the View.
+    StateMachine<States, Triggers> stTransition = new StateMachine<States, Triggers>((States)td.StateId);
+    Utils.RegisterStates_Reseller(stTransition, tdvm.MyFunc);
+    Order order = tdvm.Order;
+    USER_TYPE userType = tdvm.UserType;
+
+    <style>
+        .dl-horizontal dt {
+            width: 50%;
+            text-align: left;
+            padding: 0px;
+            /*min-height: 60px;*/
+        }
+
+        .dl-horizontal dd {
+            margin-left: 0px !important;
+            text-align: left;
+            padding: 0px;
+            font-size: 0.8em;
+            word-break: break-all;
+        }
+
+        .my-min-height {
+            min-height: 60px;
+        }
+    </style>
+
+    <div class="modal-body card-block">
+
+        <div class="col-md-12">
+            <div class="card-block">
+                <h4 class="col-md-12 pink-text">Product Details</h4>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                State
+                            </dt>
+                            <dd class="green-text font-weight-bold">
+                                @tdvm.EnumName
+                            </dd>
+                            <dt>
+                                Part Number
+                            </dt>
+                            <dd>
+                                @td.Product.PartNumber
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="dl-horizontal">
+
+                            @if (td.Product != null)
+                            {
+                                <dt>For Enterprise</dt>
+                                <dd class="green-text">@td.isEnterprise</dd>
+                                if (userType == USER_TYPE.Customer && td.Product.VendorCompany != null && td.isEnterprise == true)
+                                {
+                                    <dt>Vendor </dt>
+                                    <dd>@td.Product.VendorCompany.Name</dd>
+                                }
+                                else if (userType == USER_TYPE.Vendor && td.Product.CustomerCompany.Name != null)
+                                {
+                                    <dt>Cutomer </dt>
+                                    <dd>@td.Product.CustomerCompany.Name</dd>
+                                }
+                            }
+                            @if (@td.Product.ParentPartRevisionId == null)
+                            {
+                                <dt>Part Revision</dt>
+                                <dd class="green-text">@td.Product.PartNumberRevision</dd>
+                            }
+                            else
+                            {
+                                <dt>Part Revision</dt>
+                                <dd class="green-text">@td.Product.PartNumberRevision (from: @td.Product.ParentPartNumberRevision)</dd>
+                            }
+
+                            @if (tdvm.ChangeRevisionReason != null)
+                            {
+                                <dt>
+                                    Change Rev. Reason
+                                </dt>
+                                <dd>
+                                    @tdvm.ChangeRevisionReason
+                                </dd>
+                            }
+                            @if (td.RevisingReason != null)
+                            {
+                                <dt style="word-break:break-word">
+                                    Revision Reasons
+                                </dt>
+                                <dd>
+                                    @td.RevisingReason
+                                </dd>
+                            }
+                        </dl>
+
+                    </div>
+                </div>
+                <br />
+                <div>
+                    @{
+                        if (tdvm.ProductDetailsVM != null)
+                        {
+                            Html.RenderPartial("_PartDetails", tdvm.ProductDetailsVM);
+                        }
+                    }
+                </div>
+            </div>
+            <div class="card-block">
+                @{
+                    if (tdvm.ProductFileVM != null)
+                    {
+                        Html.RenderPartial("_ProductFiles", tdvm.ProductFileVM);
+                    }
+                }
+
+                <div class="col-md-6">
+                    <h4 class="pink-text">Date Stamps</h4>
+                    <dl class="dl-horizontal my-dl">
+
+                        <dt>Created <span class="small grey-text">(UTC)</span></dt>
+                        <dd>@td.CreatedUtc</dd>
+                        <dt>Modified <span class="small grey-text">(UTC)</span></dt>
+                        <dd>@td.ModifiedUtc</dd>
+                    </dl>
+
+                </div>
+
+            </div>
+            @if (userType == USER_TYPE.Customer)
+            {
+                if (td.StateId == (int)States.BackFromRFQ)
+                {
+                    var stateTransition = new StateTransitionViewModel
+                    {
+                        TaskData = td,
+                        StTransition = stTransition,
+                        NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                        UserType = tdvm.UserType,
+                        EnumName = tdvm.EnumName,
+                        RevisingDocs = tdvm.Docs?.Where(d => d.DocType == (int) DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+                    };
+                    @Html.Partial("_StateTransition", stateTransition);
+                }
+                else if (@td.StateId > (int)States.NCRCustomerStarted && @td.StateId < (int)States.NCRClosed ||
+                    @td.StateId == (int)States.NCRCustomerCorrectivePartsAccepted && td.isEnterprise == true ||
+                    @td.StateId == (int)States.BidReview && td.isEnterprise == true ||
+                    @td.StateId == (int)States.NCRDamagedByCustomer)
+                {
+                    var stateTransition = new StateTransitionViewModel
+                    {
+                        TaskData = td,
+                        StTransition = stTransition,
+                        NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                        UserType = tdvm.UserType,
+                        EnumName = tdvm.EnumName,
+                        RevisingDocs = tdvm.Docs?.Where(d => d.DocType == (int)DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+                    };
+                    @Html.Partial("_StateTransition", stateTransition);
+                }
+                else if (td.StateId < (int) States.CustomerCancelOrder || td.StateId > (int) States.OrderCancelDenied)
+                {
+                    var stateTransition = new StateTransitionViewModel
+                    {
+                        TaskData = td,
+                        StTransition = stTransition,
+                        UserType = tdvm.UserType,
+                        EnumName = tdvm.EnumName,
+                        RevisingDocs = tdvm.Docs?.Where(d => d.DocType == (int)DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+
+                    };
+                    @Html.Partial("_StateTransition", stateTransition);
+                }
+            }
+            else if (userType == USER_TYPE.Vendor)
+            {
+                <div class="card-block">
+                    @if (td.StateId == (int)States.OutForRFQ ||
+                            td.StateId == (int)States.RFQRevision ||
+                            td.StateId == (int)States.BidForRFQ)
+                    {
+                        StateTransitionViewModel stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                            RFQVM = tdvm.RFQVM,
+                            UserType = tdvm.UserType,
+                            EnumName = tdvm.EnumName,
+                            RevisingDocs = tdvm.Docs?.Where(d => d.DocType == (int)DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+                        };
+                        if (stateTransition.RFQVM == null)
+                        {
+                            <span class="red-text text-md-center">Shipping address was not provided for this company</span>
+                        }
+
+                        @Html.Partial("_StateTransition", stateTransition);
+                    }
+                    else if (td.StateId == (int)States.AddExtraQuantities)
+                    {
+                        StateTransitionViewModel stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                            RFQVM = tdvm.RFQVM,
+                            UserType = tdvm.UserType,
+                            EnumName = tdvm.EnumName,
+                            RevisingDocs = tdvm.Docs.Where(d => d.DocType == (int)DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+                            PackingSlipDocs = tdvm.Docs.Where(d => d.DocType == (int)DOCUMENT_TYPE.PACKING_SLIP_PDF).ToList(),
+                            CarrierName = tdvm.CarrierFromOrder,
+                        };
+                        @Html.Partial("_StateTransition", stateTransition);
+                    }
+                    else if (td.StateId == (int)States.RFQBidComplete)
+                    {
+                        if (td.RFQBidId != null)
+                        {
+                            <div class="col-md-12 top-margin-20">
+                                <h4>Bid Failed Reason</h4>
+                                <p class="red-text">@tdvm.BidFailedReason</p>
+                            </div>
+                        }
+                    }
+                    else if (td.StateId == (int)States.ProofingStarted || td.StateId == (int)States.ProofRejected ||
+                             td.StateId == (int)States.SampleRejected || td.StateId == (int)States.ProductionComplete)
+                    {
+
+                        var stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            UserType = tdvm.UserType,
+                        };
+
+                        if (td.RejectReason != null && td.StateId == (int)States.ProofRejected)
+                        {
+                            var docproofs = tdvm.Docs.Where(d => d.DocType == (int) DOCUMENT_TYPE.PROOF_PDF);
+                            <div class="col-md-12 top-margin-20">
+                                <h4>Reject Reason</h4>
+                                <p class="red-text">@td.RejectReason</p>
+                            </div>
+                            <div class="col-md-12 top-margin-20">
+                                <p>Customer uploaded correspond document for rejecting Proof:</p>
+                                @if (docproofs != null)
+                                {
+                                    foreach (var doc in docproofs)
+                                    {
+                                        <a class="col-md-12" href="@doc.DocUri" target="_blank">@doc.Name</a>
+                                    }
+                                }
+                            </div>
+                        }
+                        else if (td.RejectReason != null && td.StateId == (int)States.SampleRejected)
+                        {
+                            var docproofs = tdvm.SampleRejectDocs;
+                            <div class="col-md-12 top-margin-20">
+                                <h4>Reject Reason</h4>
+                                <p class="red-text">@td.RejectReason</p>
+                            </div>
+                            <div class="col-md-12 top-margin-20">
+                                <p>Customer uploaded correspond document for rejecting Sample:</p>
+                                @if (docproofs != null)
+                                {
+                                    foreach (var doc in docproofs)
+                                    {
+                                        <a class="col-md-12" href="@doc.DocUri" target="_blank">@doc.Name</a>
+                                    }
+                                }
+                            </div>
+                        }
+                        if (td.StateId == (int)States.ProofingStarted)
+                        {
+                            if (tdvm.MyFunc() == false)
+                            {
+                                <div id="indicate" class="col-md-12 green-text">You must upload at least one Proof document before the Submit button is available.</div>
+                                stateTransition.HideSubmitButton = null;
+                            }
+                            // Upload Proof Doc
+                            <div class="col-md-8 top-margin-30  no-padding">
+                                @Html.TextBoxFor(m => m.ProofingDocUri, new { type = "file", multiple = true, name = "proofDoc", @id = "proofDoc", @class = "no-padding" })
+                            </div>
+                            <div class="col-md-4 top-margin-30 no-padding">
+                                <span id="btnUpload" class="btn grey-background-color buttonWidth pull-md-right no-margin">Upload Proofing Doc</span>
+                            </div>
+                        }
+                        else if (td.StateId == (int)States.ProductionComplete && tdvm.MyFunc() == false)
+                        {
+                            stateTransition.HideSubmitButton = true;
+                        }
+                        else
+                        {
+                            stateTransition.HideSubmitButton = null;
+                        }
+                        @Html.Partial("_StateTransition", stateTransition);
+
+                    }
+                    else if (td.StateId == (int)States.ReOrderPaid ||
+                            td.StateId == (int)States.OrderPaid ||
+                            td.StateId == (int)States.ProofApproved ||
+                            td.StateId == (int)States.ToolingStarted ||
+                            td.StateId == (int)States.ProductionStarted ||
+                            td.StateId == (int)States.SampleRejected ||
+                            td.StateId == (int)States.SampleStarted ||
+                            td.StateId == (int)States.SampleRejected ||
+                            td.StateId == (int)States.SampleApproved ||
+                            td.StateId == (int)States.NCRClosed)
+                    {
+                        var stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            UserType = tdvm.UserType,
+                            EnumName = tdvm.EnumName,
+                            RevisingDocs = tdvm.Docs.Where(d => d.DocType == (int)DOCUMENT_TYPE.REVISING_DOCS).ToList(),
+                            PackingSlipDocs = tdvm.Docs.Where(d => d.DocType == (int)DOCUMENT_TYPE.PACKING_SLIP_PDF).ToList(),
+                            CarrierName = tdvm.CarrierFromOrder,
+                            OrderId = tdvm.Order.Id,
+                        };
+
+                        @Html.Partial("_StateTransition", stateTransition);
+                    }                 
+                    else if (td.StateId == (int)States.NCRCustomerStarted ||
+                            td.StateId == (int)States.NCRVendorRootCauseAnalysis ||
+                            td.StateId == (int)States.NCRCustomerCorrectivePartsAccepted ||
+                            td.StateId == (int)States.NCRVendorCorrectivePartsInProduction)
+                    {
+                        var stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            NcrDescriptionVM = tdvm.NcrDescriptionVM,
+                            UserType = tdvm.UserType,
+                        };
+
+                        @Html.Partial("_StateTransition", stateTransition);
+
+                    }
+                    else if (td.StateId == (int)States.VendorPendingInvoice)
+                    {
+                        if (order != null)
+                        {
+                            var stateTransition = new StateTransitionViewModel
+                            {
+                                TaskData = td,
+                                StTransition = stTransition,
+                                VendorInvoiceVM = tdvm.VendorInvoiceVM,
+                                UserType = tdvm.UserType,
+                            };
+                            if (stateTransition.VendorInvoiceVM != null)
+                            {
+                                @Html.Partial("_StateTransition", stateTransition);
+                            }
+                            else
+                            {
+                                <div class="red-text text-md-center">Object is empty, check out your vendor and task are correct.</div>
+                            }
+                        }
+                    }
+                    else if (td.isEnterprise == true && (td.StateId == (int)States.PaymentMade || td.StateId == (int)States.ReOrderPaymentMade))
+                    {
+                        var stateTransition = new StateTransitionViewModel
+                        {
+                            TaskData = td,
+                            StTransition = stTransition,
+                            UserType = tdvm.UserType,
+                        };
+                        Html.RenderPartial("_StateTransition", stateTransition);
+                    }
+
+                </div>
+            }
+
+            <div class="col-md-7 pull-right top-margin-100">
+                <a href="@Url.Action("Contact", "Home")" target="_blank" class="btn accent-background-color" style="text-align:right;">Contact Correspondent</a>
+                <a class="btn grey-background-color pull-right buttonWidth2" data-dismiss="modal">Collapse</a>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ($('#indicate').is(':visible')) {
+            $('#btnSubmit').hide();
+        }
+        else {
+            $('#btnSubmit').show();
+        }
+
+
+        $('#btnUpload').click(function () {
+
+            $('#spinner').show();
+
+            var $url = '//' + window.location.host + '/Documents/UploadProofingDoc';
+
+            var productId = @Model.TaskVM.TaskData.ProductId;
+            var taskId =  @Model.TaskVM.TaskData.TaskId;
+
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#proofDoc").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('productId', productId);
+                fileData.append('taskId', taskId);
+
+                $.ajax({
+                    type: 'POST',
+                    url: $url,
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function(result) {
+
+                        if (result == 'success') {
+                            //$('#btnSubmit').show();
+                            $('#indicate').hide();
+                            $('#spinner').hide();
+                            alertify.alert('Please close this popup and re-open it to see the changes');
+                        }
+                    },
+                    error: function(error) {
+                        $('#spinner').hide();
+                        alertify.error(error.statusCode);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+
+        });
+    })
+</script>

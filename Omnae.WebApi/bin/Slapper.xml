@@ -1,0 +1,745 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Slapper</name>
+    </assembly>
+    <members>
+        <member name="T:Slapper.AutoMapper">
+            <summary>
+            Provides auto-mapping to static type capabilities for ORMs. Slap your ORM into submission.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Cache">
+            <summary>
+            Contains the methods and members responsible for this libraries caching concerns.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Cache.InstanceCacheContextStorageKey">
+            <summary>
+            The name of the instance cache stored in the logical call context.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Cache.TypeMapCache">
+            <summary>
+            Cache of TypeMaps containing the types identifiers and PropertyInfo/FieldInfo objects.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Cache.TypeMap">
+            <summary>
+            A TypeMap holds data relevant for a particular Type.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Cache.TypeMap.#ctor(System.Type,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Creates a new <see cref="T:Slapper.AutoMapper.Cache.TypeMap"/>.
+            </summary>
+            <param name="type">Type to map.</param>
+            <param name="identifiers">The <paramref name="type"/>s identifiers.</param>
+            <param name="propertiesAndFields">The <paramref name="type"/>s properties and fields.</param>
+        </member>
+        <member name="F:Slapper.AutoMapper.Cache.TypeMap.Type">
+            <summary>
+            Type for this TypeMap
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Cache.TypeMap.Identifiers">
+            <summary>
+            List of identifiers
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Cache.TypeMap.PropertiesAndFieldsInfo">
+            <summary>
+            Property/field names and their corresponding PropertyInfo/FieldInfo objects
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Cache.ClearAllCaches">
+            <summary>
+            Clears all internal caches.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Cache.ClearInstanceCache">
+            <summary>
+            Clears the instance cache. This cache contains all objects created by Slapper.AutoMapper.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Cache.GetInstanceCache">
+            <summary>
+            Gets the instance cache containing all objects created by Slapper.AutoMapper.
+            This cache exists for the lifetime of the current thread until manually cleared/purged.
+            </summary>
+            <remarks>
+            Due to the nature of how the cache is persisted, each new thread will recieve it's own
+            unique cache.
+            </remarks>
+            <returns>Instance Cache</returns>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration">
+            <summary>
+            Contains the methods and members responsible for this libraries configuration concerns.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Configuration.Version">
+            <summary>
+            Current version of Slapper.AutoMapper.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Configuration.IdentifierAttributeType">
+            <summary>
+            The attribute Type specifying that a field or property is an identifier.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.ApplyIdentifierConvention">
+            <summary>
+            Convention for finding an identifier.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Slapper.AutoMapper.Configuration.IdentifierConventions">
+            <summary>
+            Conventions for finding an identifier.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Configuration.TypeConverters">
+            <summary>
+            Type converters used to convert values from one type to another.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Configuration.TypeActivators">
+            <summary>
+            Activators to instantiate types.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ApplyDefaultIdentifierConventions">
+            <summary>
+            Applies default conventions for finding identifiers.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ApplyDefaultTypeConverters">
+            <summary>
+            Applies the default ITypeConverters for converting values to different types.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.AddIdentifier(System.Type,System.String)">
+            <summary>
+            Adds an identifier for the specified type.
+            Replaces any identifiers previously specified.
+            </summary>
+            <param name="type">Type</param>
+            <param name="identifier">Identifier</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.AddIdentifiers(System.Type,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds identifiers for the specified type.
+            Replaces any identifiers previously specified.
+            </summary>
+            <param name="type">Type</param>
+            <param name="identifiers">Identifiers</param>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.ITypeConverter">
+            <summary>
+            Defines methods that can convert values from one type to another. 
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ITypeConverter.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value is to be converted to.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ITypeConverter.CanConvert(System.Object,System.Type)">
+            <summary>
+            Indicates whether it can convert the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value needs to be converted to.</param>
+            <returns>Boolean response.</returns>
+        </member>
+        <member name="P:Slapper.AutoMapper.Configuration.ITypeConverter.Order">
+            <summary>
+            Order to execute an <see cref="T:Slapper.AutoMapper.Configuration.ITypeConverter"/> in.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.GuidConverter">
+            <summary>
+            Converts values to Guids.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.GuidConverter.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value is to be converted to.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.GuidConverter.CanConvert(System.Object,System.Type)">
+            <summary>
+            Indicates whether it can convert the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value needs to be converted to.</param>
+            <returns>Boolean response.</returns>
+        </member>
+        <member name="P:Slapper.AutoMapper.Configuration.GuidConverter.Order">
+            <summary>
+            Order to execute an <see cref="T:Slapper.AutoMapper.Configuration.ITypeConverter"/> in.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.EnumConverter">
+            <summary>
+            Converts values to Enums.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.EnumConverter.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value is to be converted to.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.EnumConverter.CanConvert(System.Object,System.Type)">
+            <summary>
+            Indicates whether it can convert the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value needs to be converted to.</param>
+            <returns>Boolean response.</returns>
+        </member>
+        <member name="P:Slapper.AutoMapper.Configuration.EnumConverter.Order">
+            <summary>
+            Order to execute an <see cref="T:Slapper.AutoMapper.Configuration.ITypeConverter"/> in.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.ValueTypeConverter">
+            <summary>
+            Converts values types.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ValueTypeConverter.Convert(System.Object,System.Type)">
+            <summary>
+            Converts the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value is to be converted to.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ValueTypeConverter.CanConvert(System.Object,System.Type)">
+            <summary>
+            Indicates whether it can convert the given value to the requested type.
+            </summary>
+            <param name="value">Value to convert.</param>
+            <param name="type">Type the value needs to be converted to.</param>
+            <returns>Boolean response.</returns>
+        </member>
+        <member name="P:Slapper.AutoMapper.Configuration.ValueTypeConverter.Order">
+            <summary>
+            Order to execute an <see cref="T:Slapper.AutoMapper.Configuration.ITypeConverter"/> in.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Configuration.ITypeActivator">
+            <summary>
+            Defines an interface for an activator for a specific type.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ITypeActivator.Create(System.Type)">
+            <summary>
+            Creates the type.
+            </summary>
+            <param name="type">The type to create.</param>
+            <returns>The created type.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Configuration.ITypeActivator.CanCreate(System.Type)">
+            <summary>
+            Indicates whether it can create the type.
+            </summary>
+            <param name="type">The type to create.</param>
+            <returns>Boolean response.</returns>
+        </member>
+        <member name="P:Slapper.AutoMapper.Configuration.ITypeActivator.Order">
+            <summary>
+            The order to try the activator in.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Id">
+            <summary>
+            Attribute for specifying that a field or property is an identifier.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.MapDynamic``1(System.Object,System.Boolean)">
+            <summary>
+            Converts a dynamic object to a type <typeparamref name="T"/>.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <typeparam name="T">Type to instantiate and automap to</typeparam>
+            <param name="dynamicObject">Dynamic list of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>The type <typeparamref name="T"/></returns>
+            <exception cref="T:System.ArgumentException">Exception that is thrown when the <paramref name="dynamicObject"/> cannot be converted to an IDictionary of type string and object.</exception>
+        </member>
+        <member name="M:Slapper.AutoMapper.MapDynamic(System.Type,System.Object,System.Boolean)">
+            <summary>
+            Converts a dynamic object to a specified Type.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="type">Type to instantiate and automap to</param>
+            <param name="dynamicObject">Dynamic list of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>The specified Type</returns>
+            <exception cref="T:System.ArgumentException">Exception that is thrown when the <paramref name="dynamicObject"/> cannot be converted to an IDictionary of type string and object.</exception>
+        </member>
+        <member name="M:Slapper.AutoMapper.MapDynamic``1(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Converts a list of dynamic objects to a list of type of <typeparamref name="T"/>.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <typeparam name="T">Type to instantiate and automap to</typeparam>
+            <param name="dynamicListOfProperties">Dynamic list of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>List of type <typeparamref name="T"/></returns>
+            <exception cref="T:System.ArgumentException">Exception that is thrown when the <paramref name="dynamicListOfProperties"/> cannot be converted to an IDictionary of type string and object.</exception>
+        </member>
+        <member name="M:Slapper.AutoMapper.MapDynamic(System.Type,System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Converts a list of dynamic objects to a list of specified Type.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="type">Type to instantiate and automap to</param>
+            <param name="dynamicListOfProperties">Dynamic list of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>List of specified Type</returns>
+            <exception cref="T:System.ArgumentException">Exception that is thrown when the <paramref name="dynamicListOfProperties"/> cannot be converted to an IDictionary of type string and object.</exception>
+        </member>
+        <member name="M:Slapper.AutoMapper.Map``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.Boolean)">
+            <summary>
+            Converts a dictionary of property names and values to a type <typeparamref name="T"/>.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <typeparam name="T">Type to instantiate and automap to</typeparam>
+            <param name="listOfProperties">List of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>The type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Map(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object},System.Boolean)">
+            <summary>
+            Converts a dictionary of property names and values to a specified Type.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="type">Type to instantiate and automap to</param>
+            <param name="listOfProperties">List of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>The specified Type</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Map``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},System.Boolean)">
+            <summary>
+            Converts a list of dictionaries of property names and values to a list of type of <typeparamref name="T"/>.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <typeparam name="T">Type to instantiate and automap to</typeparam>
+            <param name="listOfProperties">List of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>List of type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.Map(System.Type,System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},System.Boolean)">
+            <summary>
+            Converts a list of dictionaries of property names and values to a list of specified Type.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="type">Type to instantiate and automap to</param>
+            <param name="listOfProperties">List of property names and values</param>
+            <param name="keepCache">If false, clears instance cache after mapping is completed. Defaults to true, meaning instances are kept between calls.</param>
+            <returns>List of specified Type</returns>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers">
+            <summary>
+            Contains the methods and members responsible for this libraries internal concerns.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.GetIdentifiers(System.Type)">
+            <summary>
+            Gets the identifiers for the given type. Returns NULL if not found.
+            Results are cached for subsequent use and performance.
+            </summary>
+            <remarks>
+            If no identifiers have been manually added, this method will attempt
+            to first find an <see cref="T:Slapper.AutoMapper.Id"/> attribute on the <paramref name="type"/>
+            and if not found will then try to match based upon any specified identifier conventions.
+            </remarks>
+            <param name="type">Type</param>
+            <returns>Identifier</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.GetFieldsAndProperties(System.Type)">
+            <summary>
+            Get a Dictionary of a type's property names and field names and their corresponding PropertyInfo or FieldInfo.
+            Results are cached for subsequent use and performance.
+            </summary>
+            <param name="type">Type</param>
+            <returns>Dictionary of a type's property names and their corresponding PropertyInfo</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.CreateInstance(System.Type)">
+            <summary>
+            Creates an instance of the specified type using that type's default constructor.
+            </summary>
+            <param name="type">The type of object to create.</param>
+            <returns>
+            A reference to the newly created object.
+            </returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.CreateTypeMap(System.Type)">
+            <summary>
+            Creates a TypeMap for a given Type.
+            </summary>
+            <param name="type">Type</param>
+            <returns>TypeMap</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.CreateFieldAndPropertyInfoDictionary(System.Type)">
+            <summary>
+            Creates a Dictionary of field or property names and their corresponding FieldInfo or PropertyInfo objects
+            </summary>
+            <param name="type">Type</param>
+            <returns>Dictionary of member names and member info objects</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.GetMemberType(System.Object)">
+            <summary>
+            Gets the Type of the Field or Property
+            </summary>
+            <param name="member">FieldInfo or PropertyInfo object</param>
+            <returns>Type</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.SetMemberValue(System.Object,System.Object,System.Object)">
+            <summary>
+            Sets the value on a Field or Property
+            </summary>
+            <param name="member">FieldInfo or PropertyInfo object</param>
+            <param name="obj">Object to set the value on</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ConvertValuesTypeToMembersType(System.Object,System.String,System.Type,System.Type)">
+            <summary>
+            Converts the values type to the members type if needed.
+            </summary>
+            <param name="value">Object value.</param>
+            <param name="memberName">Member name.</param>
+            <param name="memberType">Member type.</param>
+            <param name="classType">Declarying class type.</param>
+            <returns>Value converted to the same type as the member type.</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.GetMemberValue(System.Object,System.Object)">
+            <summary>
+            Gets the value of the member
+            </summary>
+            <param name="member">FieldInfo or PropertyInfo object</param>
+            <param name="obj">Object to get the value from</param>
+            <returns>Value of the member</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.GetInstance(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Gets a new or existing instance depending on whether an instance with the same identifiers already existing
+            in the instance cache.
+            </summary>
+            <param name="type">Type of instance to get</param>
+            <param name="properties">List of properties and values</param>
+            <param name="parentInstance">Parent instance. Can be NULL if this is the root instance.</param>
+            <returns>
+            Tuple of bool, object, int where bool represents whether this is a newly created instance,
+            object being an instance of the requested type and int being the instance's identifier hash.
+            </returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.Map(System.Collections.Generic.IDictionary{System.String,System.Object},System.Object,System.Object)">
+            <summary>
+            Populates the given instance's properties where the IDictionary key property names
+            match the type's property names case insensitively.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="dictionary">Dictionary of property names and values</param>
+            <param name="instance">Instance to populate</param>
+            <param name="parentInstance">Optional parent instance of the instance being populated</param>
+            <returns>Populated instance</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.MapCollection(System.Type,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object,System.Object)">
+            <summary>
+            Populates the given instance's properties where the IDictionary key property names
+            match the type's property names case insensitively.
+            
+            Population of complex nested child properties is supported by underscoring "_" into the
+            nested child properties in the property name.
+            </summary>
+            <param name="type">Underlying instance type</param>
+            <param name="dictionary">Dictionary of property names and values</param>
+            <param name="instance">Instance to populate</param>
+            <param name="parentInstance">Optional parent instance of the instance being populated</param>
+            <returns>Populated instance</returns>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers.IContextStorage">
+            <summary>
+            Provides a means of getting/storing data in the host application's
+            appropriate context.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.IContextStorage.Get``1(System.String)">
+            <summary>
+            Get a stored item.
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+            <param name="key">Item key</param>
+            <returns>Reference to the requested object</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.IContextStorage.Store(System.String,System.Object)">
+            <summary>
+            Stores an item.
+            </summary>
+            <param name="key">Item key</param>
+            <param name="obj">Object to store</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.IContextStorage.Remove(System.String)">
+            <summary>
+            Removes an item.
+            </summary>
+            <param name="key">Item key</param>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers.InternalContextStorage">
+            <summary>
+            Provides a means of getting/storing data in the host application's
+            appropriate context.
+            </summary>
+            <remarks>
+            For ASP.NET applications, it will store in the data in the current HTTPContext.
+            For all other applications, it will store the data in the logical call context.
+            </remarks>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.InternalContextStorage.Get``1(System.String)">
+            <summary>
+            Get a stored item.
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+            <param name="key">Item key</param>
+            <returns>Reference to the requested object</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.InternalContextStorage.Store(System.String,System.Object)">
+            <summary>
+            Stores an item.
+            </summary>
+            <param name="key">Item key</param>
+            <param name="obj">Object to store</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.InternalContextStorage.Remove(System.String)">
+            <summary>
+            Removes an item.
+            </summary>
+            <param name="key">Item key</param>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers.ContextStorage">
+            <summary>
+            Provides a means of getting/storing data in the host application's
+            appropriate context.
+            </summary>
+            <remarks>
+            For ASP.NET applications, it will store in the data in the current HTTPContext.
+            For all other applications, it will store the data in the logical call context.
+            </remarks>
+        </member>
+        <member name="P:Slapper.AutoMapper.InternalHelpers.ContextStorage.ContextStorageImplementation">
+            <summary>
+            Provides a means of getting/storing data in the host application's
+            appropriate context.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ContextStorage.Get``1(System.String)">
+            <summary>
+            Get a stored item.
+            </summary>
+            <typeparam name="T">Object type</typeparam>
+            <param name="key">Item key</param>
+            <returns>Reference to the requested object</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ContextStorage.Store(System.String,System.Object)">
+            <summary>
+            Stores an item.
+            </summary>
+            <param name="key">Item key</param>
+            <param name="obj">Object to store</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ContextStorage.Remove(System.String)">
+            <summary>
+            Removes an item.
+            </summary>
+            <param name="key">Item key</param>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers.ReflectionHelper">
+            <summary>
+            Contains the methods and members responsible for this libraries reflection concerns.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext">
+            <summary>
+            Provides access to System.Web.HttpContext.Current.Items via reflection.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.#cctor">
+            <summary>
+            Attempts to load and cache System.Web.HttpContext.Current.Items.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.SystemDotWeb">
+            <summary>
+            System.Web assembly reference.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.SystemDotWebDotHttpContext">
+            <summary>
+            System.Web.HttpContext type reference.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.CurrentHttpContextPropertyInfo">
+            <summary>
+            System.Web.HttpContext.Current PropertyInfo reference.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.ItemsPropertyInfo">
+            <summary>
+            System.Web.HttpContext.Current.Items PropertyInfo reference.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.GetItemFromHttpContext``1(System.String)">
+            <summary>
+            Retrieves an item of type <typeparamref name="T"/> from the current HttpContext.
+            </summary>
+            <remarks>
+            This is functionally equivalent to:
+            T obj = ( T ) System.Web.HttpContext.Current.Items[ "SomeKeyName" ];
+            </remarks>
+            <typeparam name="T">Type requested</typeparam>
+            <param name="key">Key name</param>
+            <returns>Requested item</returns>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.StoreItemInHttpContext(System.Object,System.Object)">
+            <summary>
+            Stores an item in the current HttpContext.
+            </summary>
+            <param name="key">Item key</param>
+            <param name="value">Item value</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.RemoveItemFromHttpContext(System.Object)">
+            <summary>
+            Removes an item from the current HttpContext.
+            </summary>
+            <param name="key">Item key</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.InternalHelpers.ReflectionHelper.HttpContext.GetCurrentHttpContext">
+            <summary>
+            Gets the current HttpContext.
+            </summary>
+            <returns>Reference to the current HttpContext.</returns>
+        </member>
+        <member name="T:Slapper.AutoMapper.Logging">
+            <summary>
+            Contains the methods and members responsible for this libraries logging concerns.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.Logger">
+            <summary>
+            Logger for this library.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Logging.LogLevel">
+            <summary>
+            Log levels.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.LogLevel.Debug">
+            <summary>
+            Logs debug level messages.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.LogLevel.Info">
+            <summary>
+            Logs info level messages.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.LogLevel.Warn">
+            <summary>
+            Logs warning level messages.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.LogLevel.Error">
+            <summary>
+            Logs error level messages.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.LogLevel.Fatal">
+            <summary>
+            Logs fatal level messages.
+            </summary>
+        </member>
+        <member name="T:Slapper.AutoMapper.Logging.ILogger">
+            <summary>
+            Contains methods for logging messages.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Logging.ILogger.Log(Slapper.AutoMapper.Logging.LogLevel,System.String,System.Object[])">
+            <summary>
+            Logs messages.
+            </summary>
+            <param name="logLevel">Log level.</param>
+            <param name="format">Log message format.</param>
+            <param name="args">Log message arguments.</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.Logging.ILogger.Log(Slapper.AutoMapper.Logging.LogLevel,System.Exception,System.String,System.Object[])">
+            <summary>
+            Logs exception messages.
+            </summary>
+            <param name="logLevel">Log level.</param>
+            <param name="exception">Exception being logged.</param>
+            <param name="format">Log message format.</param>
+            <param name="args">Log message arguments.</param>
+        </member>
+        <member name="T:Slapper.AutoMapper.Logging.TraceLogger">
+            <summary>
+            Logs messages to any trace listeners.
+            </summary>
+        </member>
+        <member name="F:Slapper.AutoMapper.Logging.TraceLogger.MinimumLogLevel">
+            <summary>
+            The minimum log level that this class will log messages for.
+            </summary>
+        </member>
+        <member name="M:Slapper.AutoMapper.Logging.TraceLogger.Log(Slapper.AutoMapper.Logging.LogLevel,System.String,System.Object[])">
+            <summary>
+            Logs messages to any trace listeners.
+            </summary>
+            <param name="logLevel">Log level.</param>
+            <param name="format">Log message format.</param>
+            <param name="args">Log message arguments.</param>
+        </member>
+        <member name="M:Slapper.AutoMapper.Logging.TraceLogger.Log(Slapper.AutoMapper.Logging.LogLevel,System.Exception,System.String,System.Object[])">
+            <summary>
+            Logs messages to any trace listeners.
+            </summary>
+            <param name="logLevel">Log level.</param>
+            <param name="exception">Exception being logged.</param>
+            <param name="format">Log message format.</param>
+            <param name="args">Log message arguments.</param>
+        </member>
+    </members>
+</doc>
