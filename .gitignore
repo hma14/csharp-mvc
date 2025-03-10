@@ -357,8 +357,8 @@ CountLines.txt
 total_cs_Lines
 totalLines
 
-Omnae.WebApi/*.config
-Omnae.Web/*.config
+Omnae.WebApi/Web.config
+Omnae/Web.config
 
 Omnae.BackgroundWorkers/
 
@@ -372,6 +372,10 @@ Omnae/Views/Web.config
 Omnae/Web.config
 web.config
 
-/Omnae.DemoBackgroundWorkers/local.settings.json
-/Omnae.BackgroundWorkers/local.settings.json
-/SyncHobSpotUserService/local.settings.json
+Omnae.DemoBackgroundWorkers/local.settings.json
+Omnae.BackgroundWorkers/local.settings.json
+SyncHobSpotUserService/local.settings.json
+
+Omnae.DemoBackgroundWorkers/
+Omnae.Web.Tests/
+
