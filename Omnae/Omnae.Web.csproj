@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -76,6 +76,9 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -112,56 +115,56 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.0.0.999, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.0.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Core, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Core.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Core, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Data, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Data.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Data, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.DataService, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.DataService.dll</HintPath>
+    <Reference Include="Intuit.Ipp.DataService, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.DataService.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Diagnostics.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Diagnostics, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.EntitlementService, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.EntitlementService.dll</HintPath>
+    <Reference Include="Intuit.Ipp.EntitlementService, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.EntitlementService.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Exception, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Exception.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Exception, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.GlobalTaxService, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.GlobalTaxService.dll</HintPath>
+    <Reference Include="Intuit.Ipp.GlobalTaxService, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.GlobalTaxService.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.OAuth2PlatformClient, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.OAuth2PlatformClient.dll</HintPath>
+    <Reference Include="Intuit.Ipp.OAuth2PlatformClient, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.OAuth2PlatformClient.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.OAuth2PlatformClient.Diagnostics, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.OAuth2PlatformClient.Diagnostics.dll</HintPath>
+    <Reference Include="Intuit.Ipp.OAuth2PlatformClient.Diagnostics, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.OAuth2PlatformClient.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.QueryFilter, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.QueryFilter.dll</HintPath>
+    <Reference Include="Intuit.Ipp.QueryFilter, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.QueryFilter.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.ReportService, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.ReportService.dll</HintPath>
+    <Reference Include="Intuit.Ipp.ReportService, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.ReportService.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Retry, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Retry.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Retry, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Security, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Security.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Security, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Utility, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.Utility.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Utility, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.WebHooksService, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\Intuit.Ipp.WebHooksService.dll</HintPath>
+    <Reference Include="Intuit.Ipp.WebHooksService, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\Intuit.Ipp.WebHooksService.dll</HintPath>
     </Reference>
-    <Reference Include="IppDotNetSdkForQuickBooksApiV3, Version=14.6.3.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.6\lib\net472\IppDotNetSdkForQuickBooksApiV3.dll</HintPath>
+    <Reference Include="IppDotNetSdkForQuickBooksApiV3, Version=14.6.3.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.14.6.3.7\lib\net472\IppDotNetSdkForQuickBooksApiV3.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=2020.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2020.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -1687,6 +1690,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.9.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.9.1\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.9.1\build\Microsoft.ApplicationInsights.DependencyCollector.targets'))" />
@@ -1694,15 +1699,13 @@
     <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.Web.2.9.1\build\Microsoft.ApplicationInsights.Web.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.Web.2.9.1\build\Microsoft.ApplicationInsights.Web.targets'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.9.1\build\Microsoft.ApplicationInsights.DependencyCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.9.1\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.9.1\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.9.1\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.9.1\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
   <Import Project="..\packages\Microsoft.ApplicationInsights.Web.2.9.1\build\Microsoft.ApplicationInsights.Web.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.Web.2.9.1\build\Microsoft.ApplicationInsights.Web.targets')" />
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

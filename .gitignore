@@ -359,9 +359,7 @@ totalLines
 Omnae.WebApi.Test.del/*.config
 Omnae.WebApi/Areas/HelpPage/Views/*.config
 Omnae.WebApi/Template/Web.config
-Omnae.WebApi/Views/Web.config
 Omnae/Template/Web.config
-Omnae/Views/Web.config
 Omnae/Web.config
 Omnae.WebApi/Web.config
 web.config
