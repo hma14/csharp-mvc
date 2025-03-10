@@ -372,6 +372,5 @@ Omnae.DemoBackgroundWorkers/my.azureauth.txt
 Omnae.BackgroundWorkers/local.settings.json
 SyncHobSpotUserService/local.settings.json
 
-Omnae.DemoBackgroundWorkers/
 Omnae.Web.Tests/App.config
 
