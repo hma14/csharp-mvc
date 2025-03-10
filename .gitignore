@@ -338,7 +338,6 @@ Omnae.Data/Migrations_back/Configuration.cs
 SqlScripts/CountryList.sql
 Omnae/Properties/PublishProfiles/OmnaeDev - Web Deploy.pubxml
 Omnae/Properties/PublishProfiles/Omnae - Web Deploy.pubxml
-Omnae.Data/Omnae.Data.csproj
 Omnae/DHLShippingXml/CreatedQuoteRequest.xml
 Omnae/project - Copy.json
 Omnae/project.json
