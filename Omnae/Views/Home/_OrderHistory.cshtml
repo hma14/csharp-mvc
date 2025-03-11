@@ -58,7 +58,7 @@
                         <td>
                             @Html.Raw(item.EstimateShippedDate != null && item.EstimateShippedDate.Value.Ticks > 0 ? item.EstimateShippedDate.Value.ToString(string.Format("MM/dd/yyyy")) : null)
                         </td>
-                        <td>@Html.Raw(item.ShippedDate?.ToString(string.Format("MM/dd/yyyy")))</td>
+                        <td>item.ShippedDate != null ? @Html.Raw(item.ShippedDate.Value.ToString(string.Format("MM/dd/yyyy"))) : ""</td>
                         <td>@Html.DisplayFor(m => item.PartNumber)</td>
                         <td>@Html.DisplayFor(m => item.PartNumberRevision)</td>
                         <td>@Html.DisplayFor(m => item.EstimateNumber)</td>
