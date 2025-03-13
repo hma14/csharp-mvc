@@ -12,13 +12,23 @@ jobs:
       - checkout  # Pull your repository code
       - run:
           name: Install .NET Framework Developer Pack (if needed)
-          command: choco install dotnetfx -y
+          command: |
+            choco install visualstudio2019buildtools -y --no-progress
+            choco install nuget.commandline -y --no-progress
+            refreshenv
       - run:
           name: Restore NuGet Packages
           command: nuget restore Omnae.sln
       - run:
           name: Build Solution
-          command: msbuild Omnae.sln /p:Configuration=Release /p:Platform="Any CPU"
+          shell: powershell
+          command: |
+            $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+            if (-Not (Test-Path $msbuild)) {
+                Write-Host "MSBuild not found!"
+                Exit 1
+            }
+            & $msbuild Omnae.sln /p:Configuration=Release /p:Platform="Any CPU"
 
 workflows:
   version: 2
