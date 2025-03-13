@@ -3,24 +3,25 @@ version: 2.1
 executors:
   windows-executor:
     machine:
-      image: windows-server-2019  # Use a Windows image
+      image: windows-server-2019  # Use Windows because .NET Framework 4.8 is not supported on Linux
 
 jobs:
-  build-and-test:
+  build:
     executor: windows-executor
     steps:
-      - checkout
+      - checkout  # Pull your repository code
       - run:
-          name: Install .NET Framework Developer Pack
-          command: choco install dotnetfx -y  # Install .NET Framework if needed
+          name: Install .NET Framework Developer Pack (if needed)
+          command: choco install dotnetfx -y
       - run:
           name: Restore NuGet Packages
           command: nuget restore Omnae.sln
       - run:
           name: Build Solution
-          command: msbuild Omnae.sln /p:Configuration=Release
+          command: msbuild Omnae.sln /p:Configuration=Release /p:Platform="Any CPU"
+
 workflows:
   version: 2
-  build-and-test:
+  build:
     jobs:
       - build
