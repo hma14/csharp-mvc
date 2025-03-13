@@ -19,3 +19,8 @@ jobs:
       - run:
           name: Build Solution
           command: msbuild Omnae.sln /p:Configuration=Release
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
