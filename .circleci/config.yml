@@ -1,22 +1,21 @@
 version: 2.1
 
-jobs:
-  build:
-    docker:
-      - image: mcr.microsoft.com/dotnet/framework/sdk:4.8 # Use the correct .NET Framework SDK
+executors:
+  windows-executor:
+    machine:
+      image: windows-server-2019  # Use a Windows image
 
+jobs:
+  build-and-test:
+    executor: windows-executor
     steps:
       - checkout
-
       - run:
-          name: Restore NuGet packages
-          command: nuget restore Omnae.sln # Replace with your solution filename
-
+          name: Install .NET Framework Developer Pack
+          command: choco install dotnetfx -y  # Install .NET Framework if needed
       - run:
-          name: Build the project
-          command: msbuild Omnae.sln /p:Configuration=Release # Replace with your solution filename
-
-workflows:
-  build-workflow:
-    jobs:
-      - build
+          name: Restore NuGet Packages
+          command: nuget restore Omnae.sln
+      - run:
+          name: Build Solution
+          command: msbuild Omnae.sln /p:Configuration=Release
