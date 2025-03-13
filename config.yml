@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/framework/sdk:4.8 # Use the correct .NET Framework SDK
+
+    steps:
+      - checkout
+
+      - run:
+          name: Restore NuGet packages
+          command: nuget restore Omnae.sln # Replace with your solution filename
+
+      - run:
+          name: Build the project
+          command: msbuild Omnae.sln /p:Configuration=Release # Replace with your solution filename
+
+workflows:
+  build-workflow:
+    jobs:
+      - build
