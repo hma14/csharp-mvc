@@ -9,7 +9,8 @@ namespace Omnae.Model.Models.Aspnet
     public class SimplifiedUser
     {
         public string Id { get; set; }
-        
+
+
         [Required]
         [Display(Name = "E-mail")]
         public string Email { get; set; }

@@ -10,6 +10,7 @@ namespace Omnae.Data.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            //AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(Omnae.Data.OmnaeContext context)

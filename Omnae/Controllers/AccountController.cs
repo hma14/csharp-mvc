@@ -165,7 +165,7 @@ namespace Omnae.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Resgister.Email,
+                    //UserName = model.Resgister.Email,
                     Email = model.Resgister.Email,
                     UserType = USER_TYPE.Customer,
                     PhoneNumber = model.Resgister.PhoneNumber,

@@ -1902,7 +1902,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58583</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Omnae.Web</IISUrl>
+          <IISUrl>http://localhost:9001/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
